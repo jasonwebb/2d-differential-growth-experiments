@@ -8,16 +8,21 @@ _Differential growth_ is a process that uses simple rules to produce undulating,
 
 The process itself can be described algorithmically at a high level by first supposing that we are starting with a single continuous path consisting of points (called __nodes__) connected by lines (called __edges__). In such a system, we apply the following rules:
 
-1. Each node must try to stay within a predefined maximum distance away from each of it's connected neighbors.
-2. Each node must never be too close to any other node to prevent pinching or breaking of the overall continuity of the line.
-3. When the distance between two nodes exceeds this pre-defined distance (due to the influence of the other rules), a new node must be injected between them to _split_ the line.
-4. New nodes are introduced to the system according to some growth scheme in order to induce asymmetry.
-    * Without this rule the entire system would just uniformly expand to satisfy rules #1 and #2 and reach an equilibrium state.
+1. Each node wants to be closer to it's connected neighbors, and will experience an attraction force towards them.
+2. Each node wants to sit on a straight line between it's neighbors to minimize curvature.
+3. Each node must never be too close to any other node to prevent pinching or breaking of the overall continuity of the line.
+4. When the distance between two nodes exceeds a predefined distance (due to the influence of the other rules), a new node must be injected between them to _split_ the line.
+5. New nodes are introduced to the system according to some growth scheme in order to induce asymmetry.
+    * Without this rule the entire system would just uniformly expand and reach an equilibrium state.
 
 Within these rules you can see several opportunities for customization that enable a certain amount of creative direction to be imposed by the developer. These include:
 
 * The __maximum distance__ between connected nodes before their shared edge is split.
-* The __minimum distance__ between all nodes
+* The __minimum distance__ between all nodes.
+* The __attraction force__ between connected nodes.
+* The __repulsion force__ between nearby nodes.
+* The __radius__ around each node used to calculate which nearby nodes have an influence on it.
+* The __velocity__ at which nodes move when trying to satisfy rules #1 and #2.
 * A __growth scheme__ that determines when and how new nodes are introduced to the system to induce interesting asymmetry. 
 
 ## References
