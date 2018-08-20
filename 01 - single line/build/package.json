@@ -19,7 +19,8 @@
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.5.0",
     "gulp-open": "^3.0.1",
-    "gulp-uglify": "^3.0.1"
+    "gulp-uglify": "^3.0.1",
+    "p5": "^0.7.1"
   },
   "dependencies": {
     "npm": "^6.4.0"
