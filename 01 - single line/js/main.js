@@ -85,7 +85,7 @@ class Path {
 
 
     // Move towards next node, if there is one
-    if(connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node && !this.nodes[index].isFixed) {
+    if (connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node && !this.nodes[index].isFixed) {
       lowerMinDistance = min(this.nodes[index].minDistance, connectedNodes.nextNode.minDistance);
       distance = this.nodes[index].position.dist(connectedNodes.nextNode.position);
 
@@ -144,7 +144,7 @@ class Path {
       // Move this point towards this midpoint
       this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].nextPosition, ALIGNMENT_FORCE);
     }
-  } 
+  }
 
   //==================================================================
   //  Split edges
@@ -171,20 +171,20 @@ class Path {
   //==================================================================
   injectNode() {
     // Choose two connected nodes at random
-    let index = parseInt(random(this.nodes.length-60, this.nodes.length-5));
+    let index = parseInt(random(this.nodes.length - 60, this.nodes.length - 5));
     let connectedNodes = this.getConnectedNodes(index);
 
-    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && 
-        connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-        connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > 1
-      ) {
+    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
+      connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
+      connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > 1
+    ) {
       // Create a new node with a slight vertical deviation to induce asymmetry
       let newNode = new Node(
         p5.Vector.lerp(
           connectedNodes.previousNode.position,
           connectedNodes.nextNode.position,
           0.5)
-        .add(createVector(random(1,5), random(1,5))),
+        .add(createVector(random(1, 5), random(1, 5))),
         MIN_DISTANCE,
         MAX_DISTANCE,
         REPULSION_RADIUS
@@ -197,7 +197,6 @@ class Path {
     }
   }
 
-  
   //==================================================================
   //  Get connected nodes
   //  -------------------
@@ -237,7 +236,11 @@ class Path {
   //  - Draw all nodes and edges to the canvas
   //==================================================================
   draw() {
-    stroke(0,0,0,255);
+    if (TRACE_MODE) {
+      stroke(0, 0, 0, 5);
+    } else {
+      stroke(0, 0, 0);
+    }
 
     // Draw edges between nodes
     for (let i = 0; i < this.nodes.length - 1; i++) {
@@ -253,9 +256,9 @@ class Path {
     noStroke();
 
     // Draw all nodes
-    for (let node of this.nodes) {
-      // node.draw();
-    }
+    // for (let node of this.nodes) {
+    //   node.draw();
+    // }
   }
 }
 
@@ -276,6 +279,8 @@ const ALIGNMENT_FORCE = .2;
 
 const PADDING = 0;
 
+let TRACE_MODE = false;
+
 let path;
 let lastNodeInjectTime = 0;
 
@@ -285,20 +290,14 @@ let lastNodeInjectTime = 0;
 //====================================
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  // frameRate(10);
 
-  // Create nodes
-  let nodes = [
-    new Node(createVector(0 , window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true),
-    new Node(createVector(window.innerWidth, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true)
-  ];
-
-  // Create path using nodes
-  path = new Path(nodes);
+  initializePath();
 }
 
 function draw() {
-  background(250);
+  if (!TRACE_MODE) {
+    background(250);
+  }
 
   path.iterate();
   path.draw();
@@ -308,4 +307,25 @@ function draw() {
     path.injectNode();
     lastNodeInjectTime = millis();
   }
+}
+
+document.onkeyup = function (e) {
+  if (e.key == ' ') {
+    TRACE_MODE = !TRACE_MODE;
+
+    initializePath();
+  }
+}
+
+function initializePath() {
+  background(255);
+
+  // Create nodes
+  let nodes = [
+    new Node(createVector(0, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true),
+    new Node(createVector(window.innerWidth, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true)
+  ];
+
+  // Create path using nodes
+  path = new Path(nodes);
 }
