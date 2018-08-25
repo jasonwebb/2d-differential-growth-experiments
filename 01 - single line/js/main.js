@@ -20,12 +20,16 @@ class Node {
 
   draw() {
     if (this.isFixed) {
-      fill(0, 255, 0);
+      fill(255, 0, 0);
     } else {
       fill(0);
     }
 
-    ellipse(this.position.x, this.position.y, 5);
+    if (this.isFixed) {
+      ellipse(this.position.x, this.position.y, 10);
+    } else {
+      ellipse(this.position.x, this.position.y, 5);
+    }
   }
 }
 
@@ -57,11 +61,12 @@ class Path {
       this.applyAttraction(index)
 
       // Move away from any nodes that are too close (repulsion)
-      // this.applyRepulsion(index);
+      this.applyRepulsion(index);
 
       // Align with neighbors
       this.applyAlignment(index);
 
+      // Move towards next position with velocity and acceleration
       node.iterate();
     }
 
@@ -76,24 +81,25 @@ class Path {
   //=======================================================================
   applyAttraction(index) {
     let lowerMinDistance, distance;
+    let connectedNodes = this.getConnectedNodes(index);
 
     // Move towards previous node, if there is one
-    if (index - 1 > 0) {
-      lowerMinDistance = min(this.nodes[index - 1].minDistance, this.nodes[index].minDistance);
-      distance = this.nodes[index].position.dist(this.nodes[index - 1].position);
+    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && !this.nodes[index].isFixed) {
+      lowerMinDistance = min(this.nodes[index].minDistance, connectedNodes.previousNode.minDistance);
+      distance = this.nodes[index].position.dist(connectedNodes.previousNode.position);
 
-      if (distance > lowerMinDistance && !this.nodes[index].isFixed) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, this.nodes[index - 1].position, ATTRACTION_FORCE);
+      if (distance > lowerMinDistance) {
+        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, ATTRACTION_FORCE);
       }
     }
 
     // Move towards next node, if there is one
-    if (index + 1 < this.nodes.length) {
-      lowerMinDistance = min(this.nodes[index].minDistance, this.nodes[index + 1].minDistance);
-      distance = this.nodes[index].position.dist(this.nodes[index + 1].position);
+    if(connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node && !this.nodes[index].isFixed) {
+      lowerMinDistance = min(this.nodes[index].minDistance, connectedNodes.nextNode.minDistance);
+      distance = this.nodes[index].position.dist(connectedNodes.nextNode.position);
 
-      if (distance > lowerMinDistance && !this.nodes[index].isFixed) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, this.nodes[index + 1].position, ATTRACTION_FORCE);
+      if (distance > lowerMinDistance) {
+        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.nextNode.position, ATTRACTION_FORCE);
       }
     }
   }
@@ -104,12 +110,15 @@ class Path {
   //  - Move the referenced node away from all nearby nodes within a radius
   //==========================================================================
   applyRepulsion(index) {
-    for (let node of this.nodes) {
-      let lowerRepulsionRadius = min(this.nodes[index].repulsionRadius, node.repulsionRadius);
+    for (let [thatIndex, node] of this.nodes.entries()) {
+      if (index != thatIndex) {
+        let lowerRepulsionRadius = min(this.nodes[index].repulsionRadius, node.repulsionRadius);
+        let distance = this.nodes[index].position.dist(node.position);
 
-      if (this.nodes[index].position.dist(node.position) <= lowerRepulsionRadius && !this.nodes[index].isFixed) {
-        // Push the current node away from the iterating node
-        // this.nodes[index].nextPosition
+        if (distance <= lowerRepulsionRadius && !this.nodes[index].isFixed) {
+          // Push the current node away from the other node
+          this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, node.position, -REPULSION_FORCE);
+        }
       }
     }
   }
@@ -121,34 +130,19 @@ class Path {
   //    neighbor connected nodes to minimize curvature
   //==================================================================
   applyAlignment(index) {
-    let previousNode, nextNode;
+    let connectedNodes = this.getConnectedNodes(index);
 
-    // Find previous node, if there is one
-    if (index - 1 > 0) {
-      previousNode = this.nodes[index - 1];
-    } else {
-      if (index == 0 && this.isClosed) {
-        previousNode = this.nodes[this.nodes.length];
-      }
-    }
-
-    // Find next node, if there is one
-    if (index + 1 < this.nodes.length) {
-      nextNode = this.nodes[index + 1]
-    } else {
-      if (index == this.nodes.length && this.isClosed) {
-        nextNode = this.nodes[0];
-      }
-    }
-
-    if (previousNode != undefined && previousNode instanceof Node && nextNode != undefined && nextNode instanceof Node) {
+    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
+      connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
+      !this.nodes[index].isFixed
+    ) {
       // Find the midpoint between the neighbors of this node
-      let midpoint = p5.Vector.lerp(previousNode.position, nextNode.position, 0.5);
+      let midpoint = p5.Vector.lerp(connectedNodes.previousNode.position, connectedNodes.nextNode.position, 0.5);
 
       // Move this point towards this midpoint
-      this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].position, ALIGNMENT_FORCE);
+      this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].nextPosition, ALIGNMENT_FORCE);
     }
-  }
+  } 
 
   //==================================================================
   //  Split edges
@@ -175,21 +169,55 @@ class Path {
   //==================================================================
   injectNode() {
     // Choose two connected nodes at random
-    let index = parseInt(random(0, this.nodes.length));
-    let nextIndex = index + 1;
+    let index = parseInt(random(10, this.nodes.length-5));
+    let connectedNodes = this.getConnectedNodes(index);
 
-    // If the path is closed, wrap the index. Otherwise skip injecting this node.
-    if (index == this.nodes.length - 1 && !this.closed) {
-      return;
-    } else if (index == this.nodes.length - 1 && this.closed) {
-      nextIndex = 0;
+    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && 
+        connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
+        connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > 5
+      ) {
+      // Create a new node with a slight vertical deviation to induce asymmetry
+      let newNode = new Node(
+        p5.Vector.lerp(
+          connectedNodes.previousNode.position,
+          connectedNodes.nextNode.position,
+          0.5)
+        .add(createVector(random(1,20), random(1,10))),
+        MIN_DISTANCE,
+        MAX_DISTANCE,
+        REPULSION_RADIUS
+      );
+
+      // Splice new node into array
+      this.nodes.splice(index, 0, newNode);
+    }
+  }
+
+  getConnectedNodes(index) {
+    let previousNode, nextNode;
+
+    // Find previous node, if there is one
+    if (index - 1 > 0) {
+      previousNode = this.nodes[index - 1];
+    } else {
+      if (this.isClosed) {
+        previousNode = this.nodes[this.nodes.length];
+      }
     }
 
-    // Create a new node with a slight vertical deviation to induce asymmetry
-    let newNode = new Node(p5.Vector.lerp(this.nodes[index].position, this.nodes[nextIndex].position, 0.5).add(createVector(0, random(5, 100))), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS)
+    // Find next node, if there is one
+    if (index + 1 < this.nodes.length) {
+      nextNode = this.nodes[index + 1]
+    } else {
+      if (this.isClosed) {
+        nextNode = this.nodes[0];
+      }
+    }
 
-    // Splice new node into array
-    this.nodes.splice(index, 0, newNode);
+    return {
+      previousNode,
+      nextNode
+    };
   }
 
   //==================================================================
@@ -198,24 +226,24 @@ class Path {
   //  - Draw all nodes and edges to the canvas
   //==================================================================
   draw() {
-    fill(0);
-    noStroke();
-
-    // Draw all nodes
-    for (let node of this.nodes) {
-      node.draw();
-    }
-
     stroke(0);
 
     // Draw edges between nodes
-    for (let i = 0; i < this.nodes.length - 1; i++) {
+    for (let i = 1; i < this.nodes.length - 1; i++) {
       line(this.nodes[i].position.x, this.nodes[i].position.y, this.nodes[i + 1].position.x, this.nodes[i + 1].position.y);
     }
 
     // Draw a line between last and first node to close the path, if needed
     if (this.closed) {
       line(this.nodes[this.nodes.length - 1].position.x, this.nodes[this.nodes.length - 1].position.y, this.nodes[0].position.x, this.nodes[0].position.y);
+    }
+
+    fill(0);
+    noStroke();
+
+    // Draw all nodes
+    for (let node of this.nodes) {
+      // node.draw();
     }
   }
 }
@@ -224,18 +252,18 @@ class Path {
 //====================================
 // Global variables
 //====================================
-const MIN_DISTANCE = 100;
-const MAX_DISTANCE = 200;
-const REPULSION_RADIUS = 100;
+const MIN_DISTANCE = 10;
+const MAX_DISTANCE = 30;
+const REPULSION_RADIUS = 60;
 const NODE_INJECT_INTERVAL = 100;
-const MAX_NODES = 50;
-const VELOCITY = .1;
+const MAX_NODES = 550;
+const VELOCITY = .15;
 
-const ATTRACTION_FORCE = 1.25;
-const REPULSION_FORCE = 0.001;
-const ALIGNMENT_FORCE = 0.1;
+const ATTRACTION_FORCE = .2;
+const REPULSION_FORCE = .6;
+const ALIGNMENT_FORCE = .4;
 
-const PADDING = 100;
+const PADDING = 0;
 
 let path;
 let lastNodeInjectTime = 0;
@@ -250,8 +278,8 @@ function setup() {
 
   // Create nodes
   let nodes = [
-    new Node(createVector(window.innerWidth / 5, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true),
-    new Node(createVector(4 * window.innerWidth / 5, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true)
+    new Node(createVector(0 , window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true),
+    new Node(createVector(window.innerWidth, window.innerHeight / 2), MIN_DISTANCE, MAX_DISTANCE, REPULSION_RADIUS, true)
   ];
 
   // Create path using nodes
