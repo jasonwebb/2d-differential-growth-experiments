@@ -83,15 +83,6 @@ class Path {
     let lowerMinDistance, distance;
     let connectedNodes = this.getConnectedNodes(index);
 
-    // Move towards previous node, if there is one
-    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && !this.nodes[index].isFixed) {
-      lowerMinDistance = min(this.nodes[index].minDistance, connectedNodes.previousNode.minDistance);
-      distance = this.nodes[index].position.dist(connectedNodes.previousNode.position);
-
-      if (distance > lowerMinDistance) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, ATTRACTION_FORCE);
-      }
-    }
 
     // Move towards next node, if there is one
     if(connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node && !this.nodes[index].isFixed) {
@@ -102,6 +93,17 @@ class Path {
         this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.nextNode.position, ATTRACTION_FORCE);
       }
     }
+
+    // Move towards previous node, if there is one
+    if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && !this.nodes[index].isFixed) {
+      lowerMinDistance = min(this.nodes[index].minDistance, connectedNodes.previousNode.minDistance);
+      distance = this.nodes[index].position.dist(connectedNodes.previousNode.position);
+
+      if (distance > lowerMinDistance) {
+        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, ATTRACTION_FORCE);
+      }
+    }
+
   }
 
   //=========================================================================
@@ -151,7 +153,7 @@ class Path {
   //==================================================================
   splitEdges() {
     for (let [index, node] of this.nodes.entries()) {
-      if (index + 1 < this.nodes.length) {
+      if (index < this.nodes.length - 1) {
         let lowerMaxDistance = min(this.nodes[index].maxDistance, this.nodes[index + 1].maxDistance);
 
         if (this.nodes[index].position.dist(this.nodes[index + 1].position) > lowerMaxDistance && this.nodes.length < MAX_NODES) {
@@ -169,12 +171,12 @@ class Path {
   //==================================================================
   injectNode() {
     // Choose two connected nodes at random
-    let index = parseInt(random(10, this.nodes.length-5));
+    let index = parseInt(random(this.nodes.length-60, this.nodes.length-5));
     let connectedNodes = this.getConnectedNodes(index);
 
     if (connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && 
         connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-        connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > 5
+        connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > 1
       ) {
       // Create a new node with a slight vertical deviation to induce asymmetry
       let newNode = new Node(
@@ -182,7 +184,7 @@ class Path {
           connectedNodes.previousNode.position,
           connectedNodes.nextNode.position,
           0.5)
-        .add(createVector(random(1,20), random(1,10))),
+        .add(createVector(random(1,5), random(1,5))),
         MIN_DISTANCE,
         MAX_DISTANCE,
         REPULSION_RADIUS
@@ -190,9 +192,18 @@ class Path {
 
       // Splice new node into array
       this.nodes.splice(index, 0, newNode);
+
+      // if(this.nodes.length == 150) alert('test');
     }
   }
 
+  
+  //==================================================================
+  //  Get connected nodes
+  //  -------------------
+  //  - For a given node, find a return the nodes that come 
+  //    immediately before and after it.
+  //==================================================================
   getConnectedNodes(index) {
     let previousNode, nextNode;
 
@@ -226,10 +237,10 @@ class Path {
   //  - Draw all nodes and edges to the canvas
   //==================================================================
   draw() {
-    stroke(0);
+    stroke(0,0,0,255);
 
     // Draw edges between nodes
-    for (let i = 1; i < this.nodes.length - 1; i++) {
+    for (let i = 0; i < this.nodes.length - 1; i++) {
       line(this.nodes[i].position.x, this.nodes[i].position.y, this.nodes[i + 1].position.x, this.nodes[i + 1].position.y);
     }
 
@@ -256,12 +267,12 @@ const MIN_DISTANCE = 10;
 const MAX_DISTANCE = 30;
 const REPULSION_RADIUS = 60;
 const NODE_INJECT_INTERVAL = 100;
-const MAX_NODES = 550;
-const VELOCITY = .15;
+const MAX_NODES = 500;
+const VELOCITY = .2;
 
-const ATTRACTION_FORCE = .2;
-const REPULSION_FORCE = .6;
-const ALIGNMENT_FORCE = .4;
+const ATTRACTION_FORCE = 1;
+const REPULSION_FORCE = 1;
+const ALIGNMENT_FORCE = .2;
 
 const PADDING = 0;
 
