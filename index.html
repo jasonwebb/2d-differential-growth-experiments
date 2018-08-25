@@ -28,8 +28,49 @@
   <meta name="twitter:description" content="Series of visual experiments in JavaScript exploring the topic of differential growth as a method for generating interesting 2D forms">
   <meta name="twitter:image" content="[IMAGE URL]">
 
-  <link rel="stylesheet" href="dist/style.min.css">
   <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500" rel="stylesheet">
+
+  
+  <style>
+      .container {
+        width: 50%;
+        margin: 0 auto;
+        padding: 100px 0;
+      }
+  
+      h1 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 36px;
+        font-weight: 600;
+        padding: 20px;
+        padding-right: 400px;
+      }
+  
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+  
+        ul li {}
+  
+          ul li a {
+            font-family: 'Raleway', sans-serif;
+            font-size: 36px;
+            font-weight: 200;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(0,0,0,.5);
+            transition: all .5s ease-in-out;
+            display: block;
+            padding: 10px 20px;
+          }
+  
+            ul li a:hover {
+              background-color: rgba(0,0,0,.03);
+              color: rgba(0,0,0,1);
+            }
+    </style>
 </head>
 
 <body>
@@ -43,48 +84,5 @@
     </ul>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
-  <script src="dist/app.min.js"></script>
-
-  <style>
-    .container {
-      width: 50%;
-      margin: 0 auto;
-      padding: 100px 0;
-    }
-
-    h1 {
-      font-family: 'Raleway', sans-serif;
-      font-size: 36px;
-      font-weight: 600;
-      padding: 20px;
-      padding-right: 400px;
-    }
-
-    ul {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
-
-      ul li {}
-
-        ul li a {
-          font-family: 'Raleway', sans-serif;
-          font-size: 36px;
-          font-weight: 200;
-          text-transform: uppercase;
-          text-decoration: none;
-          color: rgba(0,0,0,.5);
-          transition: all .5s ease-in-out;
-          display: block;
-          padding: 10px 20px;
-        }
-
-          ul li a:hover {
-            background-color: rgba(0,0,0,.03);
-            color: rgba(0,0,0,1);
-          }
-  </style>
 </body>
 </html>
