@@ -27,7 +27,7 @@ const globs = {
 //  CLEAN
 //=============
 gulp.task('clean', () => {
-    del(globs.dist, {
+    return del(globs.dist, {
         force: true
     });
 });
@@ -39,23 +39,23 @@ gulp.task('clean', () => {
 // Build CSS
 gulp.task('build:css', () => {
     return gulp.src(globs.css)
-               .pipe(concat('style.min.css'))
-               .pipe(autoprefixer())
-               .pipe(minify())
-               .pipe(gulp.dest(folders.dist))
-               .pipe(connect.reload());
+        .pipe(concat('style.min.css'))
+        .pipe(autoprefixer())
+        .pipe(minify())
+        .pipe(gulp.dest(folders.dist))
+        .pipe(connect.reload());
 });
 
 // Build JS
 gulp.task('build:js', () => {
     return gulp.src(globs.js)
-               .pipe(babel({
-                   presets: ['@babel/env']
-               }))
-               .pipe(concat('app.min.js'))
-               .pipe(uglify())
-               .pipe(gulp.dest(folders.dist))
-               .pipe(connect.reload());
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(folders.dist))
+        .pipe(connect.reload());
 });
 
 // Build all
@@ -84,8 +84,10 @@ gulp.task('serve', () => {
 });
 
 gulp.task('open', () => {
-    gulp.src('../index.html')
-        .pipe(open({uri: 'http://localhost:8080'}));
+    return gulp.src('../index.html')
+        .pipe(open({
+            uri: 'http://localhost:8080'
+        }));
 });
 
 
