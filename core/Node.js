@@ -1,4 +1,4 @@
-var Settings = require('./Settings');
+var Defaults = require('./Defaults');
 
 /*
 =============================================================================
@@ -11,22 +11,23 @@ var Settings = require('./Settings');
 */
 
 class Node {
-  constructor(p5, position, isFixed = false) {
+  constructor(p5, position, isFixed = false, settings = Defaults) {
     this.p5 = p5;
     this.position = position;
     this.isFixed = isFixed;
 
     this.velocity = 0;
     this.nextPosition = this.position;
+    this.settings = settings;
   }
 
   // TODO: Add acceleration
   iterate() {
-    this.position = p5.Vector.lerp(this.position, this.nextPosition, Settings.MaxVelocity);
+    this.position = p5.Vector.lerp(this.position, this.nextPosition, this.settings.MaxVelocity);
     // this.position = this.nextPosition;
 
-    // if(this.velocity < Settings.MaxVelocity) {
-    //   this.velocity += Settings.Acceleration;
+    // if(this.velocity < Defaults.MaxVelocity) {
+    //   this.velocity += Defaults.Acceleration;
     // }
   }
 

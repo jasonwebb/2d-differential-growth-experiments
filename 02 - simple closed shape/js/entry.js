@@ -1,9 +1,9 @@
-let Node = require('./Node'),
-    Path = require('./Path'),
-    World = require('./World'),
+let Node = require('../../core/Node'),
+    Path = require('../../core/Path'),
+    World = require('../../core/World'),
     Settings = require('./Settings');
 
-let world, path;
+let world;
 
 const TRIANGLE = 0,
       SQUARE = 1,
@@ -25,7 +25,7 @@ const sketch = function (p5) {
     // p5.noLoop();
 
     // Create path using nodes
-    world = new World(p5);
+    world = new World(p5, undefined, Settings);
     restartWorldWith(currentPathType);
   }
 
@@ -44,7 +44,7 @@ const sketch = function (p5) {
       let x = Math.floor(radius * Math.cos(angle));
       let y = Math.floor(radius * Math.sin(angle));
 
-      nodes.push(new Node(p5, p5.createVector(window.innerWidth / 2 + x, window.innerHeight / 2 + y)));
+      nodes.push(new Node(p5, p5.createVector(window.innerWidth / 2 + x, window.innerHeight / 2 + y), false, Settings));
     }
 
     return nodes;
@@ -73,15 +73,26 @@ const sketch = function (p5) {
 
     switch(pathType) {
       case TRIANGLE:
-        world.addPath(new Path(p5, createTriangle(), true));
+        world.addPath(new Path(p5, createTriangle(), true, Settings));
         break;
       case SQUARE:
-        world.addPath(new Path(p5, createSquare(), true));
+        world.addPath(new Path(p5, createSquare(), true, Settings));
         break;
       case CIRCLE:
-        world.addPath(new Path(p5, createCircle(), true));
+        world.addPath(new Path(p5, createCircle(), true, Settings));
         break;
     }
+
+    // Draw the first frame, then pause
+    p5.background(255);
+    world.iterate();
+    world.draw();
+    world.pause();
+
+    // Restart simulation after 1s
+    setTimeout(function() {
+      world.unpause();
+    }, 1000);
   }
 
 
@@ -114,7 +125,6 @@ const sketch = function (p5) {
   
       // Toggle trace mode with 't'
       case 't':
-        p5.background(255);
         world.traceMode = !world.traceMode;
         restartWorldWith(currentPathType);
         break;
@@ -126,7 +136,6 @@ const sketch = function (p5) {
     
       // Reset simulation with current parameters with 'r'
       case 'r':
-        p5.background(255);
         restartWorldWith(currentPathType);
         break;
 

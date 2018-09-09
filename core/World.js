@@ -1,4 +1,4 @@
-let Settings = require('./Settings');
+let Defaults = require('./Defaults');
 
 
 /*
@@ -12,16 +12,15 @@ let Settings = require('./Settings');
 */
 
 class World {
-  constructor(p5, paths = []) {
+  constructor(p5, paths = [], settings = Defaults) {
     this.p5 = p5;
     this.paths = paths;
 
     this.paused = false;
-    this.traceMode = Settings.TraceMode;
-    this.drawNodes = Settings.DrawNodes;
+    this.settings = settings;
   }
 
-  // Run a single tick for all paths ----------------
+  // Run a single tick for all paths -----------------
   iterate() {
     if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0 && !this.paused) {
       for (let path of this.paths) {
@@ -30,7 +29,7 @@ class World {
     }
   }
 
-  // Draw all paths ---------------------------------
+  // Draw all paths ----------------------------------
   draw() {
     if (!this.paused) {
       if (!this.traceMode) {
@@ -59,6 +58,16 @@ class World {
   // Remove all paths from the world -----------------
   clearPaths() {
     this.paths = [];
+  }
+
+  // Pause the simulation ----------------------------
+  pause() {
+    this.paused = true;
+  }
+
+  // Unpause the simulation --------------------------
+  unpause() {
+    this.paused = false;
   }
 }
 

@@ -16,6 +16,7 @@ let browserify = require('browserify'),
 const folders = {
     css: '../css',
     js: '../js',
+    core: '../../core',
     dist: '../dist'
 }
 
@@ -23,6 +24,7 @@ const folders = {
 const globs = {
     css: folders.css + '/**/*.css',
     js: folders.js + '/**/*.js',
+    core: folders.core + '/**/*.js',
     dist: folders.dist + '/**/*'
 };
 
@@ -79,6 +81,7 @@ gulp.task('build', ['clean', 'build:css', 'build:js']);
 gulp.task('watch', () => {
     gulp.watch(globs.css, ['build']);
     gulp.watch(globs.js, ['build']);
+    gulp.watch(globs.core, ['build']);
     gulp.watch('../**/*.html', ['build']);
 });
 

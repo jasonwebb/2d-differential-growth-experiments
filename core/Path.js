@@ -1,7 +1,7 @@
-var rbush = require('../build/node_modules/rbush');
-var knn = require('../build//node_modules/rbush-knn');
+var rbush = require('./node_modules/rbush');
+var knn = require('./node_modules/rbush-knn');
 var Node = require('./Node');
-var Settings = require('./Settings');
+var Defaults = require('./Defaults');
 
 
 /*
@@ -15,10 +15,11 @@ var Settings = require('./Settings');
 */
 
 class Path {
-  constructor(p5, nodes, isClosed = false) {
+  constructor(p5, nodes, isClosed = false, settings = Defaults) {
     this.p5 = p5;
     this.nodes = nodes;
     this.isClosed = isClosed;
+    this.settings = settings;
 
     this.tree = rbush();
     this.buildTree();
@@ -53,7 +54,7 @@ class Path {
     this.splitEdges();
 
     // Inject a new node to introduce asymmetry every so often
-    if (this.p5.millis() - this.lastNodeInjectTime >= Settings.NodeInjectionInterval && this.nodes.length < Settings.MaxNodes) {
+    if (this.p5.millis() - this.lastNodeInjectTime >= this.settings.NodeInjectionInterval && this.nodes.length < this.settings.MaxNodes) {
       // this.injectNode();
       this.lastNodeInjectTime = this.p5.millis();
     }
@@ -78,8 +79,8 @@ class Path {
     ) {
       distance = this.nodes[index].position.dist(connectedNodes.nextNode.position);
 
-      if (distance > Settings.MinDistance) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.nextNode.position, Settings.AttractionForce);
+      if (distance > this.settings.MinDistance) {
+        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.nextNode.position, this.settings.AttractionForce);
       }
     }
 
@@ -90,8 +91,8 @@ class Path {
     ) {
       distance = this.nodes[index].position.dist(connectedNodes.previousNode.position);
 
-      if (distance > Settings.MinDistance) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, Settings.AttractionForce);
+      if (distance > this.settings.MinDistance) {
+        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, this.settings.AttractionForce);
       }
     }
   }
@@ -103,20 +104,22 @@ class Path {
   //------------------------------------------------------------------------
   applyRepulsion(index) {
     let thoseNodes = this.nodes;
+    let rr = this.settings.RepulsionRadius;  // "this" doesn't work in custom predicates, so we this is needed for now
 
     // Perform knn search to find all neighbors within certain radius
+    // TODO: Node class needs to be refactored to have [x,y] as top-level properties so that custom predicate isn't needed
     var neighbors = knn(this.tree, 
                         this.nodes[index].position.x, 
                         this.nodes[index].position.y, 
                         undefined,
                         function(node) {
-                          return node.position.dist(thoseNodes[index].position) <= Settings.RepulsionRadius;
+                          return node.position.dist(thoseNodes[index].position) <= rr;
                         });
 
     // Move this node away from all nearby neighbors
     // TODO: Make this proportional to distance?
     for(let node of neighbors) {
-      this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, node.position, -Settings.RepulsionForce);
+      this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, node.position, -this.settings.RepulsionForce);
     }
   }
 
@@ -141,7 +144,7 @@ class Path {
       );
 
       // Move this point towards this midpoint
-      this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].nextPosition, Settings.AlignmentForce);
+      this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].nextPosition, this.settings.AlignmentForce);
     }
   }
 
@@ -156,8 +159,8 @@ class Path {
 
       if (
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-        node.position.dist(connectedNodes.previousNode.position) >= Settings.MaxDistance && 
-        this.nodes.length < Settings.MaxNodes) 
+        node.position.dist(connectedNodes.previousNode.position) >= this.settings.MaxDistance && 
+        this.nodes.length < this.settings.MaxNodes) 
       {
         let midpointNode = new Node(
           this.p5,
@@ -189,7 +192,7 @@ class Path {
     if (
       connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
       connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-      connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > Settings.MinDistance
+      connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > this.settings.MinDistance
     ) {
       // Create a new node in the middle
       let midpointNode = new Node(
