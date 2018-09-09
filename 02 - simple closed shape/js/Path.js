@@ -33,6 +33,9 @@ class Path {
   //-----------------------------------------------------------------
   iterate() {
     for (let [index, node] of this.nodes.entries()) {
+      // Apply Brownian motion to realistically 'jiggle' nodes
+      // this.applyBrownianMotion(index);
+
       // Move towards neighbors (attraction), if there is space to move
       this.applyAttraction(index);
 
@@ -51,7 +54,7 @@ class Path {
 
     // Inject a new node to introduce asymmetry every so often
     if (this.p5.millis() - this.lastNodeInjectTime >= Settings.NodeInjectionInterval && this.nodes.length < Settings.MaxNodes) {
-      this.injectNode();
+      // this.injectNode();
       this.lastNodeInjectTime = this.p5.millis();
     }
 
@@ -133,8 +136,8 @@ class Path {
     ) {
       // Find the midpoint between the neighbors of this node
       let midpoint = this.p5.createVector(
-        (this.nodes[index].position.x + connectedNodes.previousNode.position.x) / 2,
-        (this.nodes[index].position.y + connectedNodes.previousNode.position.y) / 2
+        (connectedNodes.previousNode.position.x + connectedNodes.nextNode.position.x) / 2,
+        (connectedNodes.previousNode.position.y + connectedNodes.nextNode.position.y) / 2
       );
 
       // Move this point towards this midpoint
@@ -153,7 +156,7 @@ class Path {
 
       if (
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-        node.position.dist(connectedNodes.previousNode.position) > Settings.MaxDistance && 
+        node.position.dist(connectedNodes.previousNode.position) >= Settings.MaxDistance && 
         this.nodes.length < Settings.MaxNodes) 
       {
         let midpointNode = new Node(
@@ -188,18 +191,17 @@ class Path {
       connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
       connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > Settings.MinDistance
     ) {
-      // Create a new node with a slight vertical deviation to induce asymmetry
-      let newNode = new Node(
-        this.p5, 
-        p5.Vector.lerp(
-          connectedNodes.previousNode.position,
-          connectedNodes.nextNode.position,
-          0.5)
-        .add(this.p5.createVector(this.p5.random(1), this.p5.random(1)))
-      );
+      // Create a new node in the middle
+      let midpointNode = new Node(
+        this.p5,
+        this.p5.createVector(
+          (connectedNodes.previousNode.position.x + this.nodes[index].position.x) / 2,
+          (connectedNodes.previousNode.position.y + this.nodes[index].position.y) / 2
+        )
+      );    
 
       // Splice new node into array
-      this.nodes.splice(index, 0, newNode);
+      this.nodes.splice(index, 0, midpointNode);
     }
   }
 
@@ -243,7 +245,7 @@ class Path {
   //  ====
   //  Draw all nodes and edges to the canvas
   //--------------------------------------------
-  draw() {
+  draw(drawNodes) {
     // Draw edges between nodes
     for (let i = 0; i < this.nodes.length - 1; i++) {
       this.p5.line(this.nodes[i].position.x, this.nodes[i].position.y, this.nodes[i + 1].position.x, this.nodes[i + 1].position.y);
@@ -255,7 +257,7 @@ class Path {
     }
 
     // Draw all nodes
-    if(Settings.DrawNodes) {
+    if(drawNodes) {
       this.p5.fill(0);
       this.p5.noStroke();
 

@@ -14,9 +14,10 @@ class Node {
   constructor(p5, position, isFixed = false) {
     this.p5 = p5;
     this.position = position;
-    this.nextPosition = this.position;
     this.isFixed = isFixed;
+
     this.velocity = 0;
+    this.nextPosition = this.position;
   }
 
   // TODO: Add acceleration

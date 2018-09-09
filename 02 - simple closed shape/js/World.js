@@ -1,3 +1,6 @@
+let Settings = require('./Settings');
+
+
 /*
 =============================================================================
   World class
@@ -12,10 +15,10 @@ class World {
   constructor(p5, paths) {
     this.p5 = p5;
     this.paths = paths;
-    this.originalPaths = paths;
 
     this.paused = false;
-    this.traceMode = false;
+    this.traceMode = Settings.TraceMode;
+    this.drawNodes = Settings.DrawNodes;
   }
 
   // Run a single tick for all paths ----------------
@@ -42,26 +45,20 @@ class World {
         }
 
         for (let path of this.paths) {
-          path.draw();
+          path.draw(this.drawNodes);
         }
       }
     }
   }
 
+  // Add a new path to the world ---------------------
   addPath(path) {
     this.paths.push(path);
-    console.log(this.paths);
   }
 
+  // Remove all paths from the world -----------------
   clearPaths() {
     this.paths = [];
-  }
-
-  restart() {
-    this.clearPaths();
-    for (let path of this.originalPaths) {
-      this.addPath(path);
-    }
   }
 }
 
