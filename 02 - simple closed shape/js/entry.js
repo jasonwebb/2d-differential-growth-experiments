@@ -3,7 +3,12 @@ let Node = require('./Node'),
     World = require('./World'),
     Settings = require('./Settings');
 
-let world, paths = [];
+let world, path;
+
+const TRIANGLE = 0,
+      SQUARE = 1,
+      CIRCLE = 2;
+let currentPathType = CIRCLE;
 
 
 /*
@@ -20,8 +25,8 @@ const sketch = function (p5) {
     // p5.noLoop();
 
     // Create path using nodes
-    paths.push(new Path(p5, createSquare(), true));
-    world = new World(p5, paths);
+    world = new World(p5);
+    restartWorldWith(currentPathType);
   }
 
   // Draw ---------------------------------------------------------------
@@ -36,7 +41,6 @@ const sketch = function (p5) {
 
     for (let i = 0; i < nodeCount; i++) {
       let angle = 2 * Math.PI * i / nodeCount + p5.radians(rotation);
-      console.log(angle);
       let x = Math.floor(radius * Math.cos(angle));
       let y = Math.floor(radius * Math.sin(angle));
 
@@ -52,18 +56,57 @@ const sketch = function (p5) {
     return createPolygon(11, 100);
   }
 
-  // Create three nodes to form an equilateral triangle ----------------
+  // Create three nodes to form an equilateral triangle -----------------
   function createTriangle() {
     return createPolygon(3, 100, 30);
   }
 
-  // Create four nodes to form a square -----------------------------
+  // Create four nodes to form a square ---------------------------------
   function createSquare() {
     return createPolygon(4, 100, 45);
   }
 
+  // Restart the simulation with a selected path type -------------------
+  function restartWorldWith(pathType) {
+    currentPathType = pathType;
+    world.clearPaths();
+
+    switch(pathType) {
+      case TRIANGLE:
+        world.addPath(new Path(p5, createTriangle(), true));
+        break;
+      case SQUARE:
+        world.addPath(new Path(p5, createSquare(), true));
+        break;
+      case CIRCLE:
+        world.addPath(new Path(p5, createCircle(), true));
+        break;
+    }
+  }
+
+
+  /*
+  =============================================================================
+    Key handler
+  =============================================================================
+  */
   p5.keyReleased = function() {
     switch (p5.key) {
+      // Restart simulation with a triangle path
+      case '1':
+        restartWorldWith(TRIANGLE);
+        break;
+
+      // Restart simulation with a square path
+      case '2':
+        restartWorldWith(SQUARE);
+        break;
+
+      // Restart simulation with a circle path
+      case '3':
+        restartWorldWith(CIRCLE);
+        break;
+
       // Pause/unpause the world with 'p'
       case 'p':
         world.paused = !world.paused;
@@ -71,14 +114,8 @@ const sketch = function (p5) {
   
       // Toggle trace mode with 't'
       case 't':
-        world.paused = true;
         world.traceMode = !world.traceMode;
-        console.log(world.paths.length);
-        paths.push(new Path(p5, createCircle(), true));
-        world.clearPaths();
-        world.addPath(paths);
-        console.log(world.paths.length);
-        world.paused = false;
+        restartWorldWith(currentPathType);
         break;
   
       // Toggle drawing of nodes with 'n'

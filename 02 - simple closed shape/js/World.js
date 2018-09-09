@@ -12,7 +12,7 @@ let Settings = require('./Settings');
 */
 
 class World {
-  constructor(p5, paths) {
+  constructor(p5, paths = []) {
     this.p5 = p5;
     this.paths = paths;
 
