@@ -114,6 +114,7 @@ const sketch = function (p5) {
   
       // Toggle trace mode with 't'
       case 't':
+        p5.background(255);
         world.traceMode = !world.traceMode;
         restartWorldWith(currentPathType);
         break;
@@ -123,7 +124,12 @@ const sketch = function (p5) {
         world.drawNodes = !world.drawNodes;
         break;
     
-      // Reset simulation with 'r'
+      // Reset simulation with current parameters with 'r'
+      case 'r':
+        p5.background(255);
+        restartWorldWith(currentPathType);
+        break;
+
       // Toggle debug mode with 'd'
       // Export SVG with 's'
     }
