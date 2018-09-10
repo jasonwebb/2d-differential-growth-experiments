@@ -11,5 +11,8 @@
   "dependencies": {
     "rbush": "^2.0.2",
     "rbush-knn": "^2.1.0"
+  },
+  "devDependencies": {
+    "vec2": "^1.6.0"
   }
 }

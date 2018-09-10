@@ -1,4 +1,5 @@
-var Defaults = require('./Defaults');
+let Vec2 = require('./node_modules/vec2'),
+    Defaults = require('./Defaults');
 
 /*
 =============================================================================
@@ -10,20 +11,24 @@ var Defaults = require('./Defaults');
 =============================================================================
 */
 
-class Node {
-  constructor(p5, position, isFixed = false, settings = Defaults) {
+class Node extends Vec2 {
+  constructor(p5, x, y, isFixed = false, settings = Defaults) {
+    super(x,y);
+
     this.p5 = p5;
-    this.position = position;
     this.isFixed = isFixed;
+    this.settings = settings;
 
     this.velocity = 0;
-    this.nextPosition = this.position;
-    this.settings = settings;
+    this.nextPosition = new Vec2(x, y);
   }
 
   // TODO: Add acceleration
   iterate() {
-    this.position = p5.Vector.lerp(this.position, this.nextPosition, this.settings.MaxVelocity);
+    this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
+    this.y = this.p5.lerp(this.y, this.nextPosition.y, this.settings.MaxVelocity);
+    
+    // this.lerp(this.nextPosition, this.settings.MaxVelocity);
     // this.position = this.nextPosition;
 
     // if(this.velocity < Defaults.MaxVelocity) {
@@ -39,9 +44,9 @@ class Node {
     }
 
     if (this.isFixed) {
-      this.p5.ellipse(this.position.x, this.position.y, 10);
+      this.p5.ellipse(this.x, this.y, 10);
     } else {
-      this.p5.ellipse(this.position.x, this.position.y, 5);
+      this.p5.ellipse(this.x, this.y, 5);
     }
   }
 }

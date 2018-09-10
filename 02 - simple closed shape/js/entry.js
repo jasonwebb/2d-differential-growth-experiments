@@ -24,7 +24,7 @@ const sketch = function (p5) {
     // p5.frameRate(1);
     // p5.noLoop();
 
-    // Create path using nodes
+    // Set up and start the simulation
     world = new World(p5, undefined, Settings);
     restartWorldWith(currentPathType);
   }
@@ -44,7 +44,7 @@ const sketch = function (p5) {
       let x = Math.floor(radius * Math.cos(angle));
       let y = Math.floor(radius * Math.sin(angle));
 
-      nodes.push(new Node(p5, p5.createVector(window.innerWidth / 2 + x, window.innerHeight / 2 + y), false, Settings));
+      nodes.push(new Node(p5, window.innerWidth / 2 + x, window.innerHeight / 2 + y, false, Settings));
     }
 
     return nodes;

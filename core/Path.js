@@ -1,7 +1,8 @@
-var rbush = require('./node_modules/rbush');
-var knn = require('./node_modules/rbush-knn');
-var Node = require('./Node');
-var Defaults = require('./Defaults');
+let rbush = require('./node_modules/rbush'),
+    knn = require('./node_modules/rbush-knn'),
+    Vec2 = require('./node_modules/vec2'),
+    Node = require('./Node'),
+    Defaults = require('./Defaults');
 
 
 /*
@@ -77,10 +78,10 @@ class Path {
       connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node && 
       !this.nodes[index].isFixed
     ) {
-      distance = this.nodes[index].position.dist(connectedNodes.nextNode.position);
+      distance = this.nodes[index].distance(connectedNodes.nextNode);
 
       if (distance > this.settings.MinDistance) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.nextNode.position, this.settings.AttractionForce);
+        this.nodes[index].nextPosition = this.nodes[index].lerp(connectedNodes.nextNode, this.settings.AttractionForce, true);
       }
     }
 
@@ -89,10 +90,10 @@ class Path {
       connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node && 
       !this.nodes[index].isFixed
     ) {
-      distance = this.nodes[index].position.dist(connectedNodes.previousNode.position);
+      distance = this.nodes[index].distance(connectedNodes.previousNode);
 
       if (distance > this.settings.MinDistance) {
-        this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, connectedNodes.previousNode.position, this.settings.AttractionForce);
+        this.nodes[index].nextPosition = this.nodes[index].lerp(connectedNodes.previousNode, this.settings.AttractionForce, true);
       }
     }
   }
@@ -103,23 +104,15 @@ class Path {
   //  Move the referenced node away from all nearby nodes within a radius
   //------------------------------------------------------------------------
   applyRepulsion(index) {
-    let thoseNodes = this.nodes;
-    let rr = this.settings.RepulsionRadius;  // "this" doesn't work in custom predicates, so we this is needed for now
-
     // Perform knn search to find all neighbors within certain radius
-    // TODO: Node class needs to be refactored to have [x,y] as top-level properties so that custom predicate isn't needed
     var neighbors = knn(this.tree, 
-                        this.nodes[index].position.x, 
-                        this.nodes[index].position.y, 
-                        undefined,
-                        function(node) {
-                          return node.position.dist(thoseNodes[index].position) <= rr;
-                        });
+                        this.nodes[index].x, 
+                        this.nodes[index].y);
 
     // Move this node away from all nearby neighbors
     // TODO: Make this proportional to distance?
     for(let node of neighbors) {
-      this.nodes[index].nextPosition = p5.Vector.lerp(this.nodes[index].position, node.position, -this.settings.RepulsionForce);
+      this.nodes[index].nextPosition = this.nodes[index].lerp(node, -this.settings.RepulsionForce, true);
     }
   }
 
@@ -138,13 +131,13 @@ class Path {
       !this.nodes[index].isFixed
     ) {
       // Find the midpoint between the neighbors of this node
-      let midpoint = this.p5.createVector(
-        (connectedNodes.previousNode.position.x + connectedNodes.nextNode.position.x) / 2,
-        (connectedNodes.previousNode.position.y + connectedNodes.nextNode.position.y) / 2
+      let midpoint = new Vec2(
+        (connectedNodes.previousNode.x + connectedNodes.nextNode.x) / 2,
+        (connectedNodes.previousNode.y + connectedNodes.nextNode.y) / 2
       );
 
       // Move this point towards this midpoint
-      this.nodes[index].nextPosition = p5.Vector.lerp(midpoint, this.nodes[index].nextPosition, this.settings.AlignmentForce);
+      this.nodes[index].nextPosition = midpoint.lerp(this.nodes[index].nextPosition, this.settings.AlignmentForce);
     }
   }
 
@@ -152,6 +145,9 @@ class Path {
   //  Split edges
   //  ===========
   //  Search for long edges, then inject a new node when found
+  //
+  //  TODO:
+  //  - Collect new nodes and inject all at once, not one at a time, to prevent asymmetric recursive splitting
   //--------------------------------------------------------------
   splitEdges() {
     for (let [index, node] of this.nodes.entries()) {
@@ -159,15 +155,15 @@ class Path {
 
       if (
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-        node.position.dist(connectedNodes.previousNode.position) >= this.settings.MaxDistance && 
+        node.distance(connectedNodes.previousNode) >= this.settings.MaxDistance && 
         this.nodes.length < this.settings.MaxNodes) 
       {
         let midpointNode = new Node(
           this.p5,
-          this.p5.createVector(
-            (node.position.x + connectedNodes.previousNode.position.x) / 2,
-            (node.position.y + connectedNodes.previousNode.position.y) / 2
-          )
+          (node.x + connectedNodes.previousNode.x) / 2,
+          (node.y + connectedNodes.previousNode.y) / 2,
+          false,
+          this.settings
         );
         
         if(index == 0) {
@@ -192,15 +188,15 @@ class Path {
     if (
       connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
       connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-      connectedNodes.previousNode.position.dist(connectedNodes.nextNode.position) > this.settings.MinDistance
+      connectedNodes.previousNode.distance(connectedNodes.nextNode) > this.settings.MinDistance
     ) {
       // Create a new node in the middle
       let midpointNode = new Node(
         this.p5,
-        this.p5.createVector(
-          (connectedNodes.previousNode.position.x + this.nodes[index].position.x) / 2,
-          (connectedNodes.previousNode.position.y + this.nodes[index].position.y) / 2
-        )
+        (connectedNodes.previousNode.x + this.nodes[index].x) / 2,
+        (connectedNodes.previousNode.y + this.nodes[index].y) / 2,
+        false,
+        this.settings
       );    
 
       // Splice new node into array
@@ -251,12 +247,12 @@ class Path {
   draw(drawNodes) {
     // Draw edges between nodes
     for (let i = 0; i < this.nodes.length - 1; i++) {
-      this.p5.line(this.nodes[i].position.x, this.nodes[i].position.y, this.nodes[i + 1].position.x, this.nodes[i + 1].position.y);
+      this.p5.line(this.nodes[i].x, this.nodes[i].y, this.nodes[i + 1].x, this.nodes[i + 1].y);
     }
 
     // Draw a line between last and first node to close the path, if needed
     if (this.isClosed) {
-      this.p5.line(this.nodes[this.nodes.length - 1].position.x, this.nodes[this.nodes.length - 1].position.y, this.nodes[0].position.x, this.nodes[0].position.y);
+      this.p5.line(this.nodes[this.nodes.length - 1].x, this.nodes[this.nodes.length - 1].y, this.nodes[0].x, this.nodes[0].y);
     }
 
     // Draw all nodes
