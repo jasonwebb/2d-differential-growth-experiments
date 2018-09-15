@@ -9,7 +9,6 @@ let rbush = require('./node_modules/rbush'),
 =============================================================================
   Path class
 
-  DESCRIPTION:
   A Path manages a set of Nodes in a continuous, ordered
   data structure (an Array). 
 =============================================================================
@@ -22,7 +21,7 @@ class Path {
     this.isClosed = isClosed;
     this.settings = settings;
 
-    this.tree = rbush();
+    this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
     this.buildTree();
 
     this.lastNodeInjectTime = 0;
@@ -56,7 +55,7 @@ class Path {
 
     // Inject a new node to introduce asymmetry every so often
     if (this.p5.millis() - this.lastNodeInjectTime >= this.settings.NodeInjectionInterval && this.nodes.length < this.settings.MaxNodes) {
-      // this.injectNode();
+      this.injectNode();
       this.lastNodeInjectTime = this.p5.millis();
     }
 
@@ -81,7 +80,8 @@ class Path {
       distance = this.nodes[index].distance(connectedNodes.nextNode);
 
       if (distance > this.settings.MinDistance) {
-        this.nodes[index].nextPosition = this.nodes[index].lerp(connectedNodes.nextNode, this.settings.AttractionForce, true);
+        this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, connectedNodes.nextNode.x, this.settings.AttractionForce);
+        this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].nextPosition.y, connectedNodes.nextNode.y, this.settings.AttractionForce);
       }
     }
 
@@ -93,7 +93,8 @@ class Path {
       distance = this.nodes[index].distance(connectedNodes.previousNode);
 
       if (distance > this.settings.MinDistance) {
-        this.nodes[index].nextPosition = this.nodes[index].lerp(connectedNodes.previousNode, this.settings.AttractionForce, true);
+        this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, connectedNodes.previousNode.x, this.settings.AttractionForce);
+        this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].nextPosition.y, connectedNodes.previousNode.y, this.settings.AttractionForce);
       }
     }
   }
@@ -107,12 +108,16 @@ class Path {
     // Perform knn search to find all neighbors within certain radius
     var neighbors = knn(this.tree, 
                         this.nodes[index].x, 
-                        this.nodes[index].y);
+                        this.nodes[index].y,
+                        undefined,
+                        undefined,
+                        this.settings.RepulsionRadius * this.settings.RepulsionRadius); // radius must be squared as per https://github.com/mourner/rbush-knn/issues/13
 
     // Move this node away from all nearby neighbors
     // TODO: Make this proportional to distance?
     for(let node of neighbors) {
-      this.nodes[index].nextPosition = this.nodes[index].lerp(node, -this.settings.RepulsionForce, true);
+      this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].x, node.x, -this.settings.RepulsionForce);
+      this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].y, node.y, -this.settings.RepulsionForce);
     }
   }
 
@@ -137,7 +142,8 @@ class Path {
       );
 
       // Move this point towards this midpoint
-      this.nodes[index].nextPosition = midpoint.lerp(this.nodes[index].nextPosition, this.settings.AlignmentForce);
+      this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, midpoint.x, this.settings.AlignmentForce);
+      this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].nextPosition.y, midpoint.y, this.settings.AlignmentForce);
     }
   }
 
@@ -145,9 +151,6 @@ class Path {
   //  Split edges
   //  ===========
   //  Search for long edges, then inject a new node when found
-  //
-  //  TODO:
-  //  - Collect new nodes and inject all at once, not one at a time, to prevent asymmetric recursive splitting
   //--------------------------------------------------------------
   splitEdges() {
     for (let [index, node] of this.nodes.entries()) {
@@ -158,6 +161,7 @@ class Path {
         node.distance(connectedNodes.previousNode) >= this.settings.MaxDistance && 
         this.nodes.length < this.settings.MaxNodes) 
       {
+        // Find the midpoint between this node and it's previous node
         let midpointNode = new Node(
           this.p5,
           (node.x + connectedNodes.previousNode.x) / 2,
@@ -166,6 +170,7 @@ class Path {
           this.settings
         );
         
+        // Inject the new midpoint node into the global list
         if(index == 0) {
           this.nodes.splice(this.nodes.length, 0, midpointNode);
         } else {

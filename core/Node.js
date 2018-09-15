@@ -5,7 +5,6 @@ let Vec2 = require('./node_modules/vec2'),
 =============================================================================
   Node class
 
-  DESCRIPTION:
   A Node is a single point on the canvas whose only job is to manage
   it's position and movement towards new position. 
 =============================================================================

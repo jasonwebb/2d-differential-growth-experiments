@@ -5,7 +5,6 @@ let Defaults = require('./Defaults');
 =============================================================================
   World class
 
-  DESCRIPTION:
   A World manages a set of Paths and provides some global control
   mechanisms, such as pausing the simulation.
 =============================================================================
@@ -18,6 +17,9 @@ class World {
 
     this.paused = false;
     this.settings = settings;
+
+    this.drawNodes = this.settings.DrawNodes;
+    this.traceMode = this.settings.TraceMode;
   }
 
   // Run a single tick for all paths -----------------
