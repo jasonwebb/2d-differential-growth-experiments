@@ -34,15 +34,21 @@
       .container {
         width: 50%;
         margin: 0 auto;
-        padding: 100px 0;
+        padding: 60px 0;
+        font-family: 'Raleway', sans-serif;
       }
   
       h1 {
-        font-family: 'Raleway', sans-serif;
         font-size: 36px;
         font-weight: 600;
-        padding: 20px;
-        padding-right: 400px;
+        padding: 20px 400px 0 20px;
+        margin: 0;
+      }
+
+      .by-line {
+        padding: 10px 20px;
+        color: rgba(0,0,0,.2);
+        margin-bottom: 30px;
       }
   
       ul {
@@ -59,13 +65,16 @@
             font-weight: 200;
             text-transform: uppercase;
             text-decoration: none;
-            color: rgba(0,0,0,.5);
+            color: rgba(0,0,0,.3);
             display: block;
-            padding: 10px 20px;
+            padding: 8px 20px 8px 12px;
+            border-left: 7px solid rgba(255,255,255,1);
           }
   
             ul li a:hover {
               background-color: rgba(0,0,0,.03);
+              color: rgba(0,0,0,.5);
+              border-color: rgba(0,0,0,.06);
             }
     </style>
 </head>
@@ -73,10 +82,14 @@
 <body>
   <div class="container">
     <h1>2D differential growth experiments with JavaScript</h1>
+    <div class="by-line">By <a href="https://jasonwebb.io" target="_blank">Jason Webb</a></div>
 
     <ul>
       <li>
         <a href="01%20-%20single%20line/">01 - single line</a>
+      </li>
+      <li>
+        <a href="02%20-%20simple%20closed%20shape/">02 - simple closed shape</a>
       </li>
     </ul>
   </div>
