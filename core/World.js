@@ -20,6 +20,7 @@ class World {
 
     this.drawNodes = this.settings.DrawNodes;
     this.traceMode = this.settings.TraceMode;
+    this.invertedColors = this.settings.InvertedColors;
   }
 
   // Run a single tick for all paths -----------------
@@ -35,14 +36,26 @@ class World {
   draw() {
     if (!this.paused) {
       if (!this.traceMode) {
-        this.p5.background(255);
+        if(!this.invertedColors) {
+          this.p5.background(255);
+        } else {
+          this.p5.background(0);
+        }
       }
 
       if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0) {
         if (this.traceMode) {
-          this.p5.stroke(0, 0, 0, 2);
+          if(!this.invertedColors) {
+            this.p5.stroke(0, 0, 0, 2);
+          } else {
+            this.p5.stroke(255, 2);
+          }          
         } else {
-          this.p5.stroke(0, 0, 0, 255);
+          if(!this.invertedColors) {
+            this.p5.stroke(0, 0, 0, 255);
+          } else {
+            this.p5.stroke(255, 255);
+          }          
         }
 
         for (let path of this.paths) {

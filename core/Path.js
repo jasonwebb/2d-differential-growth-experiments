@@ -4,7 +4,7 @@ let rbush = require('./node_modules/rbush'),
     Node = require('./Node'),
     Defaults = require('./Defaults');
 
-
+    
 /*
 =============================================================================
   Path class
@@ -24,6 +24,7 @@ class Path {
     this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
     this.buildTree();
 
+    this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
   }
 
@@ -52,6 +53,9 @@ class Path {
 
     // Split any edges that have become too long
     this.splitEdges();
+
+    // Remove any nodes that are too close to other nodes
+    this.pruneNodes();
 
     // Inject a new node to introduce asymmetry every so often
     if (this.p5.millis() - this.lastNodeInjectTime >= this.settings.NodeInjectionInterval && this.nodes.length < this.settings.MaxNodes) {
@@ -136,10 +140,7 @@ class Path {
       !this.nodes[index].isFixed
     ) {
       // Find the midpoint between the neighbors of this node
-      let midpoint = new Vec2(
-        (connectedNodes.previousNode.x + connectedNodes.nextNode.x) / 2,
-        (connectedNodes.previousNode.y + connectedNodes.nextNode.y) / 2
-      );
+      let midpoint = this.getMidpointNode(connectedNodes.previousNode, connectedNodes.nextNode);
 
       // Move this point towards this midpoint
       this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, midpoint.x, this.settings.AlignmentForce);
@@ -161,14 +162,7 @@ class Path {
         node.distance(connectedNodes.previousNode) >= this.settings.MaxDistance && 
         this.nodes.length < this.settings.MaxNodes) 
       {
-        // Find the midpoint between this node and it's previous node
-        let midpointNode = new Node(
-          this.p5,
-          (node.x + connectedNodes.previousNode.x) / 2,
-          (node.y + connectedNodes.previousNode.y) / 2,
-          false,
-          this.settings
-        );
+        let midpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
         
         // Inject the new midpoint node into the global list
         if(index == 0) {
@@ -180,34 +174,98 @@ class Path {
     }
   }
 
+  //------------------------------------------------------------
+  //  Prune nodes
+  //  ===========
+  //  Remove nodes when they are too close to their neighbors
+  //------------------------------------------------------------
+  pruneNodes() {
+    for(let [index, node] of this.nodes.entries()) {
+      let connectedNodes = this.getConnectedNodes(index);
+
+      if(
+        connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
+        node.distance(connectedNodes.previousNode) < this.settings.MinDistance) {
+          if(index == 0) {
+            this.nodes.splice(this.nodes.length, 1);
+          } else {
+            this.nodes.splice(index - 1, 1);
+          }
+      }
+    }
+  }
+
   //---------------------------------------------------
   //  Inject a node
   //  =============
   //  Create a new node between two existing nodes
   //---------------------------------------------------
   injectNode() {
-    // Choose two connected nodes at random
-    let index = parseInt(this.p5.random(this.nodes.length));
-    let connectedNodes = this.getConnectedNodes(index);
-
-    if (
-      connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-      connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-      connectedNodes.previousNode.distance(connectedNodes.nextNode) > this.settings.MinDistance
-    ) {
-      // Create a new node in the middle
-      let midpointNode = new Node(
-        this.p5,
-        (connectedNodes.previousNode.x + this.nodes[index].x) / 2,
-        (connectedNodes.previousNode.y + this.nodes[index].y) / 2,
-        false,
-        this.settings
-      );    
-
-      // Splice new node into array
-      this.nodes.splice(index, 0, midpointNode);
+    switch(this.injectionMode) {
+      case "RANDOM":
+        this.injectRandomNode();
+        break;
+      case "CURVATURE":
+        this.injectNodeByCurvature();
+        break;
     }
   }
+
+    // Inject a new node in a random location, if there is space for it
+    injectRandomNode() {
+      // Choose two connected nodes at random
+      let index = parseInt(this.p5.random(this.nodes.length));
+      let connectedNodes = this.getConnectedNodes(index);
+
+      if (
+        connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
+        connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
+        connectedNodes.previousNode.distance(connectedNodes.nextNode) > this.settings.MinDistance
+      ) {
+        // Create a new node in the middle
+        let midpointNode = this.getMidpointNode(this.nodes[index], connectedNodes.previousNode);
+        
+        // Splice new node into array
+        this.nodes.splice(index, 0, midpointNode);
+      }
+    }
+
+    // Inject new node nodes when curvature is too high
+    // - When the angle between connected nodes is too high, remove
+    //   the middle node and replace it with two nodes at the respective
+    //   midpoints of the previous two lines. This "truncates" or "chamfers"
+    //   the pointy node into two flatter nodes.
+    injectNodeByCurvature() {
+      for(let [index, node] of this.nodes.entries()) {
+        let connectedNodes = this.getConnectedNodes(index);
+
+        // Find angle between adjacent nodes
+        let a = node.distance(connectedNodes.previousNode);
+        let b = node.distance(connectedNodes.nextNode);
+        let angle = Math.atan(a/b) * 180/Math.PI;
+        
+        // If angle is below a certain angle (high curvature), replace the current node with two nodes
+        if(angle < 30) {
+          let previousMidpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
+          let nextMidpointNode = this.getMidpointNode(node, connectedNodes.nextNode);
+
+          // console.log(previousMidpointNode);
+          // console.log(nextMidpointNode);
+
+          // Replace this node with the two new nodes
+          if(index == 0) {
+            this.nodes.splice(this.nodes.length-1, 0, previousMidpointNode);
+            this.nodes.splice(0, 1, nextMidpointNode);
+          } else {
+            console.log(index);
+            console.log(this.nodes);
+            this.nodes.splice(index, 1, previousMidpointNode, nextMidpointNode);
+            console.log(this.nodes);
+            this.p5.noLoop();
+          }
+        }
+      }
+    }
 
   //------------------------------------------------------------
   //  Get connected nodes
@@ -238,7 +296,28 @@ class Path {
     };
   }
 
-  // Rebuild the spatial index
+  //------------------------------------------------------------
+  //  Get midpoint node
+  //  =================
+  //  Create and return a node exactly halfway between the
+  //  two provided nodes.
+  //------------------------------------------------------------
+  getMidpointNode(node1, node2, fixed = false) {
+    return new Node(
+      this.p5,
+      (node1.x + node2.x) / 2,
+      (node1.y + node2.y) / 2,
+      fixed,
+      this.settings
+    );
+  }
+
+  //------------------------------------------------------------
+  //  Build R-tree
+  //  ============
+  //  Rebuild the spatial index used for nearest-neighbors
+  //  search.
+  //------------------------------------------------------------  
   buildTree() {
     this.tree.clear();
     this.tree.load(this.nodes);
@@ -262,10 +341,8 @@ class Path {
 
     // Draw all nodes
     if(drawNodes) {
-      this.p5.fill(0);
-      this.p5.noStroke();
-
-      for (let node of this.nodes) {
+      for (let [index, node] of this.nodes.entries()) {
+        this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255 );
         node.draw();
       }
     }

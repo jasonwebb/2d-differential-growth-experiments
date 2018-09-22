@@ -21,6 +21,7 @@ const sketch = function (p5) {
   // Setup -------------------------------------------------------------
   p5.setup = function () {
     p5.createCanvas(window.innerWidth, window.innerHeight);
+    p5.colorMode(p5.HSB, 255);
     // p5.frameRate(1);
     // p5.noLoop();
 
@@ -53,17 +54,17 @@ const sketch = function (p5) {
   // Create nodes in a circle -------------------------------------------
   // Remember a circle on a computer is just a polygon with many sides!
   function createCircle() {
-    return createPolygon(11, 100);
+    return createPolygon(30, 10);
   }
 
   // Create three nodes to form an equilateral triangle -----------------
   function createTriangle() {
-    return createPolygon(3, 100, 30);
+    return createPolygon(3, 50, 30);
   }
 
   // Create four nodes to form a square ---------------------------------
   function createSquare() {
-    return createPolygon(4, 100, 45);
+    return createPolygon(4, 50, 45);
   }
 
   // Restart the simulation with a selected path type -------------------
@@ -84,8 +85,12 @@ const sketch = function (p5) {
     }
 
     // Draw the first frame, then pause
-    p5.background(255);
-    world.iterate();
+    if(!Settings.InvertedColors) {
+      p5.background(255);
+    } else {
+      p5.background(0);
+    }
+
     world.draw();
     world.pause();
 
@@ -139,7 +144,16 @@ const sketch = function (p5) {
         restartWorldWith(currentPathType);
         break;
 
-      // Toggle debug mode with 'd'
+      // Toggle pause with Space
+      case ' ':
+        world.paused = !world.paused;
+        break;
+
+      // Invert colors with 'i'
+      case 'i':
+        world.invertedColors = !world.invertedColors;
+        break;
+
       // Export SVG with 's'
     }
   }

@@ -36,14 +36,15 @@ class Node extends Vec2 {
   }
 
   draw() {
+    // this.p5.stroke(10);
+    this.p5.noStroke();
+
     if (this.isFixed) {
       this.p5.fill(255, 0, 0);
-    } else {
-      this.p5.fill(0);
     }
 
     if (this.isFixed) {
-      this.p5.ellipse(this.x, this.y, 10);
+      this.p5.ellipse(this.x, this.y, 5);
     } else {
       this.p5.ellipse(this.x, this.y, 5);
     }
