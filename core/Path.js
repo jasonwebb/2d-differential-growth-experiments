@@ -26,6 +26,12 @@ class Path {
 
     this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
+
+    this.drawNodes = this.settings.DrawNodes;
+    this.invertedColors = this.settings.InvertedColors;
+    this.traceMode = this.settings.TraceMode;
+    this.debugMode = this.settings.DebugMode;
+    this.fillMode = this.settings.FillMode;
   }
 
   //------------------------------------------------------------------
@@ -185,12 +191,13 @@ class Path {
 
       if(
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-        node.distance(connectedNodes.previousNode) < this.settings.MinDistance) {
-          if(index == 0) {
-            this.nodes.splice(this.nodes.length, 1);
-          } else {
-            this.nodes.splice(index - 1, 1);
-          }
+        node.distance(connectedNodes.previousNode) < this.settings.MinDistance) 
+      {
+        if(index == 0) {
+          this.nodes.splice(this.nodes.length, 1);
+        } else {
+          this.nodes.splice(index - 1, 1);
+        }
       }
     }
   }
@@ -328,19 +335,47 @@ class Path {
   //  ====
   //  Draw all nodes and edges to the canvas
   //--------------------------------------------
-  draw(drawNodes) {
+  draw() {
+    if(this.fillMode) {
+      if(!this.invertedColors) {
+        this.p5.fill(0);
+      } else {
+        this.p5.fill(255);
+      }
+    } else {
+      this.p5.noFill();
+    }
+
+    if(this.isClosed) {
+      this.p5.beginShape();
+    } else {
+      this.p5.beginShape(this.p5.LINES);
+    }
+
     // Draw edges between nodes
     for (let i = 0; i < this.nodes.length - 1; i++) {
-      this.p5.line(this.nodes[i].x, this.nodes[i].y, this.nodes[i + 1].x, this.nodes[i + 1].y);
+      if(this.debugMode) {
+        this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255 );
+      } else {
+        if(!this.invertedColors) {
+          this.p5.stroke(0);
+        } else {
+          this.p5.stroke(255);
+        }
+      }
+
+      this.p5.vertex(this.nodes[i].x, this.nodes[i].y);
     }
 
     // Draw a line between last and first node to close the path, if needed
     if (this.isClosed) {
-      this.p5.line(this.nodes[this.nodes.length - 1].x, this.nodes[this.nodes.length - 1].y, this.nodes[0].x, this.nodes[0].y);
+      this.p5.vertex(this.nodes[0].x, this.nodes[0].y);
     }
 
+    this.p5.endShape();
+
     // Draw all nodes
-    if(drawNodes) {
+    if(this.drawNodes) {
       for (let [index, node] of this.nodes.entries()) {
         this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255 );
         node.draw();

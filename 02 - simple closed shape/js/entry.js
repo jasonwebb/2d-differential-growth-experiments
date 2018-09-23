@@ -54,17 +54,17 @@ const sketch = function (p5) {
   // Create nodes in a circle -------------------------------------------
   // Remember a circle on a computer is just a polygon with many sides!
   function createCircle() {
-    return createPolygon(30, 10);
+    return createPolygon(60, Settings.SeedRadius);
   }
 
   // Create three nodes to form an equilateral triangle -----------------
   function createTriangle() {
-    return createPolygon(3, 50, 30);
+    return createPolygon(3, Settings.SeedRadius, 30);
   }
 
   // Create four nodes to form a square ---------------------------------
   function createSquare() {
-    return createPolygon(4, 50, 45);
+    return createPolygon(4, Settings.SeedRadius, 45);
   }
 
   // Restart the simulation with a selected path type -------------------
@@ -85,12 +85,7 @@ const sketch = function (p5) {
     }
 
     // Draw the first frame, then pause
-    if(!Settings.InvertedColors) {
-      p5.background(255);
-    } else {
-      p5.background(0);
-    }
-
+    world.drawBackground();
     world.draw();
     world.pause();
 
@@ -122,21 +117,16 @@ const sketch = function (p5) {
       case '3':
         restartWorldWith(CIRCLE);
         break;
-
-      // Pause/unpause the world with 'p'
-      case 'p':
-        world.paused = !world.paused;
-        break;
   
       // Toggle trace mode with 't'
       case 't':
-        world.traceMode = !world.traceMode;
+        world.toggleTraceMode()
         restartWorldWith(currentPathType);
         break;
   
       // Toggle drawing of nodes with 'n'
       case 'n':
-        world.drawNodes = !world.drawNodes;
+        world.setDrawNodes(!world.getDrawNodes());
         break;
     
       // Reset simulation with current parameters with 'r'
@@ -151,7 +141,17 @@ const sketch = function (p5) {
 
       // Invert colors with 'i'
       case 'i':
-        world.invertedColors = !world.invertedColors;
+        world.toggleInvertedColors();
+        break;
+
+      // Toggle debug mode with 'd'
+      case 'd':
+        world.toggleDebugMode()
+        break;
+
+      // Toggle fill for all shapes with 'f'
+      case 'f':
+        world.toggleFillMode();
         break;
 
       // Export SVG with 's'

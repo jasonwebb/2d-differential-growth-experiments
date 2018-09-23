@@ -18,9 +18,11 @@ class World {
     this.paused = false;
     this.settings = settings;
 
-    this.drawNodes = this.settings.DrawNodes;
     this.traceMode = this.settings.TraceMode;
+    this.drawNodes = this.settings.DrawNodes;
+    this.debugMode = this.settings.DebugMode;
     this.invertedColors = this.settings.InvertedColors;
+    this.fillMode = this.settings.FillMode;
   }
 
   // Run a single tick for all paths -----------------
@@ -36,32 +38,23 @@ class World {
   draw() {
     if (!this.paused) {
       if (!this.traceMode) {
-        if(!this.invertedColors) {
-          this.p5.background(255);
-        } else {
-          this.p5.background(0);
-        }
+        this.drawBackground();
       }
 
       if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0) {
-        if (this.traceMode) {
-          if(!this.invertedColors) {
-            this.p5.stroke(0, 0, 0, 2);
-          } else {
-            this.p5.stroke(255, 2);
-          }          
-        } else {
-          if(!this.invertedColors) {
-            this.p5.stroke(0, 0, 0, 255);
-          } else {
-            this.p5.stroke(255, 255);
-          }          
-        }
-
         for (let path of this.paths) {
-          path.draw(this.drawNodes);
+          path.draw();
         }
       }
+    }
+  }
+
+  // Draw the background -----------------------------
+  drawBackground() {
+    if(!this.invertedColors) {
+      this.p5.background(255);
+    } else {
+      this.p5.background(0);
     }
   }
 
@@ -83,6 +76,89 @@ class World {
   // Unpause the simulation --------------------------
   unpause() {
     this.paused = false;
+  }
+
+  // Getters -----------------------------------------
+  getDrawNodes() {
+    return this.drawNodes;
+  }
+
+  getTraceMode() {
+    return this.traceMode;
+  }
+
+  getInvertedColors() {
+    return this.invertedColors;
+  }
+
+  getDebugMode() {
+    return this.debugMode;
+  }
+
+  getFillMode() {
+    return this.fillMode;
+  }
+
+  // Setters -----------------------------------------
+  setDrawNodes(state) {
+    for (let path of this.paths) {
+      path.drawNodes = state;
+    }
+
+    this.drawNodes = state;
+  }
+
+  setTraceMode(state) {
+    for (let path of this.paths) {
+      path.traceMode = state;
+    }
+
+    this.traceMode = state;
+  }
+
+  setInvertedColors(state) {
+    for (let path of this.paths) {
+      path.invertedColors = state;
+    }
+
+    this.invertedColors = state;
+  }
+
+  setDebugMode(state) {
+    for (let path of this.paths) {
+      path.debugMode = state;
+    }
+
+    this.debugMode = state;
+  }
+
+  setFillMode(state) {
+    for(let path of this.paths) {
+      path.fillMode = state;
+    }
+
+    this.fillMode = state;
+  }
+
+  // Toggles ----------------------------------
+  toggleDrawNodes() {
+    this.setDrawNodes(!this.getDrawNodes());
+  }
+
+  toggleTraceMode() {
+    this.setTraceMode(!this.getTraceMode());
+  }
+
+  toggleInvertedColors() {
+    this.setInvertedColors(!this.getInvertedColors());
+  }
+
+  toggleDebugMode() {
+    this.setDebugMode(!this.getDebugMode());
+  }
+
+  toggleFillMode() {
+    this.setFillMode(!this.getFillMode());
   }
 }
 

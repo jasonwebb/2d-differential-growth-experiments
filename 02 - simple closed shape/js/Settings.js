@@ -6,11 +6,14 @@ module.exports = {
   Acceleration: .1,
   AttractionForce: .2,
   RepulsionForce: .5,
-  AlignmentForce: .5,
+  AlignmentForce: .3,
   ScreenPadding: 20,
   MaxNodes: 3000,
   NodeInjectionInterval: 1,
   DrawNodes: false,
   TraceMode: false,
-  InvertedColors: false
+  InvertedColors: false,
+  DebugMode: false,
+  SeedRadius: 200,
+  FillMode: true
 }
