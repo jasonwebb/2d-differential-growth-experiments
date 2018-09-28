@@ -121,7 +121,6 @@ const sketch = function (p5) {
       // Toggle trace mode with 't'
       case 't':
         world.toggleTraceMode()
-        restartWorldWith(currentPathType);
         break;
   
       // Toggle drawing of nodes with 'n'
@@ -142,6 +141,7 @@ const sketch = function (p5) {
       // Invert colors with 'i'
       case 'i':
         world.toggleInvertedColors();
+        world.drawBackground();
         break;
 
       // Toggle debug mode with 'd'
