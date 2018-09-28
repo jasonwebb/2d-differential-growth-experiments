@@ -32,6 +32,7 @@ class Path {
     this.traceMode = this.settings.TraceMode;
     this.debugMode = this.settings.DebugMode;
     this.fillMode = this.settings.FillMode;
+    this.useBrownianMotion = this.settings.UseBrownianMotion;
   }
 
   //------------------------------------------------------------------
@@ -42,7 +43,9 @@ class Path {
   iterate() {
     for (let [index, node] of this.nodes.entries()) {
       // Apply Brownian motion to realistically 'jiggle' nodes
-      // this.applyBrownianMotion(index);
+      if(this.useBrownianMotion) {
+        this.applyBrownianMotion(index);
+      }
 
       // Move towards neighbors (attraction), if there is space to move
       this.applyAttraction(index);

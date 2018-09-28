@@ -11,5 +11,7 @@ module.exports = {
   MaxNodes: 3000,
   NodeInjectionInterval: 100,
   DrawNodes: false,
-  TraceMode: false
+  TraceMode: false,
+  UseBrownianMotion: false,
+  BrownianMotionRange: 0.01
 }

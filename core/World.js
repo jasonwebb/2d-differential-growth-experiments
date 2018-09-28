@@ -23,6 +23,7 @@ class World {
     this.debugMode = this.settings.DebugMode;
     this.invertedColors = this.settings.InvertedColors;
     this.fillMode = this.settings.FillMode;
+    this.useBrownianMotion = this.settings.UseBrownianMotion;
   }
 
   // Run a single tick for all paths -----------------
@@ -64,6 +65,7 @@ class World {
     path.debugMode = this.debugMode;
     path.invertedColors = this.invertedColors;
     path.fillMode = this.fillMode;
+    path.useBrownianMotion = this.useBrownianMotion;
 
     this.paths.push(path);
   }
