@@ -22,29 +22,16 @@ class Node extends Vec2 {
     this.nextPosition = new Vec2(x, y);
   }
 
-  // TODO: Add acceleration
   iterate() {
-    this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
-    this.y = this.p5.lerp(this.y, this.nextPosition.y, this.settings.MaxVelocity);
-    
-    // this.lerp(this.nextPosition, this.settings.MaxVelocity);
-    // this.position = this.nextPosition;
-
-    // if(this.velocity < Defaults.MaxVelocity) {
-    //   this.velocity += Defaults.Acceleration;
-    // }
+    if(!this.isFixed) {
+      this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
+      this.y = this.p5.lerp(this.y, this.nextPosition.y, this.settings.MaxVelocity);
+    }
   }
 
   draw() {
-    // this.p5.stroke(10);
-    this.p5.noStroke();
-
     if (this.isFixed) {
-      this.p5.fill(255, 0, 0);
-    }
-
-    if (this.isFixed) {
-      this.p5.ellipse(this.x, this.y, 5);
+      this.p5.ellipse(this.x, this.y, 20);
     } else {
       this.p5.ellipse(this.x, this.y, 5);
     }

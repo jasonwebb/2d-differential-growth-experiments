@@ -41,10 +41,8 @@ class World {
         this.drawBackground();
       }
 
-      if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0) {
-        for (let path of this.paths) {
-          path.draw();
-        }
+      for (let path of this.paths) {
+        path.draw();
       }
     }
   }
@@ -60,6 +58,13 @@ class World {
 
   // Add a new path to the world ---------------------
   addPath(path) {
+    // Cascade all current settings to new path
+    path.drawNodes = this.drawNodes;
+    path.traceMode = this.traceMode;
+    path.debugMode = this.debugMode;
+    path.invertedColors = this.invertedColors;
+    path.fillMode = this.fillMode;
+
     this.paths.push(path);
   }
 

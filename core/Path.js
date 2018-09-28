@@ -53,7 +53,10 @@ class Path {
       // Align with neighbors
       this.applyAlignment(index);
 
-      // Move towards next position with velocity and acceleration
+      // Constrain to the screen
+      this.avoidWalls(index);
+
+      // Move towards next position
       node.iterate();
     }
 
@@ -71,6 +74,15 @@ class Path {
 
     // Rebuild the spatial index
     this.buildTree();
+  }
+
+  //---------------------------------------------------------------------
+  //  Brownian motion
+  //  ===============
+  //  Simulate the random
+  applyBrownianMotion(index) {
+    this.nodes[index].x += this.p5.random(-this.settings.BrownianMotionRange/2, this.settings.BrownianMotionRange/2);
+    this.nodes[index].y += this.p5.random(-this.settings.BrownianMotionRange/2, this.settings.BrownianMotionRange/2);
   }
 
   //---------------------------------------------------------------------
@@ -194,9 +206,13 @@ class Path {
         node.distance(connectedNodes.previousNode) < this.settings.MinDistance) 
       {
         if(index == 0) {
-          this.nodes.splice(this.nodes.length, 1);
+          if(!this.nodes[this.nodes.length - 1].isFixed) {
+            this.nodes.splice(this.nodes.length - 1, 1);
+          }
         } else {
-          this.nodes.splice(index - 1, 1);
+          if(!this.nodes[index - 1].isFixed) {
+            this.nodes.splice(index - 1, 1);
+          }
         }
       }
     }
@@ -221,16 +237,18 @@ class Path {
     // Inject a new node in a random location, if there is space for it
     injectRandomNode() {
       // Choose two connected nodes at random
-      let index = parseInt(this.p5.random(this.nodes.length));
+      let index = parseInt(this.p5.random(1, this.nodes.length));
       let connectedNodes = this.getConnectedNodes(index);
 
       if (
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
         connectedNodes.nextNode != undefined && connectedNodes.nextNode instanceof Node &&
-        connectedNodes.previousNode.distance(connectedNodes.nextNode) > this.settings.MinDistance
+        this.nodes[index].distance(connectedNodes.previousNode) > this.settings.MinDistance
       ) {
         // Create a new node in the middle
         let midpointNode = this.getMidpointNode(this.nodes[index], connectedNodes.previousNode);
+
+        // midpointNode.y += this.p5.random();
         
         // Splice new node into array
         this.nodes.splice(index, 0, midpointNode);
@@ -243,6 +261,7 @@ class Path {
     //   midpoints of the previous two lines. This "truncates" or "chamfers"
     //   the pointy node into two flatter nodes.
     injectNodeByCurvature() {
+      console.log('test');
       for(let [index, node] of this.nodes.entries()) {
         let connectedNodes = this.getConnectedNodes(index);
 
@@ -253,9 +272,12 @@ class Path {
         
         // If angle is below a certain angle (high curvature), replace the current node with two nodes
         if(angle < 30) {
+          console.log(index);
           let previousMidpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
           let nextMidpointNode = this.getMidpointNode(node, connectedNodes.nextNode);
-
+          console.log(previousMidpointNode);
+          console.log(nextMidpointNode);
+          this.p5.noLoop();
           // console.log(previousMidpointNode);
           // console.log(nextMidpointNode);
 
@@ -264,15 +286,25 @@ class Path {
             this.nodes.splice(this.nodes.length-1, 0, previousMidpointNode);
             this.nodes.splice(0, 1, nextMidpointNode);
           } else {
-            console.log(index);
-            console.log(this.nodes);
+            // console.log(index);
+            // console.log(this.nodes);
             this.nodes.splice(index, 1, previousMidpointNode, nextMidpointNode);
-            console.log(this.nodes);
-            this.p5.noLoop();
+            // console.log(this.nodes);
+            // this.p5.noLoop();
           }
         }
       }
     }
+
+  //------------------------------------------------------------------
+  //  Avoid walls
+  //  ===========
+  //  Clamp node position to the window to prevent "runaway" growth  
+  //------------------------------------------------------------------
+  avoidWalls(index) {
+    this.nodes[index].x = this.p5.constrain(this.nodes[index].x, 0, window.innerWidth);
+    this.nodes[index].y = this.p5.constrain(this.nodes[index].y, 0, window.innerHeight);
+  }
 
   //------------------------------------------------------------
   //  Get connected nodes
@@ -336,48 +368,93 @@ class Path {
   //  Draw all nodes and edges to the canvas
   //--------------------------------------------
   draw() {
+    // Set shape fill 
     if(this.fillMode) {
-      if(!this.invertedColors) {
-        this.p5.fill(0);
+      if(!this.traceMode) {
+        if(!this.invertedColors) {
+          this.p5.fill(0);
+        } else {
+          this.p5.fill(255);
+        }
       } else {
-        this.p5.fill(255);
+        if(!this.invertedColors) {
+          this.p5.fill(0, 1);
+        } else {
+          this.p5.fill(255, 1);
+        }
       }
     } else {
       this.p5.noFill();
     }
 
-    if(this.isClosed) {
-      this.p5.beginShape();
+    // Set stroke color
+    if(!this.traceMode) {
+      if(!this.invertedColors) {
+        this.p5.stroke(0);
+      } else {
+        this.p5.stroke(255);
+      }
     } else {
-      this.p5.beginShape(this.p5.LINES);
+      if(!this.invertedColors) {
+        this.p5.stroke(0, 2);
+      } else {
+        this.p5.stroke(255, 2);
+      }
     }
 
-    // Draw edges between nodes
-    for (let i = 0; i < this.nodes.length - 1; i++) {
-      if(this.debugMode) {
-        this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255 );
+    // Begin capturing vertices
+    if(!this.debugMode) {
+      this.p5.beginShape();
+    }
+
+    // Create vertices or lines (if debug mode)
+    for (let i = 0; i < this.nodes.length; i++) {
+      if(!this.debugMode) {
+        this.p5.vertex(this.nodes[i].x, this.nodes[i].y);
       } else {
-        if(!this.invertedColors) {
-          this.p5.stroke(0);
-        } else {
-          this.p5.stroke(255);
+
+        // In debug mode each line has a unique stroke color, which isn't possible with begin/endShape(). Instead we'll use line()
+        if(i > 0) {
+          if(!this.traceMode) {
+            this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255, 255 );
+          } else {
+            this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255, 2 );
+          }
+
+          this.p5.line(this.nodes[i-1].x, this.nodes[i-1].y, this.nodes[i].x, this.nodes[i].y);
         }
       }
-
-      this.p5.vertex(this.nodes[i].x, this.nodes[i].y);
     }
 
-    // Draw a line between last and first node to close the path, if needed
-    if (this.isClosed) {
-      this.p5.vertex(this.nodes[0].x, this.nodes[0].y);
+    // For closed paths, connect the last and first
+    if(this.isClosed) {
+      if(!this.debugMode) {
+        this.p5.vertex(this.nodes[0].x, this.nodes[0].y);
+      } else {
+        this.p5.line(this.nodes[this.nodes.length - 1].x, this.nodes[this.nodes.length - 1].y, this.nodes[0].x, this.nodes[0].y);
+      }
     }
 
-    this.p5.endShape();
+    // Stop capturing vertices
+    if(!this.debugMode) {
+      this.p5.endShape();
+    }
 
     // Draw all nodes
     if(this.drawNodes) {
+      this.p5.noStroke();
+
+      if(!this.invertedColors) {
+        this.p5.fill(0);
+      } else {
+        this.p5.fill(255);
+      }
+
       for (let [index, node] of this.nodes.entries()) {
-        this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255 );
+        if(this.debugMode) {
+          this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255, 255 );
+        }
+
         node.draw();
       }
     }
