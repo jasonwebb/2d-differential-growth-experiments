@@ -65,7 +65,7 @@ gulp.task('build:js', () => {
         .pipe(babel({
             presets: ['@babel/env']
         }))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(rename('app.min.js'))
         .pipe(gulp.dest(folders.dist))
         .pipe(connect.reload());
