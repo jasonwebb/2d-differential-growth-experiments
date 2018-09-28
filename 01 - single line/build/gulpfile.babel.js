@@ -1,10 +1,14 @@
-let gulp = require('gulp'),
+let browserify = require('browserify'),
+    gulp = require('gulp'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     del = require('del'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     babel = require('gulp-babel'),
     minify = require('gulp-clean-css'),
     autoprefixer = require('gulp-autoprefixer'),
+    rename = require('gulp-rename'),
     connect = require('gulp-connect'),
     open = require('gulp-open');
 
@@ -12,6 +16,7 @@ let gulp = require('gulp'),
 const folders = {
     css: '../css',
     js: '../js',
+    core: '../../core',
     dist: '../dist'
 }
 
@@ -19,6 +24,7 @@ const folders = {
 const globs = {
     css: folders.css + '/**/*.css',
     js: folders.js + '/**/*.js',
+    core: folders.core + '/**/*.js',
     dist: folders.dist + '/**/*'
 };
 
@@ -48,12 +54,19 @@ gulp.task('build:css', () => {
 
 // Build JS
 gulp.task('build:js', () => {
-    return gulp.src(globs.js)
+    var b = browserify({
+        entries: folders.js + '/entry.js',
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
         .pipe(babel({
             presets: ['@babel/env']
         }))
-        .pipe(concat('app.min.js'))
         .pipe(uglify())
+        .pipe(rename('app.min.js'))
         .pipe(gulp.dest(folders.dist))
         .pipe(connect.reload());
 });
@@ -68,6 +81,7 @@ gulp.task('build', ['clean', 'build:css', 'build:js']);
 gulp.task('watch', () => {
     gulp.watch(globs.css, ['build']);
     gulp.watch(globs.js, ['build']);
+    gulp.watch(globs.core, ['build']);
     gulp.watch('../**/*.html', ['build']);
 });
 
