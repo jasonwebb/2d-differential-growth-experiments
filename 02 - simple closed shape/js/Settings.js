@@ -13,7 +13,7 @@ module.exports = {
   DrawNodes: false,
   TraceMode: false,
   InvertedColors: false,
-  DebugMode: true,
+  DebugMode: false,
   FillMode: false,
   BrownianMotionRange: .01
 }
