@@ -22,7 +22,6 @@ Within these rules you can see several opportunities for customization that enab
 * The __attraction force__ between connected nodes.
 * The __repulsion force__ between nearby nodes.
 * The __radius__ around each node used to calculate which nearby nodes have an influence on it.
-* The __velocity__ at which nodes move when trying to satisfy rules #1 and #2.
 * A __growth scheme__ that determines when and how new nodes are introduced to the system to induce interesting asymmetry. 
 
 ## References
