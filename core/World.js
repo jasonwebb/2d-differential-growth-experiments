@@ -1,4 +1,6 @@
-let Defaults = require('./Defaults');
+let rbush = require('./node_modules/rbush'),
+    knn = require('./node_modules/rbush-knn'),
+    Defaults = require('./Defaults');
 
 
 /*
@@ -24,13 +26,18 @@ class World {
     this.invertedColors = this.settings.InvertedColors;
     this.fillMode = this.settings.FillMode;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
+
+    this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
+    this.buildTree();
   }
 
   // Run a single tick for all paths -----------------
   iterate() {
+    this.buildTree();
+
     if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0 && !this.paused) {
       for (let path of this.paths) {
-        path.iterate();
+        path.iterate(this.tree);
       }
     }
   }
@@ -54,6 +61,15 @@ class World {
       this.p5.background(255);
     } else {
       this.p5.background(0);
+    }
+  }
+
+  // Build an R-tree spatial index with all paths ----
+  buildTree() {
+    this.tree.clear();
+    
+    for(let path of this.paths) {
+      this.tree.load(path.nodes);
     }
   }
 

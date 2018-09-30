@@ -72,15 +72,13 @@ const sketch = function (p5) {
 
   // Restart the simulation with a selected path type -------------------
   function restartWorld() {
+    world.clearPaths();
+
     // Create a circle
     world.addPath(
       new Path(
         p5,
-        createCircle(
-          p5.random(-600, 600),
-          p5.random(-300, 300),
-          p5.random(10, 200)
-        ),
+        createCircle(-window.innerWidth/6, 0, 150),
         true,
         Settings
       )
@@ -91,10 +89,10 @@ const sketch = function (p5) {
       new Path(
         p5,
         createTriangle(
-          p5.random(-600, 600),
-          p5.random(-300, 300),
-          p5.random(10, 200),
-          p5.random(0, 360)
+          0,
+          0,
+          150,
+          30
         ),
         true,
         Settings
@@ -106,10 +104,10 @@ const sketch = function (p5) {
       new Path(
         p5,
         createSquare(
-          p5.random(-600, 600),
-          p5.random(-300, 300),
-          p5.random(10, 200),
-          p5.random(0, 360)
+          window.innerWidth/6,
+          0,
+          150,
+          45
         ),
         true,
         Settings

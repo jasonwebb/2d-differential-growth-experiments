@@ -1,8 +1,5 @@
-let rbush = require('./node_modules/rbush'),
-    knn = require('./node_modules/rbush-knn'),
-    Vec2 = require('./node_modules/vec2'),
-    Node = require('./Node'),
-    Defaults = require('./Defaults');
+let knn = require('./node_modules/rbush-knn')
+    Node = require('./Node');
 
     
 /*
@@ -21,9 +18,6 @@ class Path {
     this.isClosed = isClosed;
     this.settings = settings;
 
-    this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
-    this.buildTree();
-
     this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
 
@@ -40,7 +34,7 @@ class Path {
   //  =======
   //  Run a single 'tick' of the simulation 
   //-----------------------------------------------------------------
-  iterate() {
+  iterate(tree) {
     for (let [index, node] of this.nodes.entries()) {
       // Apply Brownian motion to realistically 'jiggle' nodes
       if(this.useBrownianMotion) {
@@ -51,7 +45,7 @@ class Path {
       this.applyAttraction(index);
 
       // Move away from any nodes that are too close (repulsion)
-      this.applyRepulsion(index);
+      this.applyRepulsion(index, tree);
 
       // Align with neighbors
       this.applyAlignment(index);
@@ -74,9 +68,6 @@ class Path {
       this.injectNode();
       this.lastNodeInjectTime = this.p5.millis();
     }
-
-    // Rebuild the spatial index
-    this.buildTree();
   }
 
   //---------------------------------------------------------------------
@@ -129,9 +120,9 @@ class Path {
   //  =========
   //  Move the referenced node away from all nearby nodes within a radius
   //------------------------------------------------------------------------
-  applyRepulsion(index) {
+  applyRepulsion(index, tree) {
     // Perform knn search to find all neighbors within certain radius
-    var neighbors = knn(this.tree, 
+    var neighbors = knn(tree, 
                         this.nodes[index].x, 
                         this.nodes[index].y,
                         undefined,
@@ -352,17 +343,6 @@ class Path {
       fixed,
       this.settings
     );
-  }
-
-  //------------------------------------------------------------
-  //  Build R-tree
-  //  ============
-  //  Rebuild the spatial index used for nearest-neighbors
-  //  search.
-  //------------------------------------------------------------  
-  buildTree() {
-    this.tree.clear();
-    this.tree.load(this.nodes);
   }
 
   //--------------------------------------------
