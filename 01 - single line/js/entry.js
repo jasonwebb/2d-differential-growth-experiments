@@ -17,10 +17,9 @@ const sketch = function (p5) {
   p5.setup = function () {
     p5.createCanvas(window.innerWidth, window.innerHeight);
     p5.colorMode(p5.HSB, 255);
-    // p5.noLoop();
 
     // Set up and start the simulation
-    world = new World(p5, undefined, Settings);
+    world = new World(p5, Settings);
     restartWorld();
   }
 
@@ -34,8 +33,8 @@ const sketch = function (p5) {
   function createLine() {
     let nodes = [];
 
-    nodes.push(new Node(p5, 200, window.innerHeight / 2, true, Settings));
-    nodes.push(new Node(p5, window.innerWidth - 200, window.innerHeight / 2, true, Settings));
+    nodes.push(new Node(p5, 200, window.innerHeight / 2, Settings, true));
+    nodes.push(new Node(p5, window.innerWidth - 200, window.innerHeight / 2, Settings, true));
 
     return nodes;
   }
@@ -44,17 +43,11 @@ const sketch = function (p5) {
   function restartWorld() {
     // Draw line
     world.clearPaths();
-    world.addPath(new Path(p5, createLine(), false, Settings));
+    world.addPath(new Path(p5, createLine(), Settings));
 
     // Draw the first frame, then pause
     world.drawBackground();
     world.draw();
-    // world.pause();
-
-    // Restart simulation after 1s
-    // setTimeout(function() {
-    //   world.unpause();
-    // }, 1000);
   }
 
 

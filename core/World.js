@@ -13,7 +13,7 @@ let rbush = require('./node_modules/rbush'),
 */
 
 class World {
-  constructor(p5, paths = [], settings = Defaults) {
+  constructor(p5, settings = Defaults, paths = []) {
     this.p5 = p5;
     this.paths = paths;
 

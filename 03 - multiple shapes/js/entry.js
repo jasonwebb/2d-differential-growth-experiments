@@ -19,7 +19,7 @@ const sketch = function (p5) {
     p5.colorMode(p5.HSB, 255);
 
     // Set up and start the simulation
-    world = new World(p5, undefined, Settings);
+    world = new World(p5, Settings);
 
     // Create random paths
     restartWorld();
@@ -44,8 +44,7 @@ const sketch = function (p5) {
         new Node(
           p5, 
           window.innerWidth/2 + xOffset + nodeX, 
-          window.innerHeight/2 + yOffset + nodeY, 
-          false, 
+          window.innerHeight/2 + yOffset + nodeY,
           Settings
         )
       );
@@ -79,8 +78,8 @@ const sketch = function (p5) {
       new Path(
         p5,
         createCircle(-window.innerWidth/6, 0, 150),
-        true,
-        Settings
+        Settings,
+        true
       )
     );
     
@@ -94,8 +93,8 @@ const sketch = function (p5) {
           150,
           30
         ),
-        true,
-        Settings
+        Settings,
+        true
       )
     );
 
@@ -109,8 +108,8 @@ const sketch = function (p5) {
           150,
           45
         ),
-        true,
-        Settings
+        Settings,
+        true
       )
     );
 

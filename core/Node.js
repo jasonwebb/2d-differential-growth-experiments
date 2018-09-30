@@ -11,7 +11,7 @@ let Vec2 = require('./node_modules/vec2'),
 */
 
 class Node extends Vec2 {
-  constructor(p5, x, y, isFixed = false, settings = Defaults) {
+  constructor(p5, x, y, settings = Defaults, isFixed = false) {
     super(x,y);
 
     this.p5 = p5;

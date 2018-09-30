@@ -22,11 +22,9 @@ const sketch = function (p5) {
   p5.setup = function () {
     p5.createCanvas(window.innerWidth, window.innerHeight);
     p5.colorMode(p5.HSB, 255);
-    // p5.frameRate(1);
-    // p5.noLoop();
 
     // Set up and start the simulation with a random shape
-    world = new World(p5, undefined, Settings);
+    world = new World(p5, Settings);
     restartWorldWith(Math.round(p5.random(0,2)));
   }
 
@@ -45,7 +43,14 @@ const sketch = function (p5) {
       let x = Math.floor(radius * Math.cos(angle));
       let y = Math.floor(radius * Math.sin(angle));
 
-      nodes.push(new Node(p5, window.innerWidth / 2 + x, window.innerHeight / 2 + y, false, Settings));
+      nodes.push(
+        new Node(
+          p5, 
+          window.innerWidth / 2 + x, 
+          window.innerHeight / 2 + y, 
+          Settings
+        )
+      );
     }
 
     return nodes;
@@ -74,13 +79,13 @@ const sketch = function (p5) {
 
     switch(pathType) {
       case TRIANGLE:
-        world.addPath(new Path(p5, createTriangle(), true, Settings));
+        world.addPath(new Path(p5, createTriangle(), Settings, true));
         break;
       case SQUARE:
-        world.addPath(new Path(p5, createSquare(), true, Settings));
+        world.addPath(new Path(p5, createSquare(), Settings, true));
         break;
       case CIRCLE:
-        world.addPath(new Path(p5, createCircle(), true, Settings));
+        world.addPath(new Path(p5, createCircle(), Settings, true));
         break;
     }
 

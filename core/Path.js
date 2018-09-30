@@ -12,7 +12,7 @@ let knn = require('./node_modules/rbush-knn')
 */
 
 class Path {
-  constructor(p5, nodes, isClosed = false, settings = Defaults) {
+  constructor(p5, nodes, settings = Defaults, isClosed = false) {
     this.p5 = p5;
     this.nodes = nodes;
     this.isClosed = isClosed;
@@ -340,8 +340,8 @@ class Path {
       this.p5,
       (node1.x + node2.x) / 2,
       (node1.y + node2.y) / 2,
-      fixed,
-      this.settings
+      this.settings,
+      fixed
     );
   }
 
