@@ -1,3 +1,7 @@
+# 02 - simple closed shape
+
+This experiment applies the differential growth process to a single closed path.
+
 ### Keyboard commands
 
 | Key     | Result                                 |
