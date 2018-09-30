@@ -25,9 +25,9 @@ const sketch = function (p5) {
     // p5.frameRate(1);
     // p5.noLoop();
 
-    // Set up and start the simulation
+    // Set up and start the simulation with a random shape
     world = new World(p5, undefined, Settings);
-    restartWorldWith(currentPathType);
+    restartWorldWith(Math.round(p5.random(0,2)));
   }
 
   // Draw ---------------------------------------------------------------
