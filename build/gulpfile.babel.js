@@ -27,12 +27,12 @@ const globs = {
   dist: 'dist/**/*',
   core: '../core/**/*.js',
   allCss: [],
-  allJs: [],
+  allJs: ['../core/*.js'],
   allHtml: ['../index.html']
 };
 
 // Build globs for global watch tasks
-for(let experiment in experiments) {
+for(let experiment of experiments) {
   globs.allCss.push(experiment + globs.css);
   globs.allJs.push(experiment + globs.js);
   globs.allHtml.push(experiment + 'index.html')
