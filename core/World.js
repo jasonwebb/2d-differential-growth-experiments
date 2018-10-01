@@ -75,13 +75,13 @@ class World {
 
   // Add a new path to the world ---------------------
   addPath(path) {
-    // Cascade all current settings to new path
+    // Cascade all current World settings to new path
     path.drawNodes = this.drawNodes;
-    path.traceMode = this.traceMode;
     path.debugMode = this.debugMode;
-    path.invertedColors = this.invertedColors;
     path.fillMode = this.fillMode;
     path.useBrownianMotion = this.useBrownianMotion;
+    path.setInvertedColors(this.invertedColors);
+    path.setTraceMode(this.traceMode);
 
     this.paths.push(path);
   }
@@ -106,14 +106,6 @@ class World {
     return this.drawNodes;
   }
 
-  getTraceMode() {
-    return this.traceMode;
-  }
-
-  getInvertedColors() {
-    return this.invertedColors;
-  }
-
   getDebugMode() {
     return this.debugMode;
   }
@@ -129,22 +121,6 @@ class World {
     }
 
     this.drawNodes = state;
-  }
-
-  setTraceMode(state) {
-    for (let path of this.paths) {
-      path.traceMode = state;
-    }
-
-    this.traceMode = state;
-  }
-
-  setInvertedColors(state) {
-    for (let path of this.paths) {
-      path.invertedColors = state;
-    }
-
-    this.invertedColors = state;
   }
 
   setDebugMode(state) {
@@ -169,11 +145,19 @@ class World {
   }
 
   toggleTraceMode() {
-    this.setTraceMode(!this.getTraceMode());
+    for(let path of this.paths) {
+      path.toggleTraceMode();
+    }
+
+    this.traceMode = !this.traceMode;
   }
 
   toggleInvertedColors() {
-    this.setInvertedColors(!this.getInvertedColors());
+    for(let path of this.paths) {
+      path.toggleInvertedColors();
+    }
+
+    this.invertedColors = !this.invertedColors;
   }
 
   toggleDebugMode() {

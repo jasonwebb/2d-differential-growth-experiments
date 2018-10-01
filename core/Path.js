@@ -12,7 +12,16 @@ let knn = require('./node_modules/rbush-knn')
 */
 
 class Path {
-  constructor(p5, nodes, settings = Defaults, isClosed = false) {
+  constructor(
+    p5, 
+    nodes, 
+    settings = Defaults, 
+    isClosed = false, 
+    fillColor = {h:0, s:0, b:0, a:255}, 
+    strokeColor = {h:0, s:0, b:0, a:255}, 
+    invertedFillColor = {h:0, s:0, b:255, a:255}, 
+    invertedStrokeColor = {h:0, s:0, b:255, a:255}
+  ) {
     this.p5 = p5;
     this.nodes = nodes;
     this.isClosed = isClosed;
@@ -27,6 +36,19 @@ class Path {
     this.debugMode = this.settings.DebugMode;
     this.fillMode = this.settings.FillMode;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
+
+    this.fillColor = fillColor;
+    this.strokeColor = strokeColor;
+    this.invertedFillColor = invertedFillColor;
+    this.invertedStrokeColor = invertedStrokeColor;
+
+    this.currentFillColor = this.fillColor;
+    this.currentStrokeColor = this.strokeColor;
+
+    if(this.invertedColors) {
+      this.currentFillColor = this.invertedFillColor;
+      this.currentStrokeColor = this.invertedStrokeColor;
+    }
   }
 
   //------------------------------------------------------------------
@@ -353,37 +375,13 @@ class Path {
   draw() {
     // Set shape fill 
     if(this.fillMode) {
-      if(!this.traceMode) {
-        if(!this.invertedColors) {
-          this.p5.fill(0);
-        } else {
-          this.p5.fill(255);
-        }
-      } else {
-        if(!this.invertedColors) {
-          this.p5.fill(0, 1);
-        } else {
-          this.p5.fill(255, 1);
-        }
-      }
+      this.p5.fill(this.currentFillColor.h, this.currentFillColor.s, this.currentFillColor.b, this.currentFillColor.a);
     } else {
       this.p5.noFill();
     }
 
     // Set stroke color
-    if(!this.traceMode) {
-      if(!this.invertedColors) {
-        this.p5.stroke(0);
-      } else {
-        this.p5.stroke(255);
-      }
-    } else {
-      if(!this.invertedColors) {
-        this.p5.stroke(0, 2);
-      } else {
-        this.p5.stroke(255, 2);
-      }
-    }
+    this.p5.stroke(this.currentStrokeColor.h, this.currentStrokeColor.s, this.currentStrokeColor.b, this.currentStrokeColor.a);
 
     // Begin capturing vertices
     if(!this.debugMode) {
@@ -441,6 +439,52 @@ class Path {
         node.draw();
       }
     }
+  }
+
+  // Getters ------------------------------------
+  getTraceMode() {
+    return this.traceMode;
+  }
+
+  getInvertedColors() {
+    return this.invertedColors;
+  }
+
+  // Setters ------------------------------------
+  setTraceMode(state) {
+    this.traceMode = state;
+
+    if(!this.traceMode) {
+      this.currentFillColor.a = 255;
+      this.currentStrokeColor.a = 255;
+    } else {
+      this.currentFillColor.a = 2;
+      this.currentStrokeColor.a = 2;
+    }
+  }
+
+  setInvertedColors(state) {
+    this.invertedColors = state;
+
+    if(!this.invertedColors) {
+      this.currentFillColor = this.fillColor;
+      this.currentStrokeColor = this.strokeColor;
+    } else {
+      this.currentFillColor = this.invertedFillColor;
+      this.currentStrokeColor = this.invertedStrokeColor;
+    }
+
+    // Reset the trace mode to make sure opacity is adjusted when colors are inverted
+    this.setTraceMode(this.traceMode);
+  }
+
+  // Toggles ------------------------------------
+  toggleTraceMode() {
+    this.setTraceMode(!this.getTraceMode());
+  }
+
+  toggleInvertedColors() {
+    this.setInvertedColors(!this.getInvertedColors());
   }
 }
 

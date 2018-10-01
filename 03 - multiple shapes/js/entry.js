@@ -73,15 +73,39 @@ const sketch = function (p5) {
   function restartWorld() {
     world.clearPaths();
 
+    let h = Math.round(p5.random(255));
+
     // Create a circle
     world.addPath(
       new Path(
         p5,
         createCircle(-window.innerWidth/6, 0, 150),
         Settings,
-        true
+        true,
+        {   // Fill color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Stroke color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted fill color
+          h: 255-h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted stroke color
+          h: 255-h,
+          s: 255,
+          b: 255
+        }
       )
     );
+
+    h = Math.round(p5.random(255));
     
     // Create a triangle
     world.addPath(
@@ -94,22 +118,64 @@ const sketch = function (p5) {
           30
         ),
         Settings,
-        true
+        true,
+        {   // Fill color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Stroke color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted fill color
+          h: 255-h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted stroke color
+          h: 255-h,
+          s: 255,
+          b: 255
+        }
       )
     );
+
+    h = Math.round(p5.random(255));
 
     // Create a square
     world.addPath(
       new Path(
         p5,
         createSquare(
-          window.innerWidth/6,
+          window.innerWidth/7,
           0,
           150,
           45
         ),
         Settings,
-        true
+        true,
+        {   // Fill color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Stroke color
+          h: h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted fill color
+          h: 255-h,
+          s: 255,
+          b: 255
+        },
+        {   // Inverted stroke color
+          h: 255-h,
+          s: 255,
+          b: 255
+        }
       )
     );
 
