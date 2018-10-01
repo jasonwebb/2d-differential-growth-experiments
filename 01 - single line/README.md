@@ -4,6 +4,8 @@ This experiment applies the differential growth process to the simplest possible
 
 # Samples
 
+![Starting point](images/01-starting-point.png)
+
 ![Line after growth](images/01-line-after-growth.png)
 
 ![Growth with inverted colors](images/01-inverted-colors.png)
