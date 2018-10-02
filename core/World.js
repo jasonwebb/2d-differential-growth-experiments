@@ -122,24 +122,33 @@ class World {
 
   // Setters -----------------------------------------
   setDrawNodes(state) {
+    this.drawBackground();
+
     for (let path of this.paths) {
       path.drawNodes = state;
+      path.draw();
     }
 
     this.drawNodes = state;
   }
 
   setDebugMode(state) {
+    this.drawBackground();
+
     for (let path of this.paths) {
       path.debugMode = state;
+      path.draw();
     }
 
     this.debugMode = state;
   }
 
   setFillMode(state) {
+    this.drawBackground();
+
     for(let path of this.paths) {
       path.fillMode = state;
+      path.draw();
     }
 
     this.fillMode = state;
@@ -151,19 +160,24 @@ class World {
   }
 
   toggleTraceMode() {
+    this.traceMode = !this.traceMode;
+    this.drawBackground();
+
     for(let path of this.paths) {
       path.toggleTraceMode();
+      path.draw();
     }
-
-    this.traceMode = !this.traceMode;
   }
 
   toggleInvertedColors() {
+    this.invertedColors = !this.invertedColors;
+
+    this.drawBackground();
+
     for(let path of this.paths) {
       path.toggleInvertedColors();
+      path.draw();
     }
-
-    this.invertedColors = !this.invertedColors;
   }
 
   toggleDebugMode() {
