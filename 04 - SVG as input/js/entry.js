@@ -18,6 +18,7 @@ const sketch = function (p5) {
   p5.setup = function () {
     p5.createCanvas(window.innerWidth, window.innerHeight);
     p5.colorMode(p5.HSB, 255);
+    p5.rectMode(p5.CENTER);
 
     // Set up world and begin simulation
     world = new World(p5, Settings);
@@ -28,6 +29,11 @@ const sketch = function (p5) {
   p5.draw = function () {
     world.iterate();
     world.draw();
+
+    // Draw canvas bounds for alignment with video recording software
+    // p5.noFill();
+    // p5.stroke(200);
+    // p5.rect(window.innerWidth/2 - 1, window.innerHeight/2 - 1, 720 + 2, 900 + 4);
   }
 
   // Restart the simulation ---------------------------------------------
@@ -35,45 +41,47 @@ const sketch = function (p5) {
     world.clearPaths();
 
     // Load the default SVG file
-    let svg = document.getElementById('hello-world-serif');
+    let svg = document.getElementById('differential-growth');
     let inputPaths = svg.contentDocument.querySelectorAll('path');
     let currentPath = new Path(p5, [], Settings, true);
 
     // Scrape all points from all points, and record breakpoints
-    for(let inputPath of inputPaths) {
-      let pathData = new SVGPathData(inputPath.getAttribute('d'));
+    for(let i = 0; i < 4; i++) {
+      for(let inputPath of inputPaths) {
+        let pathData = new SVGPathData(inputPath.getAttribute('d'));
 
-      let previousCoords = {
-        x: 500,
-        y: 500
-      };
+        let previousCoords = {
+          x: 500,
+          y: 500
+        };
 
-      for(let command of pathData.commands) {
-        switch(command.type) {
-          case SVGPathData.MOVE_TO:
-          case SVGPathData.LINE_TO:
-            currentPath.addNode(new Node(p5, command.x, command.y, Settings));
-            break;
-          case SVGPathData.HORIZ_LINE_TO:
-           currentPath.addNode(new Node(p5, command.x, previousCoords.y, Settings));
-            break;
-          case SVGPathData.VERT_LINE_TO:
-            currentPath.addNode(new Node(p5, previousCoords.x, command.y, Settings));
-            break;
-          case SVGPathData.CLOSE_PATH:
-            currentPath.scale(10);
-            currentPath.moveTo(window.innerWidth/2 - 600, window.innerHeight/2 - 150)
-            world.addPath(currentPath);
-            currentPath = new Path(p5, [], Settings, true);
-            break;
-        }
+        for(let command of pathData.commands) {
+          switch(command.type) {
+            case SVGPathData.MOVE_TO:
+            case SVGPathData.LINE_TO:
+              currentPath.addNode(new Node(p5, command.x, command.y, Settings));
+              break;
+            case SVGPathData.HORIZ_LINE_TO:
+            currentPath.addNode(new Node(p5, command.x, previousCoords.y, Settings));
+              break;
+            case SVGPathData.VERT_LINE_TO:
+              currentPath.addNode(new Node(p5, previousCoords.x, command.y, Settings));
+              break;
+            case SVGPathData.CLOSE_PATH:
+              currentPath.scale(2.25);
+              currentPath.moveTo(window.innerWidth/2 - 400, i*210 - 70);
+              world.addPath(currentPath);
+              currentPath = new Path(p5, [], Settings, true);
+              break;
+          }
 
-        if(command.hasOwnProperty('x')) {
-          previousCoords.x = command.x;
-        }
+          if(command.hasOwnProperty('x')) {
+            previousCoords.x = command.x;
+          }
 
-        if(command.hasOwnProperty('y')) {
-          previousCoords.y = command.y;
+          if(command.hasOwnProperty('y')) {
+            previousCoords.y = command.y;
+          }
         }
       }
     }
@@ -104,7 +112,7 @@ const sketch = function (p5) {
   
       // Toggle drawing of nodes with 'n'
       case 'n':
-        world.setDrawNodes(!world.getDrawNodes());
+        world.toggleDrawNodes();
         break;
     
       // Reset simulation with current parameters with 'r'
@@ -120,7 +128,6 @@ const sketch = function (p5) {
       // Invert colors with 'i'
       case 'i':
         world.toggleInvertedColors();
-        world.drawBackground();
         break;
 
       // Toggle debug mode with 'd'
