@@ -8,23 +8,3 @@
 canvas {
     display: block;
 }
-
-#instructions {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-
-    font-family: 'Raleway', sans-serif;
-    font-size: 16px;
-    color: rgba(0,0,0,.7);
-}
-
-    #instructions code {
-        font-size: 14px;
-        color: rgba(0,0,0,.5);
-        background-color: rgba(0,0,0,.1);
-        padding: 3px 8px;
-        border-radius: 5px;
-        border: 2px solid rgba(0,0,0,.15);
-        border-width: 0 3px 2px 0;
-    }
