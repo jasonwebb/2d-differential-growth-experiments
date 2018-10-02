@@ -33,8 +33,8 @@ const sketch = function (p5) {
   function createLine() {
     let nodes = [];
 
-    nodes.push(new Node(p5, 200, window.innerHeight / 2, Settings, true));
-    nodes.push(new Node(p5, window.innerWidth - 200, window.innerHeight / 2, Settings, true));
+    nodes.push(new Node(p5, 200, window.innerHeight / 2, Settings));
+    nodes.push(new Node(p5, window.innerWidth - 200, window.innerHeight / 2, Settings));
 
     return nodes;
   }
