@@ -17,7 +17,8 @@ let browserify = require('browserify'),
 const experiments = [
   '../01 - single line/',
   '../02 - simple closed shape/',
-  '../03 - multiple shapes/'
+  '../03 - multiple shapes/',
+  '../04 - SVG as input/'
 ];
 
 // Define globs

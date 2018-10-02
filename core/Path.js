@@ -263,8 +263,6 @@ class Path {
       ) {
         // Create a new node in the middle
         let midpointNode = this.getMidpointNode(this.nodes[index], connectedNodes.previousNode);
-
-        // midpointNode.y += this.p5.random();
         
         // Splice new node into array
         this.nodes.splice(index, 0, midpointNode);
@@ -407,7 +405,7 @@ class Path {
       }
     }
 
-    // For closed paths, connect the last and first
+    // For closed paths, connect the last and first nodes
     if(this.isClosed) {
       if(!this.debugMode) {
         this.p5.vertex(this.nodes[0].x, this.nodes[0].y);
@@ -439,6 +437,27 @@ class Path {
         node.draw();
       }
     }
+  }
+
+  // Translate this path by the provided offsets
+  moveTo(xOffset, yOffset) {
+    for(let node of this.nodes) {
+      node.x += xOffset;
+      node.y += yOffset;
+    }
+  }
+
+  // Scale (multiply) all Nodes by the provided factor
+  scale(factor) {
+    for(let node of this.nodes) {
+      node.x *= factor;
+      node.y *= factor;
+    }
+  }
+
+  // Add a new node from outside this class
+  addNode(node) {
+    this.nodes.push(node);
   }
 
   // Getters ------------------------------------
@@ -474,7 +493,7 @@ class Path {
       this.currentStrokeColor = this.invertedStrokeColor;
     }
 
-    // Reset the trace mode to make sure opacity is adjusted when colors are inverted
+    // Reapply the current trace mode state to make sure opacity is adjusted when colors are inverted
     this.setTraceMode(this.traceMode);
   }
 

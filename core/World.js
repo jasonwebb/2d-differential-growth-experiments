@@ -86,6 +86,12 @@ class World {
     this.paths.push(path);
   }
 
+  addPaths(paths) {
+    for(let path of paths) {
+      this.addPath(path);
+    }
+  }
+
   // Remove all paths from the world -----------------
   clearPaths() {
     this.paths = [];
