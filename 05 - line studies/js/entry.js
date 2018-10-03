@@ -5,6 +5,11 @@ let Node = require('../../core/Node'),
 
 let world;
 
+const HORIZONTAL = 0,
+      VERTICAL = 1,
+      ANGLED = 2;
+let currentLineType = HORIZONTAL;
+
 
 /*
 =============================================================================
@@ -37,6 +42,7 @@ const sketch = function (p5) {
     p5.rect(window.innerWidth/2, window.innerHeight/2, 900 - 100, 900 - 100);
   }
 
+  // Create a grid of lines as Paths consisting of two Nodes each with configurable deltas in position
   function createLines(rows, columns, rowSpacing, columnSpacing, xDelta, yDelta) {
     let totalWidth = columnSpacing * columns;
     let totalHeight = rowSpacing * rows;
@@ -77,14 +83,17 @@ const sketch = function (p5) {
     }
   }
 
+  // Horizontal lines only have deltas along X axis
   function createHorizontalLines(rows, columns) {
     createLines(rows, columns, 20, 45, 30, 0);
   }
 
+  // Vertical lines only have deltas along Y axis
   function createVerticalLines(rows, columns) {
     createLines(rows, columns, 38, 20, 0, 30);
   }
 
+  // Angled lines have deltas along both X and Y axes
   function createAngledLines(rows, columns) {
     createLines(rows, columns, 38, 20, -30, 30);
   }
@@ -94,10 +103,18 @@ const sketch = function (p5) {
     world.clearPaths();
 
     // Create a field of lines
-    // createAngledLines(10, 10);
-    createVerticalLines(10, 30);
-    // createHorizontalLines(30, 10);
-
+    switch(currentLineType) {
+      case HORIZONTAL:
+        createHorizontalLines(30, 10);
+        break;
+      case VERTICAL:
+        createVerticalLines(10, 30);
+        break;
+      case ANGLED:
+        createAngledLines(15, 20);
+        break;
+    }
+    
     // Draw the first frame, then pause
     world.drawBackground();
     world.draw();
@@ -116,7 +133,25 @@ const sketch = function (p5) {
   =============================================================================
   */
   p5.keyReleased = function() {
-    switch (p5.key) {  
+    switch (p5.key) {
+      // Switch to horizontal lines with '1'
+      case '1':
+        currentLineType = HORIZONTAL;
+        restartWorld();
+        break;
+
+      // Switch to vertical lines with '2'
+      case '2':
+        currentLineType = VERTICAL;
+        restartWorld();
+        break;
+
+      // Switch to angled lines with '3'
+      case '3':
+        currentLineType = ANGLED;
+        restartWorld();
+        break;
+
       // Toggle trace mode with 't'
       case 't':
         world.toggleTraceMode()
