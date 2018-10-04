@@ -7,8 +7,9 @@ let world;
 
 const HORIZONTAL = 0,
       VERTICAL = 1,
-      ANGLED = 2;
-let currentLineType = HORIZONTAL;
+      ANGLED = 2,
+      RADIAL = 3;
+let currentLineType = RADIAL;
 
 
 /*
@@ -98,6 +99,39 @@ const sketch = function (p5) {
     createLines(rows, columns, 38, 20, -30, 30);
   }
 
+  // Radial arrangement of lines
+  function createRadialLines() {
+    let linesPerRev = 60;
+    let angleDelta = 360 / linesPerRev;
+    let innerRadius = 75;
+    let outerRadius = 100;
+
+    for(let i = 0; i < linesPerRev * angleDelta; i += angleDelta) {
+      let nodes = [];
+
+      // Innermost Node
+      nodes[0] = new Node(
+        p5,
+        innerRadius * Math.cos(i * (Math.PI / 180)),
+        innerRadius * Math.sin(i * (Math.PI / 180)),
+        Settings
+      );
+
+      // Outermost Node
+      nodes[1] = new Node(
+        p5,
+        outerRadius * Math.cos(i * (Math.PI / 180)),
+        outerRadius * Math.sin(i * (Math.PI / 180)),
+        Settings
+      );
+
+      let path = new Path(p5, nodes, Settings);
+      path.moveTo(window.innerWidth/2, window.innerHeight/2);
+
+      world.addPath(path);
+    }
+  }
+
   // Restart the simulation with a selected path type -------------------
   function restartWorld() {
     world.clearPaths();
@@ -112,6 +146,9 @@ const sketch = function (p5) {
         break;
       case ANGLED:
         createAngledLines(15, 20);
+        break;
+      case RADIAL:
+        createRadialLines();
         break;
     }
     
@@ -149,6 +186,12 @@ const sketch = function (p5) {
       // Switch to angled lines with '3'
       case '3':
         currentLineType = ANGLED;
+        restartWorld();
+        break;
+
+      // Switch to radial arrangement of lines with '4'
+      case '4':
+        currentLineType = RADIAL;
         restartWorld();
         break;
 
