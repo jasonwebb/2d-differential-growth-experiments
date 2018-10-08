@@ -1,7 +1,8 @@
 let Node = require('../../core/Node'),
     Path = require('../../core/Path'),
     World = require('../../core/World'),
-    Settings = require('./Settings');
+    Settings = require('./Settings'),
+    MIDIControl = require('../../core/MIDIControl');
 
 let world;
 
@@ -32,6 +33,19 @@ const sketch = function (p5) {
 
     // Create random paths
     restartWorld();
+
+    // Set up MIDI controller as input
+    this.midi = new MIDIControl();
+
+    // Process MIDI 'noteon' events
+    document.addEventListener('noteon', function(e) {
+      console.log(e.detail);
+    });
+
+    // Process MIDI 'controlchange' events
+    document.addEventListener('controlchange', function(e) {
+      console.log(e.detail);
+    });
   }
 
   // Draw ---------------------------------------------------------------
