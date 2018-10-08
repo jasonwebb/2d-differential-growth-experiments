@@ -9,8 +9,9 @@ const HORIZONTAL = 0,
       VERTICAL = 1,
       ANGLED = 2,
       RADIAL = 3,
-      OPPOSING_ARCS = 4;
-let currentLineType = OPPOSING_ARCS;
+      OPPOSING_ARCS = 4,
+      NUCLEATION = 5;
+let currentLineType = NUCLEATION;
 
 
 /*
@@ -40,7 +41,13 @@ const sketch = function (p5) {
 
     // Draw canvas bounds for alignment with video recording software
     p5.noFill();
-    p5.stroke(255);
+
+    if(Settings.InvertedColors) {
+      p5.stroke(255);
+    } else {
+      p5.stroke(0);
+    }
+
     p5.rect(window.innerWidth/2, window.innerHeight/2, 900 - 100, 900 - 100);
   }
 
@@ -142,6 +149,35 @@ const sketch = function (p5) {
     createArcLines(window.innerWidth/2, window.innerHeight/2, 0, 360, 75, 60, 50);
   }
 
+  // Create radial arc arrangements at multiple spots
+  function createNucleationSites() {
+    var sites = [
+      { x:-200, y:-210, ds:0, de:360, r:25, lpa:55, ll:100 },
+      { x:60, y:-100, ds:0, de:360, r:25, lpa:30, ll:35 },
+      { x:-80, y:-20, ds:0, de:360, r:50, lpa:45, ll:25 },
+      { x:150, y:150, ds:0, de:360, r:100, lpa:60, ll:70 },
+      { x:-40, y:-150, ds:0, de:360, r:15, lpa:18, ll:10 },
+      { x:-400, y:400, ds:270, de:360, r:400, lpa:60, ll:30 },
+      { x:-400, y:400, ds:270, de:360, r:350, lpa:15, ll:20 },
+      { x:-400, y:400, ds:270, de:360, r:300, lpa:7, ll:40 },
+      { x:-400, y:400, ds:270, de:360, r:200, lpa:30, ll:75 },
+      { x:125, y:-400, ds:0, de:180, r:175, lpa:45, ll:30 },
+      { x:275, y:-110, ds:0, de:360, r:75, lpa:45, ll:15 }
+    ]
+
+    for(let i = 0; i < sites.length; i++) {
+      createArcLines(
+        window.innerWidth/2 + sites[i].x,
+        window.innerHeight/2 + sites[i].y,
+        sites[i].ds,
+        sites[i].de,
+        sites[i].r,
+        sites[i].lpa,
+        sites[i].ll
+      );
+    }
+  }
+
   // Restart the simulation with the selected path type -------------------
   function restartWorld() {
     world.clearPaths();
@@ -163,6 +199,9 @@ const sketch = function (p5) {
       case OPPOSING_ARCS:
         createOpposingArcs();
         break;
+      case NUCLEATION:
+        createNucleationSites();
+        break;
     }
     
     // Draw the first frame, then pause
@@ -172,7 +211,7 @@ const sketch = function (p5) {
 
     // Restart simulation after 1s
     setTimeout(function() {
-      world.unpause();
+      // world.unpause();
     }, 1000);
   }
 
@@ -202,12 +241,21 @@ const sketch = function (p5) {
         restartWorld();
         break;
 
-      case '4':
-        currentLineType
-
       // Switch to radial arrangement of lines with '4'
       case '4':
         currentLineType = RADIAL;
+        restartWorld();
+        break;
+
+      // Switch to dual radial arcs with '5'
+      case '5':
+        currentLineType = OPPOSING_ARCS;
+        restartWorld();
+        break;
+
+      // Switch to nucleation sites of arc lines with '6'
+      case '6':
+        currentLineType = NUCLEATION;
         restartWorld();
         break;
 
@@ -229,6 +277,11 @@ const sketch = function (p5) {
       // Toggle pause with Space
       case ' ':
         world.paused = !world.paused;
+        let total = 0;
+        for(let path of world.paths) {
+          total += path.nodes.length;
+        }
+        console.log(total);
         break;
 
       // Invert colors with 'i'
@@ -247,6 +300,9 @@ const sketch = function (p5) {
         break;
 
       // Export SVG with 's'
+      case 's':
+        world.export();
+        break;
     }
   }
 }
