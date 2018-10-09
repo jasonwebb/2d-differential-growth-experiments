@@ -95,7 +95,9 @@ class Path {
   //---------------------------------------------------------------------
   //  Brownian motion
   //  ===============
-  //  Simulate the random
+  //  Simulate the small random motions that real microscopic particles 
+  //  experience from collisions with fast-moving molecules
+  //----------------------------------------------------------------------
   applyBrownianMotion(index) {
     this.nodes[index].x += this.p5.random(-this.settings.BrownianMotionRange/2, this.settings.BrownianMotionRange/2);
     this.nodes[index].y += this.p5.random(-this.settings.BrownianMotionRange/2, this.settings.BrownianMotionRange/2);
