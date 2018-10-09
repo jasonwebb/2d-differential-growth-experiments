@@ -1,5 +1,5 @@
 module.exports = {
-  SeedRadius: 100,
+  SeedRadius: 200,
   MinDistance: 1,
   MaxDistance: 5,
   RepulsionRadius: 10,

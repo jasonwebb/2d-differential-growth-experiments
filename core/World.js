@@ -1,5 +1,6 @@
 let rbush = require('./node_modules/rbush'),
-    knn = require('./node_modules/rbush-knn'),
+    toPath = require('./node_modules/svg-points/').toPath,
+    saveAs = require('./node_modules/file-saver').saveAs,
     Defaults = require('./Defaults');
 
 
@@ -90,6 +91,48 @@ class World {
     for(let path of paths) {
       this.addPath(path);
     }
+  }
+
+  // Export an SVG and force a download prompt -----------------
+  export() {
+    let svg = document.createElement('svg');
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    svg.setAttribute('width', window.innerWidth);
+    svg.setAttribute('height', window.innerHeight);
+    svg.setAttribute('viewBox', '0 0 ' + window.innerWidth + ' ' + window.innerHeight);
+
+    for(let path of this.paths) {
+      let pointsString = '';
+
+      for(let [index, node] of path.nodes.entries()) {
+        pointsString += node.x + ',' + node.y;
+
+        if(index < path.nodes.length - 1) {
+          pointsString += ' ';
+        }
+      }
+
+      let d = toPath({
+        type: 'polyline',
+        points: pointsString
+      });
+
+      let pathEl = document.createElement('path');
+      pathEl.setAttribute('d', d);
+      pathEl.setAttribute('style', 'fill: none; stroke: black; stroke-width: 1');
+
+      svg.appendChild(pathEl);
+    }
+
+    // Force download of SVG based on https://jsfiddle.net/ch77e7yh/1
+    let svgDocType = document.implementation.createDocumentType('svg', "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
+    let svgDoc = document.implementation.createDocument('http://www.w3.org/2000/svg', 'svg', svgDocType);
+    svgDoc.replaceChild(svg, svgDoc.documentElement);
+    let svgData = (new XMLSerializer()).serializeToString(svgDoc);
+
+    let blob = new Blob([svgData.replace(/></g, '>\n\r<')]);
+    saveAs(blob, 'differential-growth-' + Date.now() + '.svg');
   }
 
   // Remove all paths from the world -----------------

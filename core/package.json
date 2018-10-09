@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "file-saver": "^2.0.0-rc.3",
     "p5": "^0.7.2",
     "rbush": "^2.0.2",
     "rbush-knn": "^2.1.0",

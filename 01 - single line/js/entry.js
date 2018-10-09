@@ -90,6 +90,9 @@ const sketch = function (p5) {
         break;
 
       // Export SVG with 's'
+      case 's':
+        world.export();
+        break;
     }
   }
 }
