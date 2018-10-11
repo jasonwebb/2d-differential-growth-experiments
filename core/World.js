@@ -19,7 +19,7 @@ class World {
     this.paths = paths;
 
     this.paused = false;
-    this.settings = settings;
+    this.settings = Object.assign({}, Defaults, settings);
 
     this.traceMode = this.settings.TraceMode;
     this.drawNodes = this.settings.DrawNodes;

@@ -1,5 +1,6 @@
-let knn = require('./node_modules/rbush-knn')
-    Node = require('./Node');
+let knn = require('./node_modules/rbush-knn'),
+    Node = require('./Node'),
+    Defaults = require('./Defaults');
 
     
 /*
@@ -25,7 +26,7 @@ class Path {
     this.p5 = p5;
     this.nodes = nodes;
     this.isClosed = isClosed;
-    this.settings = settings;
+    this.settings = Object.assign({}, Defaults, settings);
 
     this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
@@ -86,7 +87,7 @@ class Path {
     this.pruneNodes();
 
     // Inject a new node to introduce asymmetry every so often
-    if (this.p5.millis() - this.lastNodeInjectTime >= this.settings.NodeInjectionInterval && this.nodes.length < this.settings.MaxNodes) {
+    if (this.p5.millis() - this.lastNodeInjectTime >= this.settings.NodeInjectionInterval) {
       this.injectNode();
       this.lastNodeInjectTime = this.p5.millis();
     }
@@ -195,8 +196,7 @@ class Path {
 
       if (
         connectedNodes.previousNode != undefined && connectedNodes.previousNode instanceof Node &&
-        node.distance(connectedNodes.previousNode) >= this.settings.MaxDistance && 
-        this.nodes.length < this.settings.MaxNodes) 
+        node.distance(connectedNodes.previousNode) >= this.settings.MaxDistance) 
       {
         let midpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
         

@@ -16,7 +16,7 @@ class Node extends Vec2 {
 
     this.p5 = p5;
     this.isFixed = isFixed;
-    this.settings = settings;
+    this.settings = Object.assign({}, Defaults, settings);
 
     this.velocity = 0;
     this.nextPosition = new Vec2(x, y);
