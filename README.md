@@ -24,6 +24,21 @@ Within these rules you can see several opportunities for customization that enab
 * The __radius__ around each node used to calculate which nearby nodes have an influence on it.
 * A __growth scheme__ that determines when and how new nodes are introduced to the system to induce interesting asymmetry. 
 
+## Global keyboard controls
+All of these keyboard controls are available in each experiment.
+
+| Key     | Result                                         |
+| ------- | ---------------------------------------------- |
+| `1`-`9` | Change initial seed path shape (if available)  |
+| `t`     | Toggle trace mode                              |
+| `n`     | Toggle visibility of nodes                     |
+| `r`     | Reset simulation with same parameters          |
+| `Space` | Pause or unpause the simulation                |
+| `i`     | Toggle inverting of colors                     |
+| `d`     | Toggle "debug mode"                            |
+| `f`     | Toggle shape fills                             |
+| `s`     | Download an SVG of current geometry            |
+
 ## References
 
 * [Differential line growth with Processing](http://www.codeplastic.com/2017/07/22/differential-line-growth-with-processing/) by [Alberto Giachino (CodePlastic)](http://www.codeplastic.com/)
