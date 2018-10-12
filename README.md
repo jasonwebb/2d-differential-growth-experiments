@@ -34,3 +34,8 @@ Within these rules you can see several opportunities for customization that enab
 * [Differential Mesh Growth discussion thread](https://forums.odforce.net/topic/25534-differential-curve-growth/) on od|force forums
 * [Differential Growth](https://codepen.io/MAKIO135/pen/EwYPmb) by [Lionel Radisson](http://makio135.com/) via CodePen
 * [Organic Labrynths and Mazes](http://www.dgp.toronto.edu/~karan/artexhibit/mazes.pdf) (PDF) paper by Hans Pederson and Karen Singh
+
+## Samples
+
+
+![Single line growth process](01%-%20single%20line/images/01-growth-process.gif)
