@@ -38,4 +38,12 @@ Within these rules you can see several opportunities for customization that enab
 ## Samples
 
 
-![Single line growth process](01%-%20single%20line/images/01-growth-process.gif)
+![Single line growth process](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/01%20-%20single%20line/images/01-growth-process.gif)
+
+![Triangle](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/02%20-%20simple%20closed%20shape/images/02-triangle-growth.gif)
+
+![Multiple shapes](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/03%20-%20multiple%20shapes/images/03-growth-normal.gif)
+
+![SVG supershape as input](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/04%20-%20SVG%20as%20input/images/04-superformula-growth-process-inverted.gif)
+
+![Opposing arcs converging](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/05%20-%20line%20studies/images/08-opp-arcs-solid-trace.png)
