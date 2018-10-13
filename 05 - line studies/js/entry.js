@@ -12,7 +12,7 @@ const HORIZONTAL = 0,
       RADIAL = 3,
       OPPOSING_ARCS = 4,
       NUCLEATION = 5;
-let currentLineType = NUCLEATION;
+let currentLineType = OPPOSING_ARCS;
 
 
 /*
@@ -46,6 +46,13 @@ const sketch = function (p5) {
     document.addEventListener('controlchange', function(e) {
       console.log(e.detail);
     });
+
+    // Begin capturing path history once per second, but only after 5s have passed
+    setTimeout(function() {
+      setInterval(function() {
+        world.addToHistory();
+      }, 1000);
+    }, 3000);
   }
 
   // Draw ---------------------------------------------------------------
@@ -53,10 +60,13 @@ const sketch = function (p5) {
     world.iterate();
     world.draw();
 
-    // Draw canvas bounds for alignment with video recording software
+    drawFrame();
+  }
+
+  function drawFrame() {
     p5.noFill();
 
-    if(Settings.InvertedColors) {
+    if(world.invertedColors) {
       p5.stroke(255);
     } else {
       p5.stroke(0);
@@ -311,6 +321,11 @@ const sketch = function (p5) {
       // Toggle fill for all shapes with 'f'
       case 'f':
         world.toggleFillMode();
+        break;
+
+      // Toggle path history with 'h'
+      case 'h':
+        world.toggleDrawHistory();
         break;
 
       // Export SVG with 's'

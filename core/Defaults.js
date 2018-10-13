@@ -40,6 +40,9 @@ module.exports = {
   // Turn on/off shape fills for closed paths
   FillMode: false,
 
+  // Turn on/off capturing and rendering of previous node positions to create a "tree ring" effect
+  DrawHistory: true,
+
   // Turn on/off Brownian motion
   UseBrownianMotion: true,
 

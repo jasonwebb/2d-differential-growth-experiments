@@ -37,6 +37,7 @@ All of these keyboard controls are available in each experiment.
 | `i`     | Toggle inverting of colors                     |
 | `d`     | Toggle "debug mode"                            |
 | `f`     | Toggle shape fills                             |
+| `h`     | Toggle drawing of periodic path history        |
 | `s`     | Download an SVG of current geometry            |
 
 ## References

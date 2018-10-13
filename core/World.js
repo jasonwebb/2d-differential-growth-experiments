@@ -26,6 +26,7 @@ class World {
     this.debugMode = this.settings.DebugMode;
     this.invertedColors = this.settings.InvertedColors;
     this.fillMode = this.settings.FillMode;
+    this.drawHistory = this.settings.DrawHistory;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
 
     this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
@@ -90,6 +91,14 @@ class World {
   addPaths(paths) {
     for(let path of paths) {
       this.addPath(path);
+    }
+  }
+
+  addToHistory() {
+    if(!this.paused) {
+      for(let path of this.paths) {
+        path.addToHistory();
+      }
     }
   }
 
@@ -163,6 +172,10 @@ class World {
     return this.fillMode;
   }
 
+  getDrawHistory() {
+    return this.drawHistory;
+  }
+
   // Setters -----------------------------------------
   setDrawNodes(state) {
     this.drawBackground();
@@ -197,6 +210,17 @@ class World {
     this.fillMode = state;
   }
 
+  setDrawHistory(state) {
+    this.drawBackground();
+
+    for(let path of this.paths) {
+      path.drawHistory = state;
+      path.draw();
+    }
+
+    this.drawHistory = state;
+  }
+
   // Toggles ----------------------------------
   toggleDrawNodes() {
     this.setDrawNodes(!this.getDrawNodes());
@@ -229,6 +253,10 @@ class World {
 
   toggleFillMode() {
     this.setFillMode(!this.getFillMode());
+  }
+
+  toggleDrawHistory() {
+    this.setDrawHistory(!this.getDrawHistory());
   }
 }
 

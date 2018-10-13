@@ -26,6 +26,13 @@ const sketch = function (p5) {
     // Set up and start the simulation with a random shape
     world = new World(p5, Settings);
     restartWorldWith(Math.round(p5.random(0,2)));
+
+    // Begin capturing path history once per second, but only after 5s have passed
+    setTimeout(function() {
+      setInterval(function() {
+        world.addToHistory();
+      }, 1000);
+    }, 3000);
   }
 
   // Draw ---------------------------------------------------------------
@@ -157,6 +164,11 @@ const sketch = function (p5) {
       // Toggle fill for all shapes with 'f'
       case 'f':
         world.toggleFillMode();
+        break;
+        
+      // Toggle path history with 'h'
+      case 'h':
+        world.toggleDrawHistory();
         break;
 
       // Export SVG with 's'

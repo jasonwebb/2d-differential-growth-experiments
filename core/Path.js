@@ -31,12 +31,15 @@ class Path {
     this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
 
+    this.nodeHistory = [];
+
     this.drawNodes = this.settings.DrawNodes;
     this.invertedColors = this.settings.InvertedColors;
     this.traceMode = this.settings.TraceMode;
     this.debugMode = this.settings.DebugMode;
     this.fillMode = this.settings.FillMode;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
+    this.drawHistory = this.settings.DrawHistory;
 
     this.fillColor = fillColor;
     this.strokeColor = strokeColor;
@@ -375,6 +378,11 @@ class Path {
   //  Draw all nodes and edges to the canvas
   //--------------------------------------------
   draw() {
+    // Draw all the previous paths saved to the history array
+    if(this.drawHistory) {
+      this.drawPreviousEdges();
+    }
+
     // Set shape fill 
     if(this.fillMode) {
       this.p5.fill(this.currentFillColor.h, this.currentFillColor.s, this.currentFillColor.b, this.currentFillColor.a);
@@ -385,26 +393,56 @@ class Path {
     // Set stroke color
     this.p5.stroke(this.currentStrokeColor.h, this.currentStrokeColor.s, this.currentStrokeColor.b, this.currentStrokeColor.a);
 
+    // Draw current edges
+    this.drawCurrentEdges();
+
+    // Draw all nodes
+    if(this.drawNodes) {
+      this.drawCurrentNodes();
+    }
+  }
+
+  // Draw the current edges (leading edge) of the path
+  drawCurrentEdges() {
+    this.drawEdges(this.nodes);
+  }
+
+  // Draw all previous edges of the path saved to history array
+  drawPreviousEdges() {
+    for(let [index, nodes] of this.nodeHistory.entries()) {
+      this.p5.stroke(
+        this.currentStrokeColor.h, 
+        this.currentStrokeColor.s, 
+        this.currentStrokeColor.b,
+        index * 30
+      );
+
+      this.drawEdges(nodes);
+    }
+  }
+
+  // Draw edges for a given set of nodes - can be either the current or previous nodes
+  drawEdges(nodes) {
     // Begin capturing vertices
     if(!this.debugMode) {
       this.p5.beginShape();
     }
 
     // Create vertices or lines (if debug mode)
-    for (let i = 0; i < this.nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
       if(!this.debugMode) {
-        this.p5.vertex(this.nodes[i].x, this.nodes[i].y);
+        this.p5.vertex(nodes[i].x, nodes[i].y);
       } else {
 
         // In debug mode each line has a unique stroke color, which isn't possible with begin/endShape(). Instead we'll use line()
         if(i > 0) {
           if(!this.traceMode) {
-            this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255, 255 );
+            this.p5.stroke( this.p5.map(i, 0, nodes.length-1, 0, 255, true), 255, 255, 255 );
           } else {
-            this.p5.stroke( this.p5.map(i, 0, this.nodes.length-1, 0, 255, true), 255, 255, 2 );
+            this.p5.stroke( this.p5.map(i, 0, nodes.length-1, 0, 255, true), 255, 255, 2 );
           }
 
-          this.p5.line(this.nodes[i-1].x, this.nodes[i-1].y, this.nodes[i].x, this.nodes[i].y);
+          this.p5.line(nodes[i-1].x, nodes[i-1].y, nodes[i].x, nodes[i].y);
         }
       }
     }
@@ -412,9 +450,9 @@ class Path {
     // For closed paths, connect the last and first nodes
     if(this.isClosed) {
       if(!this.debugMode) {
-        this.p5.vertex(this.nodes[0].x, this.nodes[0].y);
+        this.p5.vertex(nodes[0].x, nodes[0].y);
       } else {
-        this.p5.line(this.nodes[this.nodes.length - 1].x, this.nodes[this.nodes.length - 1].y, this.nodes[0].x, this.nodes[0].y);
+        this.p5.line(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y, nodes[0].x, nodes[0].y);
       }
     }
 
@@ -422,25 +460,30 @@ class Path {
     if(!this.debugMode) {
       this.p5.endShape();
     }
+  }
 
-    // Draw all nodes
-    if(this.drawNodes) {
-      this.p5.noStroke();
+  // Draw circles for every node
+  drawCurrentNodes() {
+    this.p5.noStroke();
 
-      if(!this.invertedColors) {
-        this.p5.fill(0);
-      } else {
-        this.p5.fill(255);
-      }
-
-      for (let [index, node] of this.nodes.entries()) {
-        if(this.debugMode) {
-          this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255, 255 );
-        }
-
-        node.draw();
-      }
+    if(!this.invertedColors) {
+      this.p5.fill(0);
+    } else {
+      this.p5.fill(255);
     }
+
+    for (let [index, node] of this.nodes.entries()) {
+      if(this.debugMode) {
+        this.p5.fill( this.p5.map(index, 0, this.nodes.length-1, 0, 255, true), 255, 255, 255 );
+      }
+
+      node.draw();
+    }
+  }
+
+  // Take a snapshot of the current nodes by saving a dereferenced clone of them to the history array
+  addToHistory() {
+    this.nodeHistory.push(Object.assign([], JSON.parse(JSON.stringify(this.nodes))));
   }
 
   // Translate this path by the provided offsets
