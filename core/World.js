@@ -31,6 +31,12 @@ class World {
 
     this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
     this.buildTree();
+    
+    // Begin capturing path history
+    let _this = this;
+    setInterval(function() {
+      _this.addToHistory(); 
+    }, this.settings.HistoryCaptureInterval);
   }
 
   // Run a single tick for all paths -----------------

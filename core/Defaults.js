@@ -43,6 +43,12 @@ module.exports = {
   // Turn on/off capturing and rendering of previous node positions to create a "tree ring" effect
   DrawHistory: true,
 
+  // Interval (in ms) between capture of paths for history effect
+  HistoryCaptureInterval: 1000,
+
+  // Maximum number of previous paths to capture for history effect
+  MaxHistorySize: 20,
+
   // Turn on/off Brownian motion
   UseBrownianMotion: true,
 

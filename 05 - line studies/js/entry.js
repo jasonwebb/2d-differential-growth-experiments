@@ -46,13 +46,6 @@ const sketch = function (p5) {
     document.addEventListener('controlchange', function(e) {
       console.log(e.detail);
     });
-
-    // Begin capturing path history once per second, but only after 5s have passed
-    setTimeout(function() {
-      setInterval(function() {
-        world.addToHistory();
-      }, 1000);
-    }, 3000);
   }
 
   // Draw ---------------------------------------------------------------

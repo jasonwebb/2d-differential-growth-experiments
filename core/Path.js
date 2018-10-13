@@ -483,6 +483,10 @@ class Path {
 
   // Take a snapshot of the current nodes by saving a dereferenced clone of them to the history array
   addToHistory() {
+    if(this.nodeHistory.length == this.settings.MaxHistorySize) {
+      this.nodeHistory.shift();
+    }
+
     this.nodeHistory.push(Object.assign([], JSON.parse(JSON.stringify(this.nodes))));
   }
 

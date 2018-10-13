@@ -8,7 +8,7 @@ let world;
 const TRIANGLE = 0,
       SQUARE = 1,
       CIRCLE = 2;
-let currentPathType = CIRCLE;
+let currentPathType = TRIANGLE;
 
 
 /*
@@ -25,14 +25,7 @@ const sketch = function (p5) {
 
     // Set up and start the simulation with a random shape
     world = new World(p5, Settings);
-    restartWorldWith(Math.round(p5.random(0,2)));
-
-    // Begin capturing path history once per second, but only after 5s have passed
-    setTimeout(function() {
-      setInterval(function() {
-        world.addToHistory();
-      }, 1000);
-    }, 3000);
+    restartWorldWith(currentPathType);
   }
 
   // Draw ---------------------------------------------------------------

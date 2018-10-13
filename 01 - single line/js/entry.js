@@ -21,13 +21,6 @@ const sketch = function (p5) {
     // Set up and start the simulation
     world = new World(p5, Settings);
     restartWorld();
-    
-    // Begin capturing path history once per second, but only after 5s have passed
-    setTimeout(function() {
-      setInterval(function() {
-        world.addToHistory();
-      }, 1000);
-    }, 3000);
   }
 
   // Draw ---------------------------------------------------------------

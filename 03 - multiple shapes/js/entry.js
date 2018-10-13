@@ -23,13 +23,6 @@ const sketch = function (p5) {
 
     // Create random paths
     restartWorld();
-    
-    // Begin capturing path history once per second, but only after 5s have passed
-    setTimeout(function() {
-      setInterval(function() {
-        world.addToHistory();
-      }, 1000);
-    }, 3000);
   }
 
   // Draw ---------------------------------------------------------------
