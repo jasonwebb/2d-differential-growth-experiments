@@ -11,7 +11,7 @@ let Vec2 = require('./node_modules/vec2'),
 */
 
 class Node extends Vec2 {
-  constructor(p5, x, y, settings = Defaults, isFixed = false) {
+  constructor(p5, x, y, settings = Defaults, isFixed = false, minDistance, repulsionRadius) {
     super(x,y);
 
     this.p5 = p5;
@@ -20,6 +20,9 @@ class Node extends Vec2 {
 
     this.velocity = 0;
     this.nextPosition = new Vec2(x, y);
+
+    this.minDistance = minDistance || settings.MinDistance;
+    this.repulsionRadius = repulsionRadius || settings.RepulsionRadius;
   }
 
   iterate() {

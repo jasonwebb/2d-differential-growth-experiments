@@ -110,7 +110,7 @@ class Path {
   //  Move the referenced node closer to it's connected neighbor nodes
   //---------------------------------------------------------------------
   applyAttraction(index) {
-    let distance;
+    let distance, leastMinDistance;
     let connectedNodes = this.getConnectedNodes(index);
 
     // Move towards next node, if there is one
@@ -119,8 +119,9 @@ class Path {
       !this.nodes[index].isFixed
     ) {
       distance = this.nodes[index].distance(connectedNodes.nextNode);
+      leastMinDistance = Math.min(this.nodes[index].minDistance, connectedNodes.nextNode.minDistance);
 
-      if (distance > this.settings.MinDistance) {
+      if (distance > leastMinDistance) {
         this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, connectedNodes.nextNode.x, this.settings.AttractionForce);
         this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].nextPosition.y, connectedNodes.nextNode.y, this.settings.AttractionForce);
       }
@@ -132,8 +133,9 @@ class Path {
       !this.nodes[index].isFixed
     ) {
       distance = this.nodes[index].distance(connectedNodes.previousNode);
+      leastMinDistance = Math.min(this.nodes[index].minDistance, connectedNodes.previousNode.minDistance);
 
-      if (distance > this.settings.MinDistance) {
+      if (distance > leastMinDistance) {
         this.nodes[index].nextPosition.x = this.p5.lerp(this.nodes[index].nextPosition.x, connectedNodes.previousNode.x, this.settings.AttractionForce);
         this.nodes[index].nextPosition.y = this.p5.lerp(this.nodes[index].nextPosition.y, connectedNodes.previousNode.y, this.settings.AttractionForce);
       }
@@ -152,7 +154,7 @@ class Path {
                         this.nodes[index].y,
                         undefined,
                         undefined,
-                        this.settings.RepulsionRadius * this.settings.RepulsionRadius); // radius must be squared as per https://github.com/mourner/rbush-knn/issues/13
+                        this.nodes[index].repulsionRadius * this.nodes[index].repulsionRadius); // radius must be squared as per https://github.com/mourner/rbush-knn/issues/13
 
     // Move this node away from all nearby neighbors
     // TODO: Make this proportional to distance?
@@ -479,8 +481,8 @@ class Path {
       this.currentFillColor.a = 255;
       this.currentStrokeColor.a = 255;
     } else {
-      this.currentFillColor.a = 2;
-      this.currentStrokeColor.a = 2;
+      this.currentFillColor.a = 255;
+      this.currentStrokeColor.a = 255;
     }
   }
 
