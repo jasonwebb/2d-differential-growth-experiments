@@ -41,7 +41,7 @@ module.exports = {
   FillMode: false,
 
   // Turn on/off Brownian motion
-  UseBrownianMotion: false,
+  UseBrownianMotion: true,
 
   // Amount to 'jiggle' nodes when Brownian motion is enabled
   BrownianMotionRange: 0.01
