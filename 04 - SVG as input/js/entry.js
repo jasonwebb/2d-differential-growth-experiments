@@ -8,8 +8,9 @@ let world;
 
 const DIFFERENTIAL_GROWTH = 'differential-growth',
       HELLO_WORLD_SERIF = 'hello-world-serif',
-      SUPERFORMULA = 'superformula';
-let currentFile = HELLO_WORLD_SERIF;
+      SUPERFORMULA = 'superformula',
+      GNU = 'gnu';
+let currentFile = GNU;
 
 /*
 =============================================================================
@@ -87,6 +88,11 @@ const sketch = function (p5) {
               case HELLO_WORLD_SERIF:
                 currentPath.scale(2.25);
                 currentPath.moveTo(window.innerWidth/2 - 300, window.innerHeight/2 - 410);
+                break;
+
+              case GNU:
+                currentPath.scale(1.125);
+                currentPath.moveTo(window.innerWidth/2 - 300, window.innerHeight/2 - 275);
                 break;
             }
 
