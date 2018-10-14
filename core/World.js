@@ -133,6 +133,10 @@ class World {
         points: pointsString
       });
 
+      if(path.isClosed) {
+        d += ' Z';
+      }
+
       let pathEl = document.createElement('path');
       pathEl.setAttribute('d', d);
       pathEl.setAttribute('style', 'fill: none; stroke: black; stroke-width: 1');
