@@ -117,31 +117,17 @@ class World {
     svg.setAttribute('height', window.innerHeight);
     svg.setAttribute('viewBox', '0 0 ' + window.innerWidth + ' ' + window.innerHeight);
 
+    // Add a <path> node for every Path in this World
     for(let path of this.paths) {
-      let pointsString = '';
 
-      for(let [index, node] of path.nodes.entries()) {
-        pointsString += node.x + ',' + node.y;
-
-        if(index < path.nodes.length - 1) {
-          pointsString += ' ';
+      // If history is enabled, create a new <path> node for each snapshot
+      if(this.drawHistory) {
+        for(let nodes of path.nodeHistory) {
+          svg.appendChild( this.createPathElFromNodes(nodes, path.isClosed) );
         }
       }
 
-      let d = toPath({
-        type: 'polyline',
-        points: pointsString
-      });
-
-      if(path.isClosed) {
-        d += ' Z';
-      }
-
-      let pathEl = document.createElement('path');
-      pathEl.setAttribute('d', d);
-      pathEl.setAttribute('style', 'fill: none; stroke: black; stroke-width: 1');
-
-      svg.appendChild(pathEl);
+      svg.appendChild( this.createPathElFromNodes(path.nodes), path.isClosed );
     }
 
     // Force download of SVG based on https://jsfiddle.net/ch77e7yh/1
@@ -152,6 +138,34 @@ class World {
 
     let blob = new Blob([svgData.replace(/></g, '>\n\r<')]);
     saveAs(blob, 'differential-growth-' + Date.now() + '.svg');
+  }
+
+  // Create and return a new SVG <path> element from a given set of nodes
+  createPathElFromNodes(nodes, isClosed) {
+    let pointsString = '';
+
+    for(let [index, node] of nodes.entries()) {
+      pointsString += node.x + ',' + node.y;
+
+      if(index < nodes.length - 1) {
+        pointsString += ' ';
+      }
+    }
+
+    let d = toPath({
+      type: 'polyline',
+      points: pointsString
+    });
+
+    if(isClosed) {
+      d += ' Z';
+    }
+
+    let pathEl = document.createElement('path');
+    pathEl.setAttribute('d', d);
+    pathEl.setAttribute('style', 'fill: none; stroke: black; stroke-width: 1');
+
+    return pathEl;
   }
 
   // Remove all paths from the world -----------------
