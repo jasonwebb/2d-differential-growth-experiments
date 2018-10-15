@@ -51,6 +51,22 @@ All of these keyboard controls are available in each experiment.
 * [Differential Growth](https://codepen.io/MAKIO135/pen/EwYPmb) by [Lionel Radisson](http://makio135.com/) via CodePen
 * [Organic Labrynths and Mazes](http://www.dgp.toronto.edu/~karan/artexhibit/mazes.pdf) (PDF) paper by Hans Pederson and Karen Singh
 
+## Local install instructions
+
+1. Run `npm install` in both the `build/` and `core/` folders.
+2. Run `gulp` from within the `build/` folder to kick off a watch process and a browser window with LiveReload enabled.
+3. Keep Gulp running and the browser window open while making changes. If all goes well, new builds will kick off when you save your changes and the browser will refresh!
+
+## Packages used
+
+* [p5js](https://www.npmjs.com/package/p5) for canvas drawing and miscellaneous helper functions (like `lerp` and `map`).
+* [rbush](https://www.npmjs.com/package/rbush) for a fast R-tree spatial index implementation
+* [rbush-knn](https://www.npmjs.com/package/rbush-knn) for k-nearest neighbors searching of rbush index
+* [svg-pathdata](https://www.npmjs.com/package/svg-pathdata) for extracting X,Y coordinates out of SVG `<path>` elements. Used to import SVG files.
+* [svg-points](https://www.npmjs.com/package/svg-points) for generating the `d` attribute of SVG `<path>` elements. Used to export SVG files from paths.
+* [file-saver](https://www.npmjs.com/package/file-saver) for initiating a download prompt when exporting SVG files
+* [browserify](https://www.npmjs.com/package/browserify), [babel](https://www.npmjs.com/package/babel-core), and others for working with modern ES6 and module patterns.
+
 ## Samples
 
 
