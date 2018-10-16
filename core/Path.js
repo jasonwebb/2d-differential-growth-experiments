@@ -28,7 +28,7 @@ class Path {
     this.isClosed = isClosed;
     this.settings = Object.assign({}, Defaults, settings);
 
-    this.injectionMode = "RANDOM";
+    this.injectionMode = "CURVATURE";
     this.lastNodeInjectTime = 0;
 
     this.nodeHistory = [];
@@ -276,13 +276,11 @@ class Path {
       }
     }
 
-    // Inject new node nodes when curvature is too high
+    // Inject new nodes in areas where curvature is high
     // - When the angle between connected nodes is too high, remove
     //   the middle node and replace it with two nodes at the respective
-    //   midpoints of the previous two lines. This "truncates" or "chamfers"
-    //   the pointy node into two flatter nodes.
+    //   midpoints of the previous two lines.
     injectNodeByCurvature() {
-      console.log('test');
       for(let [index, node] of this.nodes.entries()) {
         let connectedNodes = this.getConnectedNodes(index);
 
@@ -292,26 +290,16 @@ class Path {
         let angle = Math.atan(a/b) * 180/Math.PI;
         
         // If angle is below a certain angle (high curvature), replace the current node with two nodes
-        if(angle < 30) {
-          console.log(index);
+        if(angle < 15) {
           let previousMidpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
           let nextMidpointNode = this.getMidpointNode(node, connectedNodes.nextNode);
-          console.log(previousMidpointNode);
-          console.log(nextMidpointNode);
-          this.p5.noLoop();
-          // console.log(previousMidpointNode);
-          // console.log(nextMidpointNode);
-
+          
           // Replace this node with the two new nodes
           if(index == 0) {
             this.nodes.splice(this.nodes.length-1, 0, previousMidpointNode);
             this.nodes.splice(0, 1, nextMidpointNode);
           } else {
-            // console.log(index);
-            // console.log(this.nodes);
             this.nodes.splice(index, 1, previousMidpointNode, nextMidpointNode);
-            // console.log(this.nodes);
-            // this.p5.noLoop();
           }
         }
       }
