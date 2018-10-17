@@ -19,7 +19,8 @@ const experiments = [
   '../02 - simple closed shape/',
   '../03 - multiple shapes/',
   '../04 - SVG as input/',
-  '../05 - line studies/'
+  '../05 - line studies/',
+  '../06 - shape studies/'
 ];
 
 // Define globs
