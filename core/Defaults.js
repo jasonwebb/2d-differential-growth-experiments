@@ -41,10 +41,10 @@ module.exports = {
   FillMode: false,
 
   // Turn on/off capturing and rendering of previous node positions to create a "tree ring" effect
-  DrawHistory: true,
+  DrawHistory: false,
 
   // Interval (in ms) between capture of paths for history effect
-  HistoryCaptureInterval: 1000,
+  HistoryCaptureInterval: 2000,
 
   // Maximum number of previous paths to capture for history effect
   MaxHistorySize: 20,
