@@ -28,7 +28,7 @@ class Path {
     this.isClosed = isClosed;
     this.settings = Object.assign({}, Defaults, settings);
 
-    this.injectionMode = "CURVATURE";
+    this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
 
     this.nodeHistory = [];
