@@ -41,6 +41,7 @@ class World {
 
   // Run a single tick for all paths -----------------
   iterate() {
+    this.prunePaths();
     this.buildTree();
 
     if (this.paths != undefined && this.paths instanceof Array && this.paths.length > 0 && !this.paused) {
@@ -104,6 +105,15 @@ class World {
     if(!this.paused) {
       for(let path of this.paths) {
         path.addToHistory();
+      }
+    }
+  }
+
+  // Clean up (remove) any paths that have gotten too small
+  prunePaths() {
+    for(let i = 0; i < this.paths.length; i++) {
+      if(this.paths[i].nodes.length <= 1) {
+        this.paths.splice(i, 1);
       }
     }
   }
