@@ -7,7 +7,7 @@ module.exports = {
   AlignmentForce: .55,
   NodeInjectionInterval: 100,
   DrawNodes: false,
-  TraceMode: false,
+  TraceMode: true,
   InvertedColors: true,
   DebugMode: false,
   FillMode: false

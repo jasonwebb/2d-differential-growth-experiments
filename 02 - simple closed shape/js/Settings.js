@@ -2,14 +2,14 @@ module.exports = {
   SeedRadius: 200,
   MinDistance: 1,
   MaxDistance: 5,
-  RepulsionRadius: 10,
+  RepulsionRadius: 20,
   AttractionForce: .2,
   RepulsionForce: .6,
-  AlignmentForce: .55,
+  AlignmentForce: .7,
   NodeInjectionInterval: 100,
   DrawNodes: false,
   TraceMode: false,
-  InvertedColors: false,
+  InvertedColors: true,
   DebugMode: false,
   FillMode: false
 }
