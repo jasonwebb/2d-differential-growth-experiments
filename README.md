@@ -62,6 +62,7 @@ All of these keyboard controls are available in each experiment.
 * [p5js](https://www.npmjs.com/package/p5) for canvas drawing and miscellaneous helper functions (like `lerp` and `map`).
 * [rbush](https://www.npmjs.com/package/rbush) for a fast R-tree spatial index implementation
 * [rbush-knn](https://www.npmjs.com/package/rbush-knn) for k-nearest neighbors searching of rbush index
+* [point-in-polygon](https://www.npmjs.com/package/point-in-polygon) for constraining nodes inside of bounding paths
 * [svg-pathdata](https://www.npmjs.com/package/svg-pathdata) for extracting X,Y coordinates out of SVG `<path>` elements. Used to import SVG files.
 * [svg-points](https://www.npmjs.com/package/svg-points) for generating the `d` attribute of SVG `<path>` elements. Used to export SVG files from paths.
 * [file-saver](https://www.npmjs.com/package/file-saver) for initiating a download prompt when exporting SVG files

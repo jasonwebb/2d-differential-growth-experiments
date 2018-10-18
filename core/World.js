@@ -28,6 +28,7 @@ class World {
     this.fillMode = this.settings.FillMode;
     this.drawHistory = this.settings.DrawHistory;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
+    this.showBounds = this.settings.ShowBounds;
 
     this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
     this.buildTree();
@@ -210,6 +211,10 @@ class World {
     return this.drawHistory;
   }
 
+  getDrawBounds() {
+    return this.showBounds;
+  }
+
   // Setters -----------------------------------------
   setDrawNodes(state) {
     this.drawBackground();
@@ -255,6 +260,17 @@ class World {
     this.drawHistory = state;
   }
 
+  setDrawBounds(state) {
+    this.drawBackground();
+
+    for(let path of this.paths) {
+      path.showBounds = state;
+      path.draw();
+    }
+
+    this.showBounds = state;
+  }
+
   // Toggles ----------------------------------
   toggleDrawNodes() {
     this.setDrawNodes(!this.getDrawNodes());
@@ -291,6 +307,10 @@ class World {
 
   toggleDrawHistory() {
     this.setDrawHistory(!this.getDrawHistory());
+  }
+
+  toggleDrawBounds() {
+    this.setDrawBounds(!this.getDrawBounds());
   }
 }
 

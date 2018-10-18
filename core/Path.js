@@ -1,5 +1,6 @@
 let knn = require('./node_modules/rbush-knn'),
     Node = require('./Node'),
+    Bounds = require('./Bounds'),
     Defaults = require('./Defaults');
 
     
@@ -18,6 +19,7 @@ class Path {
     nodes, 
     settings = Defaults, 
     isClosed = false, 
+    bounds = false,
     fillColor = {h:0, s:0, b:0, a:255}, 
     strokeColor = {h:0, s:0, b:0, a:255}, 
     invertedFillColor = {h:0, s:0, b:255, a:255}, 
@@ -27,6 +29,7 @@ class Path {
     this.nodes = nodes;
     this.isClosed = isClosed;
     this.settings = Object.assign({}, Defaults, settings);
+    this.bounds = bounds;
 
     this.injectionMode = "RANDOM";
     this.lastNodeInjectTime = 0;
@@ -40,6 +43,7 @@ class Path {
     this.fillMode = this.settings.FillMode;
     this.useBrownianMotion = this.settings.UseBrownianMotion;
     this.drawHistory = this.settings.DrawHistory;
+    this.showBounds = this.settings.ShowBounds;
 
     this.fillColor = fillColor;
     this.strokeColor = strokeColor;
@@ -76,8 +80,8 @@ class Path {
       // Align with neighbors
       this.applyAlignment(index);
 
-      // Constrain to the screen
-      this.avoidWalls(index);
+      // Apply boundaries
+      this.applyBounds(index);
 
       // Move towards next position
       node.iterate();
@@ -306,13 +310,16 @@ class Path {
     }
 
   //------------------------------------------------------------------
-  //  Avoid walls
-  //  ===========
-  //  Clamp node position to the window to prevent "runaway" growth  
+  //  Constrain node to bounds
+  //  ========================
   //------------------------------------------------------------------
-  avoidWalls(index) {
-    this.nodes[index].x = this.p5.constrain(this.nodes[index].x, 0, window.innerWidth);
-    this.nodes[index].y = this.p5.constrain(this.nodes[index].y, 0, window.innerHeight);
+  applyBounds(index) {
+    if(
+      this.bounds != undefined && this.bounds instanceof Bounds &&
+      !this.bounds.contains([this.nodes[index].x, this.nodes[index].y])
+    ) {
+      this.nodes[index].isFixed = true;
+    }
   }
 
   //------------------------------------------------------------
@@ -369,6 +376,11 @@ class Path {
     // Draw all the previous paths saved to the history array
     if(this.drawHistory) {
       this.drawPreviousEdges();
+    }
+
+    // Draw bounds
+    if(this.showBounds && this.bounds != undefined && this.bounds instanceof Bounds) {
+      this.drawBounds();
     }
 
     // Set shape fill 
@@ -469,6 +481,19 @@ class Path {
     }
   }
 
+  // Draw boundary shape(s)
+  drawBounds() {
+    if(!this.invertedColors) {
+      this.p5.stroke(0);
+    } else {
+      this.p5.stroke(255);
+    }
+
+    this.p5.noFill();
+
+    this.bounds.draw();
+  }
+
   // Take a snapshot of the current nodes by saving a dereferenced clone of them to the history array
   addToHistory() {
     if(this.nodeHistory.length == this.settings.MaxHistorySize) {
@@ -497,6 +522,17 @@ class Path {
   // Add a new node from outside this class
   addNode(node) {
     this.nodes.push(node);
+  }
+
+  // Return a raw 2D array of all node coordinates. Used for creating Bounds.
+  toArray() {
+    let polygon = [];
+
+    for(let node of this.nodes) {
+      polygon.push([node.x, node.y]);
+    }
+
+    return polygon;
   }
 
   // Getters ------------------------------------
@@ -534,6 +570,10 @@ class Path {
 
     // Reapply the current trace mode state to make sure opacity is adjusted when colors are inverted
     this.setTraceMode(this.traceMode);
+  }
+
+  setBounds(bounds) {
+    this.bounds = bounds;
   }
 
   // Toggles ------------------------------------

@@ -53,5 +53,8 @@ module.exports = {
   UseBrownianMotion: true,
 
   // Amount to 'jiggle' nodes when Brownian motion is enabled
-  BrownianMotionRange: 0.01
+  BrownianMotionRange: 0.01,
+
+  // Draw all boundaries
+  ShowBounds: true
 }
