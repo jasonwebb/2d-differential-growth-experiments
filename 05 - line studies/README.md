@@ -1,6 +1,6 @@
 # 05 - line studies
 
-This experiment applies the differential growth process to a various fields of lines.
+This experiment applies the differential growth process to various fields of lines.
 
 # Samples
 
