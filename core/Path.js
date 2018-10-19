@@ -484,9 +484,9 @@ class Path {
   // Draw boundary shape(s)
   drawBounds() {
     if(!this.invertedColors) {
-      this.p5.stroke(0);
+      this.p5.stroke(200);
     } else {
-      this.p5.stroke(255);
+      this.p5.stroke(100);
     }
 
     this.p5.noFill();
