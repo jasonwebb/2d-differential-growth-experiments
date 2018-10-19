@@ -39,6 +39,7 @@ All of these keyboard controls are available in each experiment.
 | `f`     | Toggle shape fills                             |
 | `h`     | Toggle drawing of periodic path history        |
 | `s`     | Download an SVG of current geometry            |
+| `b`     | Toggle visibility of path bounds               |
 
 ## References
 
