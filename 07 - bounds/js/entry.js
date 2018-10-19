@@ -12,7 +12,7 @@ const SQUARE = 0,
       MULTIPLE_SHAPES = 2,
       SVG_TEXT = 3,
       SVG_MAZE = 4;
-let currentBoundsType = SVG_TEXT;
+let currentBoundsType = CIRCLE;
 
 /*
 =============================================================================
@@ -206,6 +206,20 @@ const sketch = function (p5) {
         }
         
         break;
+
+      case SVG_MAZE:
+        bounds = SVGLoader.load(p5, 'maze', Settings);
+        
+        for(let bound of bounds) {
+          bound.scale(.8);
+          bound.moveTo(cx - 360, cy - 185);
+        }
+
+        path = createPolygonPath(10, 10);
+        path.moveTo(-220, -75);
+        path.setBounds(new Bounds(p5, bounds[1].toArray()));
+        paths.push(path);
+        break;
     }
 
     // Add all paths with bounds to World
@@ -218,7 +232,7 @@ const sketch = function (p5) {
 
     // Restart simulation after 1s
     setTimeout(function() {
-      // world.unpause();
+      world.unpause();
     }, 1000);
   }
 
