@@ -1,7 +1,7 @@
 module.exports = {
-  MinDistance: 1,
+  MinDistance: 2,
   MaxDistance: 5,
-  RepulsionRadius: 10,
+  RepulsionRadius: 15,
   AttractionForce: .2,
   RepulsionForce: .6,
   AlignmentForce: .55,

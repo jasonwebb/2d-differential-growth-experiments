@@ -228,7 +228,7 @@ const sketch = function (p5) {
 
     // Restart simulation after 1s
     setTimeout(function() {
-      // world.unpause();
+      world.unpause();
     }, 1000);
   }
 

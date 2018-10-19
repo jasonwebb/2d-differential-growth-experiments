@@ -9,7 +9,7 @@ module.exports = {
   NodeInjectionInterval: 100,
   DrawNodes: false,
   TraceMode: false,
-  InvertedColors: true,
+  InvertedColors: false,
   DebugMode: false,
   FillMode: false
 }

@@ -10,5 +10,6 @@ module.exports = {
   TraceMode: false,
   InvertedColors: false,
   DebugMode: false,
-  FillMode: false
+  FillMode: false,
+  DrawHistory: false
 }

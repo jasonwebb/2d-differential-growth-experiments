@@ -11,7 +11,7 @@ const TRIANGLES = 0,
       CIRCLES = 2,
       MIXED = 3,
       PHYLLOTAXIS = 4;
-let currentShapeType = PHYLLOTAXIS;
+let currentShapeType = TRIANGLES;
 let useRotation = false;
 
 
