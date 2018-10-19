@@ -2,15 +2,17 @@ let Node = require('../../core/Node'),
     Path = require('../../core/Path'),
     World = require('../../core/World'),
     Bounds = require('../../core/Bounds'),
+    SVGLoader = require('../../core/SVGLoader'),
     Settings = require('./Settings');
 
 let world;
 
 const SQUARE = 0,
       CIRCLE = 1,
-      MAZE = 2,
-      TEXT = 3;
-let currentBoundsType = SQUARE;
+      MULTIPLE_SHAPES = 2,
+      SVG_TEXT = 3,
+      SVG_MAZE = 4;
+let currentBoundsType = SVG_TEXT;
 
 /*
 =============================================================================
@@ -56,22 +58,158 @@ const sketch = function (p5) {
     world.clearPaths();
 
     currentBoundsType = boundsType;
+    let bounds,
+        path,
+        paths = [];
 
-    let cx = window.innerWidth/2;
-    let cy = window.innerHeight/2;
+    let cx = window.innerWidth/2,
+        cy = window.innerHeight/2;
 
     switch(currentBoundsType) {
       case SQUARE:
-        // Create the bounds object
-        let bounds = createPolygonPath(40, 200);
+        bounds = createPolygonPath(4, 200, 45).toArray();
+        path = createPolygonPath(3, 100);
+        path.setBounds(new Bounds(p5, bounds));
+        paths.push(path);
+        break;
 
-        // Create a path and pass bounds to it
-        let path = createPolygonPath(3, 100);
+      case CIRCLE:
+        bounds = createPolygonPath(40, 200).toArray();
+        path = createPolygonPath(4, 100);
+        path.setBounds(new Bounds(p5, bounds));
+        paths.push(path);
+        break;
+
+      case MULTIPLE_SHAPES:
+        // Top left - line
+        bounds = createPolygonPath(30, 160);
+        bounds.moveTo(-175, -175);
+        path = createLinePath(cx + -175, cy + -135, cx + -175, cy + -225);
         path.setBounds(new Bounds(p5, bounds.toArray()));
+        paths.push(path);
 
-        world.addPath(path);
+        // Top right - triangle
+        bounds = createPolygonPath(30, 160);
+        bounds.moveTo(175, -175);
+        path = createPolygonPath(3, 75);
+        path.moveTo(175, -175);
+        path.setBounds(new Bounds(p5, bounds.toArray()));
+        paths.push(path);
+
+        // Bottom left - square
+        bounds = createPolygonPath(30, 160);
+        bounds.moveTo(-175, 175);
+        path = createPolygonPath(4, 75, 45);
+        path.moveTo(-175, 175);
+        path.setBounds(new Bounds(p5, bounds.toArray()));
+        paths.push(path);
+        
+        // Bottom right - square
+        bounds = createPolygonPath(30, 160);
+        bounds.moveTo(175, 175);
+        path = createPolygonPath(5, 75, -18);
+        path.moveTo(175, 175);
+        path.setBounds(new Bounds(p5, bounds.toArray()));
+        paths.push(path);
+        break;
+
+      case SVG_TEXT:
+        let letters = SVGLoader.load(p5, 'text', Settings);
+
+        for(let [index, letter] of letters.entries()) {
+          letter.scale(3.5);
+          letter.moveTo(window.innerWidth/2 - 425, -200);
+          bounds = new Bounds(p5, letter.toArray());
+
+          switch(index) {
+            // 'S'
+            case 0:
+              path = createPolygonPath(3, 5);
+              path.moveTo(-295, -140);
+              path.setBounds(bounds);
+              paths.push(path);
+
+              path = createPolygonPath(10, 8);
+              path.moveTo(-210, -70);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'U'
+            case 1:
+              path = createPolygonPath(3, 5);
+              path.moveTo(-170, -120);
+              path.setBounds(bounds);
+              paths.push(path);
+
+              path = createPolygonPath(4, 7);
+              path.moveTo(-80, -150);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'P'
+            case 2:
+              path = createPolygonPath(7, 10);
+              path.moveTo(-30, -120);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'D'
+            case 3:
+              path = createPolygonPath(4, 10);
+              path.moveTo(-250, 50);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'A'
+            case 4:
+              path = createPolygonPath(3, 13);
+              path.moveTo(-100, 75);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'W'
+            case 5:
+              path = createPolygonPath(4, 6);
+              path.moveTo(10, 140);
+              path.setBounds(bounds);
+              paths.push(path);
+
+              path = createPolygonPath(6, 10);
+              path.moveTo(60, 20);
+              path.setBounds(bounds);
+              paths.push(path);
+
+              path = createPolygonPath(3, 6);
+              path.moveTo(110, 130);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+
+            // 'G'
+            case 6:
+              path = createPolygonPath(3, 6);
+              path.moveTo(180, 50);
+              path.setBounds(bounds);
+              paths.push(path);
+
+              path = createPolygonPath(4, 5);
+              path.moveTo(260, 140);
+              path.setBounds(bounds);
+              paths.push(path);
+              break;
+          }
+        }
+        
         break;
     }
+
+    // Add all paths with bounds to World
+    world.addPaths(paths);
 
     // Draw the first frame, then pause
     world.drawBackground();
@@ -80,7 +218,7 @@ const sketch = function (p5) {
 
     // Restart simulation after 1s
     setTimeout(function() {
-      world.unpause();
+      // world.unpause();
     }, 1000);
   }
 
@@ -108,6 +246,18 @@ const sketch = function (p5) {
     return path;
   }
 
+  // Create a path with a single line made of two nodes
+  function createLinePath(x1, y1, x2, y2) {
+    let nodes = [];
+
+    nodes.push(new Node(p5, x1, y1, Settings));
+    nodes.push(new Node(p5, x2, y2, Settings));
+
+    let path = new Path(p5, nodes, Settings);
+
+    return path;
+  }
+
   
   /*
   =============================================================================
@@ -116,6 +266,26 @@ const sketch = function (p5) {
   */
   p5.keyReleased = function() {
     switch (p5.key) {
+      // Restart with square with '1'
+      case '1':
+        restartWorldWith(SQUARE);
+        break;
+
+      // Restart with circle with '2'
+      case '2':
+        restartWorldWith(CIRCLE);
+        break;
+
+      // Restart with multiple shapes with '3'
+      case '3':
+        restartWorldWith(MULTIPLE_SHAPES);
+        break;
+
+      // Restart with SVG text with '4'
+      case '4':
+        restartWorldWith(SVG_TEXT);
+        break;
+
       // Toggle trace mode with 't'
       case 't':
         world.toggleTraceMode()

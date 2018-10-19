@@ -1,7 +1,7 @@
 module.exports = {
-  MinDistance: 5,
-  MaxDistance: 10,
-  RepulsionRadius: 20,
+  MinDistance: 1,
+  MaxDistance: 5,
+  RepulsionRadius: 10,
   AttractionForce: .2,
   RepulsionForce: .6,
   AlignmentForce: .55,
@@ -10,5 +10,7 @@ module.exports = {
   TraceMode: false,
   InvertedColors: false,
   DebugMode: false,
-  FillMode: false
+  FillMode: false,
+  DrawHistory: false,
+  ShowBounds: true
 }
