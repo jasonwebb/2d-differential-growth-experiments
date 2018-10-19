@@ -44,10 +44,10 @@ module.exports = {
   DrawHistory: false,
 
   // Interval (in ms) between capture of paths for history effect
-  HistoryCaptureInterval: 2000,
+  HistoryCaptureInterval: 1000,
 
   // Maximum number of previous paths to capture for history effect
-  MaxHistorySize: 20,
+  MaxHistorySize: 10,
 
   // Turn on/off Brownian motion
   UseBrownianMotion: true,
