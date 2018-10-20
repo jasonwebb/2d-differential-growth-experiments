@@ -27,14 +27,41 @@
   <meta name="twitter:title" content="07 - bounds">
   <meta name="twitter:description" content="2D differential growth experiment in JavaScript exploring growth constraints">
   <meta name="twitter:image" content="images/social-media-preview.png">
-  
-  <link rel="stylesheet" href="dist/style.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      display: block;
+
+      z-index: 1;
+    }
+
+    svg,
+    object {
+      opacity: 0;
+      z-index: 0;
+    }
+  </style>
 </head>
 
 <body>
   <object id="text" data="svg/text.svg" type="image/svg+xml"></object>
   <object id="maze" data="svg/maze.svg" type="image/svg+xml"></object>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
   <!-- <script src="p5.min.js"></script> -->
   <script src="dist/app.min.js"></script>

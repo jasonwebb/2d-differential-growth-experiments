@@ -3,11 +3,8 @@ let browserify = require('browserify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer'),
   del = require('del'),
-  concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   babel = require('gulp-babel'),
-  minify = require('gulp-clean-css'),
-  autoprefixer = require('gulp-autoprefixer'),
   rename = require('gulp-rename'),
   connect = require('gulp-connect'),
   open = require('gulp-open'),
@@ -26,18 +23,15 @@ const experiments = [
 
 // Define globs
 const globs = {
-  css: 'css/**/*.css',
   js: 'js/**/*.js',
   dist: 'dist/**/*',
   core: '../core/**/*.js',
-  allCss: [],
   allJs: ['../core/*.js'],
   allHtml: ['../index.html']
 };
 
 // Build globs for global watch tasks
 for(let experiment of experiments) {
-  globs.allCss.push(experiment + globs.css);
   globs.allJs.push(experiment + globs.js);
   globs.allHtml.push(experiment + 'index.html')
 }
@@ -60,24 +54,6 @@ gulp.task('clean', () => {
 //=============
 //  BUILD
 //=============
-
-// Build CSS
-gulp.task('build:css', () => {
-  let streams = new Stream();
-
-  for(let experiment of experiments) {
-    streams.add(
-      gulp.src(experiment + globs.css)
-        .pipe(concat('style.min.css'))
-        .pipe(autoprefixer())
-        .pipe(minify())
-        .pipe(gulp.dest(experiment + 'dist'))
-        .pipe(connect.reload())
-    );
-  }
-
-  return streams;
-});
 
 // Build JS
 gulp.task('build:js', () => {
@@ -105,7 +81,7 @@ gulp.task('build:js', () => {
 });
 
 // Build all
-gulp.task('build', ['clean', 'build:css', 'build:js']);
+gulp.task('build', ['clean', 'build:js']);
 
 
 //=============
@@ -113,7 +89,6 @@ gulp.task('build', ['clean', 'build:css', 'build:js']);
 //=============
 
 gulp.task('watch', () => {
-  gulp.watch(globs.allCss, ['build']);
   gulp.watch(globs.allJs, ['build']);
   gulp.watch(globs.allHtml, ['build']);
 });

@@ -27,8 +27,35 @@
   <meta name="twitter:title" content="04 - SVG as input">
   <meta name="twitter:description" content="2D differential growth experiment in JavaScript with shapes imported from SVG files">
   <meta name="twitter:image" content="images/social-media-preview.png">
-  
-  <link rel="stylesheet" href="dist/style.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      display: block;
+
+      z-index: 1;
+    }
+
+    svg,
+    object {
+        opacity: 0;
+        z-index: 0;
+    }
+  </style>
 </head>
 
 <body>
