@@ -140,7 +140,7 @@ h1 {
 
   
   .card:hover .overlay {
-    /* opacity: .8; */
+    opacity: .8;
   }
 
   .card.playground {
