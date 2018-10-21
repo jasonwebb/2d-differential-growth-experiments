@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+h1 {
+  position: absolute;
+  left: -9999px;
+}
+
+.card {
+  display: flex;
+  flex-basis: 25%;
+  justify-content: center;
+  align-content: stretch;
+  align-items: center;
+  height: 50vh;
+
+  position: relative;
+  overflow: hidden;
+
+  font-size: 36px;
+  text-decoration: none;
+}
+
+  /* Desktops - set borders */
+  @media screen and (min-width: 1281px) {
+    .card {
+      border-right: 1px solid rgba(0,0,0,.4);
+    }
+
+      .card:nth-of-type(-n+4) {
+        border-bottom: 1px solid rgba(0,0,0,.4);
+      }
+
+      .card:nth-of-type(4) {
+        border-right: 0;
+      }
+  }
+
+  /* Tablets - two columns */
+  @media screen and (max-width: 1280px) {
+    .card {
+      flex-basis: 50%;
+      font-size: 24px;
+
+      border-bottom: 1px solid rgba(0,0,0,.4);
+    }
+
+      .card:nth-of-type(odd) {
+        border-right: 1px solid rgba(0,0,0,.4);
+      }
+
+      .card:nth-of-type(7),
+      .card:last-of-type {
+        border-bottom: 0;
+      }
+  }
+
+  /* Mobile - full width */
+  @media screen and (max-width: 768px) {
+    .card {
+      flex-basis: 100%;
+    }
+
+      .card:nth-of-type(odd) {
+        border-right: 0;
+      }
+
+      .card:nth-of-type(7) {
+        border-bottom: 1px solid rgba(0,0,0,.4);
+      }
+  }
+
+  .card .overlay {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    
+    text-align: center;
+    background-color: black;
+    color: white;
+
+    opacity: 0;
+    transition: opacity 0s ease-in-out;
+  }
+
+    @media screen and (max-width: 1280px) {
+      .card .overlay {
+        height: auto;
+        width: auto;
+        max-width: 80%;
+        opacity: .8;
+        border-radius: 10px;
+        padding: 20px;
+      }
+    }
+
+    .card .overlay .number {
+      display: block;
+      width: 100%;
+      font-size: 150px;
+      margin-bottom: 20px;
+    }
+
+      @media screen and (max-width: 1280px) {
+        .card .overlay .number {
+          font-size: 36px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+      }
+
+  .card img {
+    z-index: 1;
+    opacity: .4;
+
+    transition:  opacity .3s ease-in-out;
+  }
+
+  
+  .card:hover .overlay {
+    /* opacity: .8; */
+  }
+
+  .card.playground {
+    text-decoration: line-through;
+  }
+
+    .card.playground:hover {
+      background-color: rgba(0,0,0,.8);
+      color: white;
+    }
