@@ -14,10 +14,13 @@ const FREEHAND = 0,
       CIRCLE = 2;
 let activeTool = FREEHAND;
 
+let distanceToClose = 15;
+
 let startX, startY, endX, endY;
 
-let allButtonEls = document.querySelectorAll('button');
-let svgImportInputEl = document.querySelector('.svgImportInput');
+let allButtonEls = document.querySelectorAll('button'),
+    svgImportInputEl = document.querySelector('.svgImportInput'),
+    playButtonEl = document.querySelector('.play');
 
 
 /*
@@ -59,7 +62,7 @@ function handleToolClick(e) {
 }
 
 // Import SVG - open file input dialog
-function importSVG() {
+function openFileImport() {
   svgImportInputEl.click();
 }
 
@@ -79,7 +82,15 @@ function exportSVG() {
 function togglePause() {
   world.togglePause();
 
-  // update the icon
+  let icon = playButtonEl.querySelector('.icon');
+
+  if(world.paused) {
+    icon.classList.remove('fa-pause');
+    icon.classList.add('fa-play');
+  } else {
+    icon.classList.remove('fa-play');
+    icon.classList.add('fa-pause');
+  }
 }
 
 
@@ -105,6 +116,20 @@ function toggleParameters() {
 }
 
 
+function importSVG() {
+  let file = this.files[0];
+  
+  if(file.type === 'image/svg+xml') {
+    let objectEl = document.querySelector('#user-file');
+    objectEl.data = URL.createObjectURL(file);
+    objectEl.onload = function() {
+      let thing = SVGLoader.load(p5, 'user-file', Settings);
+      console.log(thing);
+    }
+  }
+}
+
+
 const sketch = function (p5) {
   // Setup -------------------------------------------------------------
   p5.setup = function () {
@@ -124,7 +149,7 @@ const sketch = function (p5) {
     document.querySelector('.circle').addEventListener('click', handleToolClick);
 
     // Import, export, and clear
-    document.querySelector('.import').addEventListener('click', importSVG);
+    document.querySelector('.import').addEventListener('click', openFileImport);
     document.querySelector('.reset').addEventListener('click', clearPaths);
     document.querySelector('.export').addEventListener('click', exportSVG);
 
@@ -135,6 +160,8 @@ const sketch = function (p5) {
     document.querySelector('.viewSource').addEventListener('click', viewSource);
     document.querySelector('.keyboard').addEventListener('click', toggleKeyboardControls);
     document.querySelector('.about').addEventListener('click', toggleAbout);
+
+    document.querySelector('.svgImportInput').addEventListener('change', importSVG);
   }
 
   // Draw ---------------------------------------------------------------
@@ -165,6 +192,9 @@ const sketch = function (p5) {
   }
 
   p5.mouseReleased = function () {
+    world.drawBackground();
+    world.draw();
+
     switch (activeTool) {
       // Freehand tool ------------------------------------
       case FREEHAND:
@@ -180,7 +210,7 @@ const sketch = function (p5) {
             y2 = nodes[0].y;
 
           // If end point is very close to starting point, make the path closed
-          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) < 10) {
+          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) <= distanceToClose) {
             isClosed = true;
           }
 
@@ -208,6 +238,15 @@ const sketch = function (p5) {
 
         nodes = [];
         break;
+
+      // Circle tool --------------------------------------
+      case CIRCLE:
+        endX = p5.mouseX;
+        endY = p5.mouseY;
+
+        // TODO: create nodes to form ellipse
+
+        break;
     }
   }
 
@@ -220,6 +259,7 @@ const sketch = function (p5) {
     world.draw();
 
     switch (activeTool) {
+      // Freehand tool ------------------------------------
       case FREEHAND:
         if (p5.mouseButton == p5.LEFT) {
           nodes.push(new Node(p5, p5.mouseX, p5.mouseY, Settings));
@@ -227,16 +267,32 @@ const sketch = function (p5) {
           if (nodes.length > 0) {
             for (let [index, node] of nodes.entries()) {
               if (index > 0) {
+                p5.stroke(0);
                 p5.line(nodes[index - 1].x, nodes[index - 1].y, node.x, node.y);
               }
             }
+          }
+
+          let x1 = nodes[nodes.length - 1].x,
+              y1 = nodes[nodes.length - 1].y,
+              x2 = nodes[0].x,
+              y2 = nodes[0].y;
+
+          // If current point is very near the starting point, highlight the starting point to indicate that the path will close
+          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) <= distanceToClose) {
+            p5.fill(150);
+            p5.noStroke();
+            p5.ellipseMode(p5.CENTER);
+            p5.ellipse(nodes[0].x, nodes[0].y, distanceToClose);
           }
         }
 
         break;
 
+      // Rectangle tool -----------------------------------
       case RECTANGLE:
         if(p5.mouseButton == p5.LEFT) {
+          p5.stroke(0);
           p5.line(startX, startY, p5.mouseX, startY);        // top
           p5.line(p5.mouseX, startY, p5.mouseX, p5.mouseY);  // right
           p5.line(p5.mouseX, p5.mouseY, startX, p5.mouseY);  // bottom
@@ -244,6 +300,15 @@ const sketch = function (p5) {
         }
 
         break;
+
+      // Circle tool --------------------------------------
+      case CIRCLE:
+        if(p5.mouseButton == p5.LEFT && startX != undefined && startY != undefined) {
+          p5.stroke(0);
+          p5.noFill();
+          p5.ellipseMode(p5.CORNERS);
+          p5.ellipse(startX, startY, p5.mouseX, p5.mouseY);
+        }
     }
   }
 
@@ -273,7 +338,7 @@ const sketch = function (p5) {
 
         // Toggle pause with Space
       case ' ':
-        world.togglePause()
+        togglePause()
         break;
 
         // Invert colors with 'i'

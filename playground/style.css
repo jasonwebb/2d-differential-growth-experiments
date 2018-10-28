@@ -45,7 +45,7 @@ button {
 */
 .top-controls {
   position: absolute;
-  top: 20px;
+  top: 30px;
   text-align: center;
   width: 100%;
   z-index: 2;
