@@ -54,14 +54,12 @@ class World {
 
   // Draw all paths ----------------------------------
   draw() {
-    if (!this.paused) {
-      if (!this.traceMode) {
-        this.drawBackground();
-      }
+    if (!this.traceMode) {
+      this.drawBackground();
+    }
 
-      for (let path of this.paths) {
-        path.draw();
-      }
+    for (let path of this.paths) {
+      path.draw();
     }
   }
 
