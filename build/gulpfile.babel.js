@@ -18,7 +18,8 @@ const experiments = [
   '../04 - SVG as input/',
   '../05 - line studies/',
   '../06 - shape studies/',
-  '../07 - bounds/'
+  '../07 - bounds/',
+  '../playground/'
 ];
 
 // Define globs
