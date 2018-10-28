@@ -16,7 +16,7 @@ let activeTool = FREEHAND;
 
 let distanceToClose = 15;
 
-let startX, startY, endX, endY;
+let startX, startY, endX, endY, deltaX, deltaY;
 
 let allButtonEls = document.querySelectorAll('button'),
     svgImportInputEl = document.querySelector('.svgImportInput'),
@@ -168,9 +168,8 @@ const sketch = function (p5) {
   p5.draw = function () {
     if (!world.paused) {
       world.iterate();
+      world.draw();
     }
-    
-    world.draw();
   }
 
 
@@ -192,9 +191,6 @@ const sketch = function (p5) {
   }
 
   p5.mouseReleased = function () {
-    world.drawBackground();
-    world.draw();
-
     switch (activeTool) {
       // Freehand tool ------------------------------------
       case FREEHAND:
@@ -243,11 +239,28 @@ const sketch = function (p5) {
       case CIRCLE:
         endX = p5.mouseX;
         endY = p5.mouseY;
+        deltaX = endX - startX;
+        deltaY = endY - startY;
 
-        // TODO: create nodes to form ellipse
+        for(let i = 0; i < 360; i++) {
+          nodes.push(
+            new Node(
+              p5,
+              startX + deltaX/2 + deltaX/2 * Math.cos(i * Math.PI/180),
+              startY + deltaY/2 + deltaY/2 * Math.sin(i * Math.PI/180),
+              Settings
+            )
+          )
+        }
 
+        path = new Path(p5, nodes, Settings, true);
+        world.addPath(path);
+
+        nodes = [];
         break;
     }
+
+    world.draw();
   }
 
   p5.mouseDragged = function () {
@@ -255,7 +268,6 @@ const sketch = function (p5) {
       world.pause();
     }
 
-    world.drawBackground();
     world.draw();
 
     switch (activeTool) {
