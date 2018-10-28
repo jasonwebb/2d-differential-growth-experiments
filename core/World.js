@@ -312,6 +312,14 @@ class World {
   toggleDrawBounds() {
     this.setDrawBounds(!this.getDrawBounds());
   }
+
+  togglePause() {
+    if(this.paused) {
+      this.unpause();
+    } else {
+      this.pause();
+    }
+  }
 }
 
 module.exports = World;
