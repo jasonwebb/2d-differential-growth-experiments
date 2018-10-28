@@ -1,0 +1,206 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: block;
+
+  z-index: 1;
+}
+
+ul {
+  list-style: none;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+
+/*
+ Button prototype
+*/
+button {
+  background: transparent;
+  background-color: rgba(0,0,0,.1);
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+
+/*
+ Top controls - play/pause button
+*/
+.top-controls {
+  position: absolute;
+  top: 20px;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+}
+
+  .top-controls button {
+    background-color: transparent;
+  }
+
+    .top-controls button .icon {
+      font-size: 50px;
+      opacity: .2;
+    }
+
+      .top-controls button:hover .icon {
+        opacity: 1;
+      }
+
+
+/*
+ Toolbar prototype
+*/
+.toolbar {
+  z-index: 2;
+}
+
+  .toolbar li {
+    margin-bottom: 20px;
+  }
+
+  .toolbar .has-divider:after {
+    display: block;
+    content: ' ';
+    width: 40px;
+    margin-left: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+  }
+
+  .toolbar button {}
+
+    .toolbar button:focus {
+      outline: none;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(0,0,255,.5);
+    }
+
+    .toolbar button:hover,
+    .toolbar button.is-active {
+      background-color: rgba(0,0,0,.8);
+      color: white;
+      box-shadow: 3px 3px 3px rgba(0,0,0,.3);
+    }
+
+    .toolbar button:hover .icon,
+      .toolbar button.is-active .icon {
+        opacity: .85;
+        color: white;
+      }
+
+      .toolbar button:hover .text {
+        display: inline-block;
+
+      }
+
+    .toolbar button .icon {
+      color: black;
+      font-size: 26px;
+      opacity: .4;
+      padding: 15px;
+      min-width: 60px;
+      vertical-align: middle;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .toolbar button .text {
+      display: none;
+      font-size: 18px;
+      opacity: .85;
+      vertical-align: middle;
+      text-align: right;
+      pointer-events: none;
+    }
+
+
+/*
+ Left menu - drawing tools
+*/
+.left-menu {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+  .left-menu button .text {
+    margin-left: -5px;
+    padding-right: 25px;
+  }
+
+
+/*
+ Right menu - view source, help, etc
+*/
+.right-menu {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  text-align: right;
+}
+
+  .right-menu button .text {
+    margin-right: -5px;
+    padding-left: 25px;
+  }
+
+
+  /*
+   Modal window
+  */
+  .modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0,0,0,.4);
+  }
+
+    .modal .modal-content {
+      background-color: rgba(0,0,0,1);
+      padding: 30px 40px;
+      color: rgba(255,255,255,.8);
+      border-radius: 10px;
+
+      box-shadow: 0 0 50px rgba(0,0,0,.4);
+    }
+
+      .modal .modal-content code {
+        background-color: rgba(255,255,255,.75);
+        color: rgba(0,0,0,.8);
+        padding: 4px 8px 4px 8px;
+        font-weight: bold;
+        border-radius: 3px;
+        display: inline-block;
+      }
+
+    .modal .modal-content .keyboard-controls-content {}
+  
+      .modal .modal-content .keyboard-controls-content li {
+        margin-bottom: 10px;
+      }

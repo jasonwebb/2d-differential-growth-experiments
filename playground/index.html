@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Differential growth playground</title>
+
+  <meta name="description" content="2D differential growth experiment in JavaScript exploring growth constraints">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Facebook OG -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jasonwebb.github.io/2d-differential-growth-experiments/playground/">
+  <meta property="og:title" content="Playground">
+  <meta property="og:image" content="images/social-media-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="600">
+  <meta property="og:description" content="2D differential growth experiment in JavaScript exploring growth constraints">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@jasonwebb">
+  <meta name="twitter:url" content="https://jasonwebb.github.io/2d-differential-growth-experiments/playground">
+  <meta name="twitter:title" content="Playground">
+  <meta name="twitter:description" content="2D differential growth experiment in JavaScript exploring growth constraints">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/07%20-%20bounds/images/social-media-preview.png">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="modal is-hidden">
+    <div class="modal-content">
+      <div class="keyboard-controls-content" style="display: none">
+        <h2>Keyboard shortcuts</h2>
+
+        <ul>
+          <li>
+            <code>t</code> - toggle trace effect 
+          </li>
+          <li>
+            <code>n</code> - toggle visibility of nodes
+          </li>
+          <li>
+            <code>r</code> - reset canvas
+          </li>
+          <li>
+            <code>Space</code> - pause or unpause the simulation
+          </li>
+          <li>
+            <code>i</code> - toggle inverting of colors
+          </li>
+          <li>
+            <code>d</code> - toggle debug mode
+          </li>
+          <li>
+            <code>f</code> - toggle shape fills
+          </li>
+          <li>
+            <code>h</code> - toggle history effect
+          </li>
+          <li>
+            <code>s</code> - download an SVG of the current drawing
+          </li>
+        </ul>
+      </div>
+
+      <div class="about-content"></div>
+
+      <div class="parameters-content"></div>
+    </div>
+  </div>
+
+  <div class="top-controls">
+    <button class="play">
+      <span class="icon fas fa-play"></span>
+    </button>
+  </div>
+
+  <aside class="left-menu toolbar">
+    <ul>
+      <li>
+        <button class="freehand is-active">
+          <span class="icon fas fa-pencil-alt"></span>
+          <span class="text">Freehand</span>
+        </button>
+      </li>
+
+      <li>
+        <button class="rectangle">
+          <span class="icon far fa-square"></span>
+          <span class="text">Draw rectangle</span>
+        </button>
+      </li>
+
+      <li>
+        <button class="circle">
+          <span class="icon far fa-circle"></span>
+          <span class="text">Draw circle</span>
+        </button>
+      </li>
+      
+      <li>
+        <button class="import">
+          <span class="icon far fa-folder-open"></span>
+          <span class="text">Import SVG</span>
+        </button>
+      </li>
+
+      <li class="has-divider">
+        <button class="reset">
+          <span class="icon fas fa-eraser"></span>
+          <span class="text">Reset</span>
+        </button>
+      </li>
+
+      <li>
+        <button class="export">
+          <span class="icon fas fa-download"></span>
+          <span class="text">Download SVG</span>
+        </button>
+      </li>
+    </ul>
+  </aside>
+
+  <aside class="right-menu toolbar">
+    <ul>
+      <li>
+        <button data-href="https://github.com/jasonwebb/2d-differential-growth-experiments" class="viewSource">
+          <span class="text">View source on Github</span>
+          <span class="icon fas fa-code"></span>
+        </button>
+      </li>
+
+      <li>
+        <button class="keyboard">
+          <span class="text">Keyboard controls</span>
+          <span class="icon fas fa-keyboard"></span>
+        </button>
+      </li>
+      
+      <li class="has-divider">
+        <button class="about">
+          <span class="text">About</span>
+          <span class="icon fas fa-question"></span>
+        </button>
+      </li>
+
+      <li>
+        <button class="parameters">
+          <span class="text">Adjust parameters</span>
+          <span class="icon fas fa-sliders-h"></span>
+        </button>
+      </li>
+    </ul>
+  </aside>
+
+  <input type="file" class="svgImportInput" accept=".svg" hidden>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
+  <script src="dist/app.min.js"></script>
+</body>
+
+</html>

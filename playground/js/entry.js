@@ -1,0 +1,313 @@
+let Node = require('../../core/Node'),
+    Path = require('../../core/Path'),
+    World = require('../../core/World'),
+    Bounds = require('../../core/Bounds'),
+    SVGLoader = require('../../core/SVGLoader'),
+    Settings = require('./Settings');
+
+let world,
+    path,
+    nodes = [];
+
+const FREEHAND = 0,
+      RECTANGLE = 1,
+      CIRCLE = 2;
+let activeTool = FREEHAND;
+
+let startX, startY, endX, endY;
+
+let allButtonEls = document.querySelectorAll('button');
+let svgImportInputEl = document.querySelector('.svgImportInput');
+
+
+/*
+=============================================================================
+  Main sketch
+=============================================================================
+*/
+
+
+function setActiveTool(tool) {
+  for(let button of allButtonEls) {
+    button.classList.remove('is-active');
+  }
+
+  switch(tool) {
+    case FREEHAND:
+      document.querySelector('.freehand').classList.add('is-active');
+      break;
+    case RECTANGLE:
+      document.querySelector('.rectangle').classList.add('is-active');
+      break;
+    case CIRCLE:
+      document.querySelector('.circle').classList.add('is-active');
+      break;
+  }
+
+  activeTool = tool;
+}
+
+// Set active tool based on which tool icon was clicked
+function handleToolClick(e) {
+  if(e.target.classList.contains('freehand')) {
+    setActiveTool(FREEHAND);
+  } else if(e.target.classList.contains('rectangle')) {
+    setActiveTool(RECTANGLE);
+  } else if(e.target.classList.contains('circle')) {
+    setActiveTool(CIRCLE);
+  }
+}
+
+// Import SVG - open file input dialog
+function importSVG() {
+  svgImportInputEl.click();
+}
+
+// Eraser - clear all paths from the world
+function clearPaths() {
+  world.clearPaths();
+  world.drawBackground();
+}
+
+// Download SVG - export world contents as SVG
+function exportSVG() {
+  world.export();
+}
+
+
+// Play button - toggle pause/unpause of world
+function togglePause() {
+  world.togglePause();
+
+  // update the icon
+}
+
+
+// View source - go to Github repo
+function viewSource(e) {
+  window.location.href = e.target.getAttribute('data-href');
+}
+
+// Keyboard icon - toggle keyboard controls modal window
+function toggleKeyboardControls() {
+  console.log('toggling keyboard control modal');
+}
+
+// Question mark icon - toggle 'about' modal window
+function toggleAbout() {
+  console.log('toggling help modal window');
+}
+
+
+// Sliders icon - toggle parameters modal window
+function toggleParameters() {
+  console.log('toggling parameters modal window');
+}
+
+
+const sketch = function (p5) {
+  // Setup -------------------------------------------------------------
+  p5.setup = function () {
+    p5.createCanvas(window.innerWidth, window.innerHeight);
+    p5.colorMode(p5.HSB, 255);
+    p5.rectMode(p5.CENTER);
+    p5.smooth();
+
+    // Set up and start the simulation
+    world = new World(p5, Settings);
+    world.pause();
+
+    // Left menu ----------------------
+    // Drawing tools
+    document.querySelector('.freehand').addEventListener('click', handleToolClick);
+    document.querySelector('.rectangle').addEventListener('click', handleToolClick);
+    document.querySelector('.circle').addEventListener('click', handleToolClick);
+
+    // Import, export, and clear
+    document.querySelector('.import').addEventListener('click', importSVG);
+    document.querySelector('.reset').addEventListener('click', clearPaths);
+    document.querySelector('.export').addEventListener('click', exportSVG);
+
+    // Center controls ----------------
+    document.querySelector('.play').addEventListener('click', togglePause);
+
+    // Right menu ---------------------
+    document.querySelector('.viewSource').addEventListener('click', viewSource);
+    document.querySelector('.keyboard').addEventListener('click', toggleKeyboardControls);
+    document.querySelector('.about').addEventListener('click', toggleAbout);
+  }
+
+  // Draw ---------------------------------------------------------------
+  p5.draw = function () {
+    if (!world.paused) {
+      world.iterate();
+    }
+    
+    world.draw();
+  }
+
+
+  /*
+  =============================================================================
+    Mouse handlers
+  =============================================================================
+  */
+
+  p5.mousePressed = function() {
+    switch(activeTool) {
+      // Rectangle tool -----------------------------------
+      case RECTANGLE:
+      case CIRCLE:
+        startX = p5.mouseX;
+        startY = p5.mouseY;
+        break;
+    }
+  }
+
+  p5.mouseReleased = function () {
+    switch (activeTool) {
+      // Freehand tool ------------------------------------
+      case FREEHAND:
+        if (p5.mouseButton == p5.LEFT) {
+          if(nodes.length == 0) {
+            return;
+          }
+
+          let isClosed = false,
+            x1 = nodes[nodes.length - 1].x,
+            y1 = nodes[nodes.length - 1].y,
+            x2 = nodes[0].x,
+            y2 = nodes[0].y;
+
+          // If end point is very close to starting point, make the path closed
+          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) < 10) {
+            isClosed = true;
+          }
+
+          // Create and add Path to the World
+          path = new Path(p5, nodes, Settings, isClosed);
+          world.addPath(path);
+
+          nodes = [];
+        }
+
+        break;
+
+      // Rectangle tool -----------------------------------
+      case RECTANGLE:
+        endX = p5.mouseX;
+        endY = p5.mouseY;
+
+        nodes.push(new Node(p5, startX, startY, Settings));  // top left
+        nodes.push(new Node(p5, endX, startY, Settings));    // top right
+        nodes.push(new Node(p5, endX, endY, Settings));      // bottom right
+        nodes.push(new Node(p5, startX, endY, Settings));    // bottom left
+
+        path = new Path(p5, nodes, Settings, true);
+        world.addPath(path);
+
+        nodes = [];
+        break;
+    }
+  }
+
+  p5.mouseDragged = function () {
+    if(!world.paused) {
+      world.pause();
+    }
+
+    world.drawBackground();
+    world.draw();
+
+    switch (activeTool) {
+      case FREEHAND:
+        if (p5.mouseButton == p5.LEFT) {
+          nodes.push(new Node(p5, p5.mouseX, p5.mouseY, Settings));
+
+          if (nodes.length > 0) {
+            for (let [index, node] of nodes.entries()) {
+              if (index > 0) {
+                p5.line(nodes[index - 1].x, nodes[index - 1].y, node.x, node.y);
+              }
+            }
+          }
+        }
+
+        break;
+
+      case RECTANGLE:
+        if(p5.mouseButton == p5.LEFT) {
+          p5.line(startX, startY, p5.mouseX, startY);        // top
+          p5.line(p5.mouseX, startY, p5.mouseX, p5.mouseY);  // right
+          p5.line(p5.mouseX, p5.mouseY, startX, p5.mouseY);  // bottom
+          p5.line(startX, p5.mouseY, startX, startY);        // left
+        }
+
+        break;
+    }
+  }
+
+
+  /*
+  =============================================================================
+    Key handler
+  =============================================================================
+  */
+  p5.keyReleased = function () {
+    switch (p5.key) {
+      // Toggle trace mode with 't'
+      case 't':
+        world.toggleTraceMode()
+        break;
+
+        // Toggle drawing of nodes with 'n'
+      case 'n':
+        world.toggleDrawNodes();
+        break;
+
+        // Reset simulation with current parameters with 'r'
+      case 'r':
+        world.clearPaths();
+        world.drawBackground();
+        break;
+
+        // Toggle pause with Space
+      case ' ':
+        world.togglePause()
+        break;
+
+        // Invert colors with 'i'
+      case 'i':
+        world.toggleInvertedColors();
+        break;
+
+        // Toggle debug mode with 'd'
+      case 'd':
+        world.toggleDebugMode()
+        break;
+
+        // Toggle fill for all shapes with 'f'
+      case 'f':
+        world.toggleFillMode();
+        break;
+
+        // Toggle path history with 'h'
+      case 'h':
+        world.toggleDrawHistory();
+        break;
+
+        // Export SVG with 's'
+      case 's':
+        world.export();
+        break;
+
+        // Toggle visibility of all bounds for all paths with 'b'
+      case 'b':
+        world.toggleDrawBounds();
+        break;
+    }
+  }
+}
+
+// Launch the sketch using p5js in instantiated mode
+new p5(sketch);
