@@ -15,12 +15,14 @@ let Node = require('./Node'),
 class SVGLoader {
   constructor() {}
 
-  static load(p5, svg, settings = Defaults) {
+  static loadFromObject(p5, id, settings = Defaults) {
+    return this.load(p5, document.getElementById(id), settings);
+  }
+
+  static load(p5, svgNode, settings = Defaults) {
     this.settings = Object.assign({}, Defaults, settings);
 
-    // Load the default SVG file
-    let svgEl = document.getElementById(svg),
-        inputPaths = svgEl.contentDocument.querySelectorAll('path'),
+    let inputPaths = svgNode.querySelectorAll('path'),
         currentPath = new Path(p5, [], this.settings, true),
         paths = [];
 
@@ -33,7 +35,7 @@ class SVGLoader {
         y: 0
       };
 
-      for(let command of pathData.commands) {
+      for(let [index, command] of pathData.commands.entries()) {
         switch(command.type) {
           // Move ('M') and line ('L') commands have both X and Y
           case SVGPathData.MOVE_TO:
@@ -60,6 +62,14 @@ class SVGLoader {
             currentPath = new Path(p5, [], this.settings, true);
             currentPath.setInvertedColors(true);
             break;
+        }
+
+        // Unclosed paths never have CLOSE_PATH commands, so wrap up the current path when we're at the end of the path and have not found the command
+        if(index == pathData.commands.length - 1 && command.type != SVGPathData.CLOSE_PATH) {
+          currentPath.isClosed = false;
+          paths.push(currentPath);
+
+          currentPath = new Path(p5, [], this.settings, true);
         }
 
         // Capture X coordinate, if there was one
