@@ -66,7 +66,16 @@ class SVGLoader {
 
         // Unclosed paths never have CLOSE_PATH commands, so wrap up the current path when we're at the end of the path and have not found the command
         if(index == pathData.commands.length - 1 && command.type != SVGPathData.CLOSE_PATH) {
-          currentPath.isClosed = false;
+          let firstNode = currentPath.nodes[0],
+              lastNode = currentPath.nodes[ currentPath.nodes.length - 1 ];
+
+          // Automatically close the path if the first and last nodes are effectively the same, even if a CLOSE_PATH command doesn't exist
+          if(lastNode.distance(firstNode) < .1) {
+            currentPath.isClosed = true;
+          } else {
+            currentPath.isClosed = false;
+          }
+
           paths.push(currentPath);
 
           currentPath = new Path(p5, [], this.settings, true);
