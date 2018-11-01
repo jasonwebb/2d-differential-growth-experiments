@@ -6,22 +6,27 @@ let Node = require('../../core/Node'),
   Settings = require('./Settings');
 
 let world,
-  path,
-  nodes = [];
+    path,
+    nodes = [];
 
 const FREEHAND = 0,
-  RECTANGLE = 1,
-  CIRCLE = 2;
+      RECTANGLE = 1,
+      CIRCLE = 2;
 let activeTool = FREEHAND;
 
-let distanceToClose = 15;
+let distanceToClose = 10;
 
 let startX, startY, endX, endY, deltaX, deltaY;
 
 let allButtonEls = document.querySelectorAll('button'),
-  svgImportInputEl = document.querySelector('.svgImportInput'),
-  playButtonEl = document.querySelector('.play');
+    svgImportInputEl = document.querySelector('.svgImportInput'),
+    playButtonEl = document.querySelector('.play');
 
+let keyboardModalOpen = false,
+    aboutModalOpen = false,
+    parametersModalOpen = false;
+
+let modalEl = document.querySelector('.modal');
 
 
 /*
@@ -60,6 +65,7 @@ const sketch = function (p5) {
     document.querySelector('.viewSource').addEventListener('click', viewSource);
     document.querySelector('.keyboard').addEventListener('click', toggleKeyboardControls);
     document.querySelector('.about').addEventListener('click', toggleAbout);
+    document.querySelector('.parameters').addEventListener('click', toggleParameters);
 
     document.querySelector('.svgImportInput').addEventListener('change', importSVG);
   }
@@ -149,18 +155,36 @@ const sketch = function (p5) {
 
   // Keyboard icon - toggle keyboard controls modal window
   function toggleKeyboardControls() {
-    console.log('toggling keyboard control modal');
+    openModal('keyboard-controls');
   }
 
   // Question mark icon - toggle 'about' modal window
   function toggleAbout() {
-    console.log('toggling help modal window');
+    openModal('about');
   }
 
 
   // Sliders icon - toggle parameters modal window
   function toggleParameters() {
-    console.log('toggling parameters modal window');
+    openModal('parameters');
+  }
+
+  function openModal(modal) {
+    let allContentEls = modalEl.querySelectorAll('.modal-content > div:not(.close)');
+
+    for(let contentEl of allContentEls) {
+      contentEl.classList.add('is-hidden');
+    }
+
+    modalEl.querySelector('.' + modal + '-content').classList.remove('is-hidden');
+    modalEl.classList.remove('is-hidden');
+
+    modalEl.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    modalEl.querySelector('.close').addEventListener('click', closeModal);
+  }
+
+  function closeModal() {
+    modalEl.classList.add('is-hidden');
   }
 
   // Parse SVG file from user input and add to World
@@ -215,13 +239,11 @@ const sketch = function (p5) {
           }
 
           let isClosed = false,
-            x1 = nodes[nodes.length - 1].x,
-            y1 = nodes[nodes.length - 1].y,
-            x2 = nodes[0].x,
-            y2 = nodes[0].y;
+              firstNode = nodes[0],
+              lastNode = nodes[nodes.length-1];
 
           // If end point is very close to starting point, make the path closed
-          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) <= distanceToClose) {
+          if (lastNode.distance(firstNode) <= distanceToClose) {
             isClosed = true;
           }
 
@@ -300,17 +322,15 @@ const sketch = function (p5) {
             }
           }
 
-          let x1 = nodes[nodes.length - 1].x,
-            y1 = nodes[nodes.length - 1].y,
-            x2 = nodes[0].x,
-            y2 = nodes[0].y;
+          let firstNode = nodes[0],
+              lastNode = nodes[nodes.length-1];
 
           // If current point is very near the starting point, highlight the starting point to indicate that the path will close
-          if (Math.sqrt(Math.pow(x2 - x1, 2), Math.pow(y2 - y1, 2)) <= distanceToClose) {
+          if (lastNode.distance(firstNode) <= distanceToClose) {
             p5.fill(150);
             p5.noStroke();
             p5.ellipseMode(p5.CENTER);
-            p5.ellipse(nodes[0].x, nodes[0].y, distanceToClose);
+            p5.ellipse(nodes[0].x, nodes[0].y, distanceToClose * 2);
           }
         }
 

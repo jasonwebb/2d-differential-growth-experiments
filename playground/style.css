@@ -56,12 +56,12 @@ button {
   }
 
     .top-controls button .icon {
+      color: rgba(203,203,203);
       font-size: 50px;
-      opacity: .2;
     }
 
       .top-controls button:hover .icon {
-        opacity: 1;
+        color: black;
       }
 
 
@@ -163,44 +163,112 @@ button {
   }
 
 
-  /*
-   Modal window
-  */
-  .modal {
+/*
+  Modal window
+*/
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  .modal .modal-backdrop {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 100;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     background-color: rgba(0,0,0,.4);
   }
 
-    .modal .modal-content {
-      background-color: rgba(0,0,0,1);
-      padding: 30px 40px;
-      color: rgba(255,255,255,.8);
-      border-radius: 10px;
+  .modal .modal-content {
+    position: relative;
+    background-color: rgba(0,0,0,1);
+    padding: 30px 40px;
+    color: rgba(255,255,255,.7);
+    border-radius: 10px;
 
-      box-shadow: 0 0 50px rgba(0,0,0,.4);
+    box-shadow: 0 0 50px rgba(0,0,0,.4);
+  }
+
+    .modal .modal-content .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 30px;
+      opacity: .5;
+      cursor: pointer;
     }
 
-      .modal .modal-content code {
-        background-color: rgba(255,255,255,.75);
-        color: rgba(0,0,0,.8);
-        padding: 4px 8px 4px 8px;
-        font-weight: bold;
-        border-radius: 3px;
-        display: inline-block;
+      .modal .modal-content .close:hover {
+        opacity: 1;
       }
 
-    .modal .modal-content .keyboard-controls-content {}
-  
-      .modal .modal-content .keyboard-controls-content li {
-        margin-bottom: 10px;
+    .modal .modal-content h1,
+    .modal .modal-content h2,
+    .modal .modal-content h3 {
+      margin-bottom: 10px;
+      color: rgba(255,255,255,.9);
+    }
+
+    .modal .modal-content p {
+      margin-bottom: 20px;
+    }
+
+    .modal .modal-content a {
+      color: rgb(255,255,255,.8);
+      font-weight: bold;
+    }
+
+    .modal .modal-content code {
+      background-color: rgba(255,255,255,.75);
+      color: rgba(0,0,0,.8);
+      padding: 4px 8px 4px 8px;
+      font-weight: bold;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+  .modal .modal-content .columns {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    border-top: 1px solid rgba(255,255,255,.2);
+  }
+
+    .modal .modal-content .columns .column {
+      flex: 1;
+      flex-basis: 50%;
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,.2);
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+
+      .modal .modal-content .columns .column:nth-of-type(odd) {
+        padding-left: 0;
       }
+
+      .modal .modal-content .columns .column:nth-of-type(even) {
+        border-right: 0;
+        padding-right: 0;
+      }
+
+
+  /* Keyboard controls modal */
+  .modal .modal-content .keyboard-controls-content {}
+
+    .modal .modal-content .keyboard-controls-content li {
+      margin-bottom: 10px;
+    }
+
+  .modal .modal-content .about-content {
+    width: 700px;
+  }
