@@ -189,13 +189,14 @@ button {
     background-color: rgba(0,0,0,.4);
   }
 
+
   .modal .modal-content {
     position: relative;
     background-color: rgba(0,0,0,1);
     padding: 30px 40px;
     color: rgba(255,255,255,.7);
     border-radius: 10px;
-
+    transition: background-color .3s linear;
     box-shadow: 0 0 50px rgba(0,0,0,.4);
   }
 
@@ -227,6 +228,10 @@ button {
       color: rgb(255,255,255,.8);
       font-weight: bold;
     }
+
+      .modal .modal-content a:hover {
+        color: rgba(255,255,255,1);
+      }
 
     .modal .modal-content code {
       background-color: rgba(255,255,255,.75);
@@ -265,10 +270,121 @@ button {
   /* Keyboard controls modal */
   .modal .modal-content .keyboard-controls-content {}
 
+    .modal .modal-content .keyboard-controls-content h2 {
+      margin-bottom: 20px;
+    }
+
     .modal .modal-content .keyboard-controls-content li {
       margin-bottom: 10px;
     }
 
+  /* About modal */
   .modal .modal-content .about-content {
     width: 700px;
   }
+
+    .modal .modal-content .about-content .columns {
+      margin-top: 30px;
+    }
+
+  /* Adjust parameters modal */
+  .modal .modal-content .parameters-content {}
+
+    .modal .modal-content .parameters-content .column {
+      border: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin: 10px 0;
+      width: 375px;
+    }
+
+      .modal .modal-content .parameters-content .column:first-of-type {
+        padding-right: 5px;
+      }
+
+      .modal .modal-content .parameters-content .column:last-of-type {
+        padding-left: 5px;
+      }
+
+    .modal .modal-content .parameters-content fieldset {
+      background-color: rgba(255,255,255,.1);
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+      .modal .modal-content .parameters-content .control {
+        margin-bottom: 8px;
+      }
+
+        .modal .modal-content .parameters-content .control.range {
+          margin-bottom: 25px;
+        }
+
+          .modal .modal-content .parameters-content .control.range:last-of-type {
+            margin-bottom: 10px;
+          }
+
+      .modal .modal-content .parameters-content fieldset label {
+        vertical-align: middle;
+        width: 150px;
+        display: inline-block;
+      }
+
+      .modal .modal-content .parameters-content fieldset input {
+        vertical-align: middle;
+      }
+
+        /* Custom checkboxes */
+        .modal .modal-content .parameters-content fieldset input[type='checkbox'] {
+          display: none;
+        }
+
+        .modal .modal-content .parameters-content fieldset input[type='checkbox'] + label:before {
+          font-family: 'Font Awesome 5 Free';
+          content: ' ';
+          color: black;
+          display: inline-block;
+          text-align: center;
+          vertical-align: middle;
+          width: 15px;
+          height: 15px;
+          background-color: white;
+          vertical-align: middle;
+          border-radius: 2px;
+          margin-right: 10px;
+          margin-top: -2px;
+        }
+
+          .modal .modal-content .parameters-content fieldset input[type='checkbox']:checked + label:before {
+            content: "\f00c";
+          }
+
+      /* Value next to ranges */
+      .modal .modal-content .parameters-content fieldset .value {
+        font-size: 14px;
+        opacity: .6;
+        margin-left: 5px;
+        vertical-align: middle
+      }
+
+      /* Description under ranges */
+      .modal .modal-content .parameters-content fieldset .description {
+        font-size: 14px;
+        opacity: .5;
+      }
+
+    /*
+      Apply button
+    */
+    .modal .modal-content .parameters-content .apply {
+      border-radius: 5px;
+      font-size: 16px;
+      color: rgba(255,255,255,.7);
+      padding: 10px 20px;
+      background-color: rgba(255,255,255,.2);
+    }
+
+      .modal .modal-content .parameters-content .apply:hover {
+        color: rgba(255,255,255,.9);
+        background-color: rgba(255,255,255,.3);
+      }

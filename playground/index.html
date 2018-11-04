@@ -28,7 +28,7 @@
   <meta name="twitter:description" content="2D differential growth experiment in JavaScript exploring growth constraints">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/07%20-%20bounds/images/social-media-preview.png">
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -77,146 +77,22 @@
         </ul>
       </div>
 
-      <div class="about-content">        
+      <div class="about-content is-hidden">
         <h2>About this app</h2>
-        <p>This interactive application lets you grow fun 2D forms out of simple shapes using a process found in nature called <em>differential growth</em>. Use the tools on the left to draw lines, rectangles, and circles, or import custom SVG artwork, then hit the Play button (or Space key) to start the process!</code></p>
-        <p>When you see something you like, use the Download SVG button (or the S key) to get a vector file that you can use with pen plotters, laser cutters, and design software like Fusion 360 or Illustrator</p>
+        <p>This interactive application lets you grow fun 2D forms out of simple shapes using a process found in nature called <em>differential growth</em>. Use the tools on the left to draw lines, rectangles, and circles or import custom SVG artwork, then hit the Play button to start the process!</code></p>
+        <p>When you see something you like, use the Download SVG button (or the S key) to get a vector file that you can use with pen plotters, laser cutters, and design software like Fusion 360 or Illustrator!</p>
 
         <div class="columns">
           <div class="column">
             <h3>What is differential growth?</h3>
-            <p><i>Differential growth</i> is a natural process that produces interesting undulating forms out of chains of particles using simple, configurable rules.</p>
+            <p><i>Differential growth</i> is a natural process that produces interesting undulating forms out of over-constrained chains of particles using simple, configurable rules.</p>
+            <p>Anders Hoff describes this process well in his article <a href="https://inconvergent.net/2016/shepherding-random-growth/" target="_blank">Shepherding Random Growth</a>.</p>
           </div>
 
           <div class="column">
             <h3>How was this made?</h3>
-            <p>This app was built using JavaScript (ES6), p5.js, Babel, Browserify, and a smattering of </p>
-          </div>
-        </div>
-       
-        <div class="footer">
-          <p>Source code and additional information and links about differential growth is <a href="https://github.com/jasonwebb/2d-differential-growth-experiments">available on Github</a>.</p>
-        </div>
-      </div>
-
-      <div class="parameters-content">
-        <h2>Parameters</h2>
-
-        <!--
-          MinDistance : slider
-          MaxDistance : slider
-          RepulsionRadius : slider
-          AttractionForce : slider
-          RepulsionForce : slider
-          AlignmentForce : slider
-
-          DrawNodes : toggle
-          TraceMode : toggle
-          InvertedColors : toggle
-          DebugMode : toggle
-          FillMode : toggle
-
-          DrawHistory : toggle
-          HistoryCaptureInterval : slider
-          MaxHistorySize : slider 
-
-          UseBrownianMotion : toggle
-          BrownianMotionRange : slider
-        -->
-
-        <div class="columns">
-          <div class="column">
-            <fieldset>
-              <div class="control">
-                <label for="min-distance">Minimum distance</label>
-                <input type="range" min="1" max="20" id="min-distance">
-              </div>
-
-              <div class="control">
-                <label for="max-distance">Maximum distance</label>
-                <input type="range" min="1" max="20" id="max-distance">
-              </div>
-
-              <div class="control">
-                <label for="repulsion-radius">Repulsion radius</label>
-                <input type="range" min="1" max="20" id="repulsion-radius">
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <div class="control">
-                <label for="attraction-force">Attraction force</label>
-                <input type="range" min="0" max="1" step=".01" id="attraction-force">
-              </div>
-
-              <div class="control">
-                <label for="repulsion-force">Repulsion force</label>
-                <input type="range" min="0" max="1" step=".01" id="repulsion-force">
-              </div>
-
-              <div class="control">
-                <label for="alignment-force">Alignment force</label>
-                <input type="range" min="0" max="1" step=".01" id="alignment-force">
-              </div>
-            </fieldset>
-          </div>
-
-          <div class="column">
-            <fieldset>
-              <div class="control">
-                <input type="checkbox" id="draw-nodes">
-                <label for="draw-nodes">Draw nodes</label>
-              </div>
-
-              <div class="control">
-                <input type="checkbox" id="trace-mode">
-                <label for="trace-mode">Trace effect</label>
-              </div>
-                
-              <div class="control">
-                <input type="checkbox" id="inverted-colors">
-                <label for="inverted-colors">Invert colors</label>
-              </div>
-
-              <div class="control">
-                <input type="checkbox" id="fill-mode">
-                <label for="fill-mode">Fill shapes</label>
-              </div>
-
-              <div class="control">
-                <input type="checkbox" id="debug-mode">
-                <label for="debug-mode">Debug mode</label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <div class="control">
-                <input type="checkbox" id="draw-history">
-                <label for="draw-history">History effect</label>
-              </div>
-              
-              <div class="control">
-                <label for="history-capture-interval">History capture interval (in ms)</label> 
-                <input type="range" min="10" max="500" step="1" id="history-capture-interval">
-              </div>
-
-              <div class="control">
-                <label for="max-history-size">Max history size</label>
-                <input type="range" min="1" max="20" step="1" id="max-history-size">
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <div class="control">
-                <input type="checkbox" id="use-brownian-motion">
-                <label for="use-brownian-motion">Use Brownian motion</label>
-              </div>
-
-              <div class="control">
-                <label for="brownian-motion-range">Brownian motion range</label>
-                <input type="range" min=".001" max=".1" step=".001" id="brownian-motion-range">
-              </div>
-            </fieldset>
+            <p>This app was built using JavaScript (ES6), p5.js, Babel, Browserify, and a smattering of single-purpose packages.</p>
+            <p>Source code and documentation <a href="https://github.com/jasonwebb/2d-differential-growth-experiments">available on Github</a>.</p>
           </div>
         </div>
       </div>
@@ -291,17 +167,10 @@
         </button>
       </li>
       
-      <li class="has-divider">
+      <li>
         <button class="about">
           <span class="text">About</span>
           <span class="icon fas fa-question"></span>
-        </button>
-      </li>
-
-      <li>
-        <button class="parameters">
-          <span class="text">Adjust parameters</span>
-          <span class="icon fas fa-sliders-h"></span>
         </button>
       </li>
     </ul>
