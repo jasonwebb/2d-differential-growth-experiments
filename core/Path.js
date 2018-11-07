@@ -388,7 +388,7 @@ class Path {
     }
 
     // Set shape fill 
-    if(this.fillMode) {
+    if(this.fillMode && this.isClosed) {
       this.p5.fill(this.currentFillColor.h, this.currentFillColor.s, this.currentFillColor.b, this.currentFillColor.a);
     } else {
       this.p5.noFill();
