@@ -288,20 +288,24 @@ class Path {
       for(let [index, node] of this.nodes.entries()) {
         let connectedNodes = this.getConnectedNodes(index);
 
+        if( connectedNodes.previousNode == undefined || connectedNodes.nextNode == undefined ) {
+          continue;
+        }
+
         // Find angle between adjacent nodes
-        let a = node.distance(connectedNodes.previousNode);
-        let b = node.distance(connectedNodes.nextNode);
-        let angle = Math.atan(a/b) * 180/Math.PI;
+        let n = connectedNodes.nextNode.y - connectedNodes.previousNode.y;
+        let d = connectedNodes.nextNode.x - connectedNodes.previousNode.x;
+        let angle = Math.round(Math.abs(Math.atan(n/d)));
         
-        // If angle is below a certain angle (high curvature), replace the current node with two nodes
-        if(angle < 15) {
+        // // If angle is below a certain angle (high curvature), replace the current node with two nodes
+        if(angle > 20) {
           let previousMidpointNode = this.getMidpointNode(node, connectedNodes.previousNode);
           let nextMidpointNode = this.getMidpointNode(node, connectedNodes.nextNode);
           
-          // Replace this node with the two new nodes
+          // // Replace this node with the two new nodes
           if(index == 0) {
             this.nodes.splice(this.nodes.length-1, 0, previousMidpointNode);
-            this.nodes.splice(0, 1, nextMidpointNode);
+            this.nodes.splice(0, 0, nextMidpointNode);
           } else {
             this.nodes.splice(index, 1, previousMidpointNode, nextMidpointNode);
           }
@@ -545,6 +549,30 @@ class Path {
   }
 
   // Setters ------------------------------------
+  setMinDistance(minDistance) {
+    this.settings.MinDistance = minDistance;
+
+    for(let node of this.nodes) {
+      node.minDistance = minDistance;
+    }
+  }
+
+  setMaxDistance(maxDistance) {
+    this.settings.MaxDistance = maxDistance;
+
+    for(let node of this.nodes) {
+      node.maxDistance = maxDistance;
+    }
+  }
+
+  setRepulsionRadius(repulsionRadius) {
+    this.settings.RepulsionRadius = repulsionRadius;
+
+    for(let node of this.nodes) {
+      node.repulsionRadius = repulsionRadius;
+    }
+  }
+
   setTraceMode(state) {
     this.traceMode = state;
 

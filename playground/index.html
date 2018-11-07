@@ -35,7 +35,7 @@
 <body>
   <h1 class="is-hidden">Differential growth playground</h1>
 
-  <div class="modal is-hidden">
+  <div class="modal">
     <div class="modal-backdrop"></div>
 
     <div class="modal-content">
@@ -95,6 +95,127 @@
             <p>Source code and documentation <a href="https://github.com/jasonwebb/2d-differential-growth-experiments">available on Github</a>.</p>
           </div>
         </div>
+
+        <div class="is-centered">
+          <button class="start">Start playing!</button>
+        </div>
+      </div>
+
+      <div class="parameters-content is-hidden">
+        <h2>Adjust parameters</h2>
+
+        <div class="columns">
+          <div class="column">
+            <fieldset>
+              <div class="control range">
+                <label for="min-distance">Minimum distance</label>
+                <input type="range" min="1" max="20" id="min-distance">
+                <span class="value"></span>
+                <div class="description">Minimum distance between nodes. Lower values mean smoother curves, but slower performance.</div>
+              </div>
+
+              <div class="control range">
+                <label for="max-distance">Maximum distance</label>
+                <input type="range" min="1" max="20" id="max-distance">
+                <span class="value"></span>
+                <div class="description">Maximum distance between nodes before edge is split.</div>
+              </div>
+
+              <div class="control range">
+                <label for="repulsion-radius">Repulsion radius</label>
+                <input type="range" min="1" max="20" id="repulsion-radius">
+                <span class="value"></span>
+                <div class="description">Distance around each node </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <div class="control range">
+                <label for="attraction-force">Attraction force</label>
+                <input type="range" min=".01" max="1" step=".01" id="attraction-force">
+                <span class="value"></span>
+                <div class="description">How strongly each node will be pulled to it's <em>connected</em> neighbors.</div>
+              </div>
+
+              <div class="control range">
+                <label for="repulsion-force">Repulsion force</label>
+                <input type="range" min=".01" max="1" step=".01" id="repulsion-force">
+                <span class="value"></span>
+                <div class="description">How strongly nodes will push each other away.</div>
+              </div>
+
+              <div class="control range">
+                <label for="alignment-force">Alignment force</label>
+                <input type="range" min=".01" max="1" step=".01" id="alignment-force">
+                <span class="value"></span>
+                <div class="description">How strongly each node will try to form a straight line with it's <em>connected</em> neighbors.</div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="column">
+            <fieldset>
+              <div class="control">
+                <input type="checkbox" id="draw-nodes">
+                <label for="draw-nodes">Draw nodes</label>
+              </div>
+
+              <div class="control">
+                <input type="checkbox" id="fill-mode">
+                <label for="fill-mode">Fill shapes</label>
+              </div>
+
+              <div class="control">
+                <input type="checkbox" id="debug-mode">
+                <label for="debug-mode">Debug mode</label>
+              </div>
+                
+              <div class="control">
+                <input type="checkbox" id="inverted-colors">
+                <label for="inverted-colors">Invert colors</label>
+              </div>
+
+              <div class="control">
+                <input type="checkbox" id="trace-mode">
+                <label for="trace-mode">Trace effect</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <div class="control">
+                <input type="checkbox" id="draw-history">
+                <label for="draw-history">History effect</label>
+              </div>
+              
+              <div class="control range">
+                <label for="history-capture-interval">History capture interval (in ms)</label> 
+                <input type="range" min="10" max="500" step="1" id="history-capture-interval">
+                <span class="value"></span>
+              </div>
+
+              <div class="control range">
+                <label for="max-history-size">Max history size</label>
+                <input type="range" min="1" max="20" step="1" id="max-history-size">
+                <span class="value"></span>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <div class="control">
+                <input type="checkbox" id="use-brownian-motion">
+                <label for="use-brownian-motion">Use Brownian motion</label>
+              </div>
+
+              <div class="control range">
+                <label for="brownian-motion-range">Displacement range</label>
+                <input type="range" min=".01" max=".1" step=".01" id="brownian-motion-range">
+                <span class="value"></span>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <button class="apply">Apply</button>
       </div>
     </div>
   </div>
@@ -167,10 +288,17 @@
         </button>
       </li>
       
-      <li>
+      <li class="has-divider">
         <button class="about">
           <span class="text">About</span>
           <span class="icon fas fa-question"></span>
+        </button>
+      </li>
+
+      <li>
+        <button class="parameters">
+          <span class="text">Adjust parameters</span>
+          <span class="icon fas fa-sliders-h"></span>
         </button>
       </li>
     </ul>

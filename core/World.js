@@ -214,6 +214,54 @@ class World {
   }
 
   // Setters -----------------------------------------
+  setMinDistance(minDistance) {
+    this.settings.MinDistance = minDistance;
+
+    for(let path of this.paths) {
+      path.setMinDistance(minDistance);
+    }
+  }
+
+  setMaxDistance(maxDistance) {
+    this.settings.MaxDistance = maxDistance;
+
+    for(let path of this.paths) {
+      path.setMaxDistance(maxDistance);
+    }
+  }
+
+  setRepulsionRadius(repulsionRadius) {
+    this.settings.RepulsionRadius = repulsionRadius;
+
+    for(let path of this.paths) {
+      path.setRepulsionRadius(repulsionRadius);
+    }
+  }
+
+  setAttractionForce(attractionForce) {
+    this.settings.AttractionForce = attractionForce;
+
+    for(let path of this.paths) {
+      path.setAttractionForce(attractionForce);
+    }
+  }
+
+  setRepulsionForce(repulsionForce) {
+    this.settings.RepulsionForce = repulsionForce;
+
+    for(let path of this.paths) {
+      path.setRepulsionForce(repulsionForce);
+    }
+  }
+
+  setAlignmentForce(alignmentForce) {
+    this.settings.AlignmentForce = alignmentForce;
+
+    for(let path of this.paths) {
+      path.setAlignmentForce(alignmentForce);
+    }
+  }
+
   setDrawNodes(state) {
     this.drawBackground();
 
@@ -223,6 +271,7 @@ class World {
     }
 
     this.drawNodes = state;
+    this.settings.DrawNodes = state;
   }
 
   setDebugMode(state) {
@@ -234,6 +283,7 @@ class World {
     }
 
     this.debugMode = state;
+    this.settings.DebugMode = state;
   }
 
   setFillMode(state) {
@@ -245,6 +295,7 @@ class World {
     }
 
     this.fillMode = state;
+    this.settings.FillMode = state;
   }
 
   setDrawHistory(state) {
@@ -256,6 +307,27 @@ class World {
     }
 
     this.drawHistory = state;
+    this.settings.DrawHistory = state;
+  }
+
+  setTraceMode(state) {
+    this.traceMode = state;
+    this.settings.TraceMode = state;
+    this.drawBackground();
+
+    for(let path of this.paths) {
+      path.traceMode = state;
+    }
+  }
+
+  setInvertedColors(state) {
+    this.invertedColors = state;
+    this.settings.InvertedColors = state;
+    this.drawBackground();
+
+    for(let path of this.paths) {
+      path.invertedColors = state;
+    }
   }
 
   setDrawBounds(state) {

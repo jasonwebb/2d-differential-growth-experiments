@@ -28,6 +28,10 @@ ul {
   display: none !important;
 }
 
+.is-centered {
+  text-align: center;
+}
+
 
 /*
  Button prototype
@@ -38,6 +42,11 @@ button {
   border-radius: 50px;
   cursor: pointer;
 }
+
+  button:active,
+  button:focus {
+    outline: none;
+  }
 
 
 /*
@@ -177,7 +186,17 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  display: none;
 }
+
+  .modal.is-visible  {
+    display: flex;
+  }
+
+    .modal.is-visible .modal-backdrop {
+      background-color: rgba(0,0,0,.4);
+    }
 
   .modal .modal-backdrop {
     position: absolute;
@@ -186,9 +205,9 @@ button {
     width: 100%;
     height: 100%;
 
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,0);
+    transition: background-color .3s linear;
   }
-
 
   .modal .modal-content {
     position: relative;
@@ -196,7 +215,6 @@ button {
     padding: 30px 40px;
     color: rgba(255,255,255,.7);
     border-radius: 10px;
-    transition: background-color .3s linear;
     box-shadow: 0 0 50px rgba(0,0,0,.4);
   }
 
@@ -278,6 +296,7 @@ button {
       margin-bottom: 10px;
     }
 
+
   /* About modal */
   .modal .modal-content .about-content {
     width: 700px;
@@ -286,6 +305,7 @@ button {
     .modal .modal-content .about-content .columns {
       margin-top: 30px;
     }
+
 
   /* Adjust parameters modal */
   .modal .modal-content .parameters-content {}
@@ -339,6 +359,11 @@ button {
           display: none;
         }
 
+        .modal .modal-content .parameters-content fieldset input[type='checkbox'] + label {
+          width: 200px;
+          margin-bottom: 10px;
+        }
+
         .modal .modal-content .parameters-content fieldset input[type='checkbox'] + label:before {
           font-family: 'Font Awesome 5 Free';
           content: ' ';
@@ -361,8 +386,9 @@ button {
 
       /* Value next to ranges */
       .modal .modal-content .parameters-content fieldset .value {
-        font-size: 14px;
-        opacity: .6;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 16px;
+        opacity: .8;
         margin-left: 5px;
         vertical-align: middle
       }
@@ -371,11 +397,11 @@ button {
       .modal .modal-content .parameters-content fieldset .description {
         font-size: 14px;
         opacity: .5;
+        margin-top: 5px;
       }
 
-    /*
-      Apply button
-    */
+    /* Apply button */
+    .modal .modal-content .about-content .start,
     .modal .modal-content .parameters-content .apply {
       border-radius: 5px;
       font-size: 16px;
@@ -384,7 +410,124 @@ button {
       background-color: rgba(255,255,255,.2);
     }
 
+      .modal .modal-content .about-content .start:hover,
       .modal .modal-content .parameters-content .apply:hover {
         color: rgba(255,255,255,.9);
         background-color: rgba(255,255,255,.3);
       }
+
+/*
+  Inverted colors mode
+*/
+.is-inverted {}
+
+  .is-inverted .modal.is-visible .modal-backdrop {
+    background-color: rgba(255,255,255,.1);
+  }
+
+/*
+  Custom range styles 
+*/
+input[type=range] {
+  background-color: transparent;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 15px;
+  cursor: pointer;
+  box-shadow: 0;
+  background: rgba(0,0,0,1);
+  border-radius: 0;
+  border: 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0;
+  border: 0;
+  height: 15px;
+  width: 15px;
+  border-radius: 0;
+  background: rgba(255,255,255,.5);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: 0;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: rgba(0,0,0,1);
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 15px;
+  cursor: pointer;
+  box-shadow: 0;
+  background: rgba(0,0,0,1);
+  border-radius: 0;
+  border: 0;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0;
+  border: 0;
+  height: 15px;
+  width: 15px;
+  border-radius: 0;
+  background: rgba(255,255,255,.5);
+  cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 15px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+  background: rgba(0,0,0,1);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+input[type=range]::-ms-fill-upper {
+  background: rgba(0,0,0,1);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0;
+}
+
+input[type=range]::-ms-thumb {
+  box-shadow: 0;
+  border: 0;
+  width: 15px;
+  border-radius: 0;
+  background: rgba(255,255,255,.5);
+  cursor: pointer;
+  height: 15px;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+  background: rgba(0,0,0,1);
+}
+
+input[type=range]:focus::-ms-fill-upper {
+  background: rgba(0,0,0,1);
+}
+
+
+input[type=range]::-webkit-slider-thumb:hover,
+input[type=range]::-moz-range-thumb:hover,
+input[type=range]::-ms-thumb:hover {
+  background: rgba(0,0,0,.8);
+}

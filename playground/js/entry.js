@@ -3,7 +3,8 @@ let Node = require('../../core/Node'),
   World = require('../../core/World'),
   Bounds = require('../../core/Bounds'),
   SVGLoader = require('../../core/SVGLoader'),
-  Settings = require('./Settings');
+  Settings = require('./Settings'),
+  ParametersPanel = require('./ParametersPanel');
 
 let world,
     path,
@@ -21,10 +22,6 @@ let startX, startY, endX, endY, deltaX, deltaY;
 let allButtonEls = document.querySelectorAll('button'),
     svgImportInputEl = document.querySelector('.svgImportInput'),
     playButtonEl = document.querySelector('.play');
-
-let keyboardModalOpen = false,
-    aboutModalOpen = false,
-    parametersModalOpen = false;
 
 let modalEl = document.querySelector('.modal');
 
@@ -47,6 +44,9 @@ const sketch = function (p5) {
     world = new World(p5, Settings);
     world.pause();
 
+    // Set up the Parameters window
+    let paramPanel = new ParametersPanel(world);
+
     // Left menu ----------------------
     // Drawing tools
     document.querySelector('.freehand').addEventListener('click', handleToolClick);
@@ -67,7 +67,11 @@ const sketch = function (p5) {
     document.querySelector('.about').addEventListener('click', toggleAbout);
     document.querySelector('.parameters').addEventListener('click', toggleParameters);
 
+    // Other functions ----------------
     document.querySelector('.svgImportInput').addEventListener('change', importSVG);
+    document.querySelector('.start').addEventListener('click', closeModal);
+
+    openModal('parameters');
   }
 
   // Draw ---------------------------------------------------------------
@@ -177,14 +181,14 @@ const sketch = function (p5) {
     }
 
     modalEl.querySelector('.' + modal + '-content').classList.remove('is-hidden');
-    modalEl.classList.remove('is-hidden');
+    modalEl.classList.add('is-visible');
 
     modalEl.querySelector('.modal-backdrop').addEventListener('click', closeModal);
     modalEl.querySelector('.close').addEventListener('click', closeModal);
   }
 
   function closeModal() {
-    modalEl.classList.add('is-hidden');
+    modalEl.classList.remove('is-visible');
   }
 
   // Parse SVG file from user input and add to World
