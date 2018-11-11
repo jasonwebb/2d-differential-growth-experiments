@@ -143,9 +143,7 @@ h1 {
     opacity: .8;
   }
 
-  .card.playground {
-    text-decoration: line-through;
-  }
+  .card.playground {}
 
     .card.playground:hover {
       background-color: rgba(0,0,0,.8);
