@@ -1,7 +1,6 @@
 let Node = require('../../core/Node'),
   Path = require('../../core/Path'),
   World = require('../../core/World'),
-  Bounds = require('../../core/Bounds'),
   SVGLoader = require('../../core/SVGLoader'),
   Settings = require('./Settings'),
   ParametersPanel = require('./ParametersPanel');
@@ -70,8 +69,6 @@ const sketch = function (p5) {
     // Other functions ----------------
     document.querySelector('.svgImportInput').addEventListener('change', importSVG);
     document.querySelector('.start').addEventListener('click', closeModal);
-
-    openModal('parameters');
   }
 
   // Draw ---------------------------------------------------------------
@@ -260,7 +257,7 @@ const sketch = function (p5) {
 
         break;
 
-        // Rectangle tool -----------------------------------
+      // Rectangle tool -----------------------------------
       case RECTANGLE:
         endX = p5.mouseX;
         endY = p5.mouseY;
@@ -276,7 +273,7 @@ const sketch = function (p5) {
         nodes = [];
         break;
 
-        // Circle tool --------------------------------------
+      // Circle tool --------------------------------------
       case CIRCLE:
         endX = p5.mouseX;
         endY = p5.mouseY;

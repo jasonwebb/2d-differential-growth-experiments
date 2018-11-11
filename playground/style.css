@@ -79,19 +79,11 @@ button {
 */
 .toolbar {
   z-index: 2;
+  position: relative;
 }
 
   .toolbar li {
     margin-bottom: 20px;
-  }
-
-  .toolbar .has-divider:after {
-    display: block;
-    content: ' ';
-    width: 40px;
-    margin-left: 10px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0,0,0,.2);
   }
 
   .toolbar button {}
@@ -336,6 +328,10 @@ button {
         margin-bottom: 8px;
       }
 
+        .modal .modal-content .parameters-content .column:last-of-type fieldset:first-of-type .control:last-of-type {
+          margin-bottom: 0;
+        }
+
         .modal .modal-content .parameters-content .control.range {
           margin-bottom: 25px;
         }
@@ -359,29 +355,33 @@ button {
           display: none;
         }
 
-        .modal .modal-content .parameters-content fieldset input[type='checkbox'] + label {
+        .modal .modal-content .parameters-content fieldset:not(:first-of-type) input[type='checkbox'] + label {
           width: 200px;
           margin-bottom: 10px;
         }
 
         .modal .modal-content .parameters-content fieldset input[type='checkbox'] + label:before {
           font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          font-size: 12px;
+          font-weight: bold;
           content: ' ';
           color: black;
           display: inline-block;
           text-align: center;
           vertical-align: middle;
           width: 15px;
-          height: 15px;
+          height: 14px;
           background-color: white;
           vertical-align: middle;
           border-radius: 2px;
           margin-right: 10px;
           margin-top: -2px;
+          padding-top: 2px;
         }
 
           .modal .modal-content .parameters-content fieldset input[type='checkbox']:checked + label:before {
-            content: "\f00c";
+            content: '\f00c';
           }
 
       /* Value next to ranges */
