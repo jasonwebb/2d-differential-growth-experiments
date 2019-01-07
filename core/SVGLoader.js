@@ -1,24 +1,32 @@
+/** @module SVGLoader */
+
 let Node = require('./Node'),
     Path = require('./Path'),
     Defaults = require('./Defaults'),
     {SVGPathData} = require('./node_modules/svg-pathdata');
 
   
-/*
-=============================================================================
-  SVGLoader class
-
-  Utility class to load an external SVG file and produce Path(s) 
-=============================================================================
-*/
-
+/** Utility class to load an external SVG file and produce Path(s) */
 class SVGLoader {
   constructor() {}
 
+  /**
+   * Kick of loading of an SVG document embedded within a DOM element with the provided ID
+   * @param {object} p5 Reference to the global instance of p5.js
+   * @param {string} id ID attribute of the DOM node to load SVG data from
+   * @param {object} settings Object containing local override Settings to merge with Defaults
+   * @returns {array} See `load()`
+   */
   static loadFromObject(p5, id, settings = Defaults) {
     return this.load(p5, document.getElementById(id), settings);
   }
 
+  /**
+   * Extract path data from the provided SVG node and produce a set of Path objects with Nodes
+   * @param {object} p5 Reference to the global instance of p5.js
+   * @param {node} svgNode SVG DOM node to load data from
+   * @param {object} settings Object containing local override Settings to merge with Defaults
+   */
   static load(p5, svgNode, settings = Defaults) {
     this.settings = Object.assign({}, Defaults, settings);
 

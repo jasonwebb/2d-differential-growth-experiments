@@ -1,16 +1,24 @@
+/** @module Node */
+
 let Vec2 = require('./node_modules/vec2'),
     Defaults = require('./Defaults');
 
-/*
-=============================================================================
-  Node class
 
-  A Node is a single point on the canvas whose only job is to manage
-  it's position and movement towards new position. 
-=============================================================================
-*/
-
+/** 
+ * Single point (node) within a Path, whose only job is to manage it's position and movement towards new position. 
+ * @extends Vec2
+ */
 class Node extends Vec2 {
+  /**
+   * Create a new Node object
+   * @param {object} p5 Reference to global instance of p5.js for drawing 
+   * @param {number} x Initial X coordinate
+   * @param {number} y Initial Y coordinate
+   * @param {object} settings Object of local override Settings to merge with Defaults
+   * @param {boolean} isFixed Whether or not this Node is allowed to move
+   * @param {number} minDistance Minimum distance this Node wants to be to nearby Nodes
+   * @param {number} repulsionRadius Radius around Node that will affect movement of other Nodes
+   */
   constructor(p5, x, y, settings = Defaults, isFixed = false, minDistance, repulsionRadius) {
     super(x,y);
 
@@ -25,6 +33,9 @@ class Node extends Vec2 {
     this.repulsionRadius = repulsionRadius || settings.RepulsionRadius;
   }
 
+  /**
+   * Moves Node by one "step"
+   */
   iterate() {
     if(!this.isFixed) {
       this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
@@ -32,6 +43,9 @@ class Node extends Vec2 {
     }
   }
 
+  /**
+   * Draw this Node to the canvas
+   */
   draw() {
     if (this.isFixed) {
       this.p5.ellipse(this.x, this.y, 20);

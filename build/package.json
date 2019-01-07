@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "jsdoc": "jsdoc ../core -d ../docs -t node_modules/docdash"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@babel/register": "^7.0.0",
     "browserify": "^16.2.2",
     "del": "^3.0.0",
+    "docdash": "^1.0.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^8.0.0-beta.2",
@@ -23,6 +24,7 @@
     "gulp-open": "^3.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-uglify": "^3.0.1",
+    "jsdoc": "^3.5.5",
     "merge-stream": "^1.0.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
