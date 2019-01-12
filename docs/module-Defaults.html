@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Defaults - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module-Bounds-Bounds.html">Bounds</a><ul class='methods'><li data-type='method'><a href="module-Bounds-Bounds.html#contains">contains</a></li><li data-type='method'><a href="module-Bounds-Bounds.html#draw">draw</a></li></ul></li><li><a href="module-Node-Node.html">Node</a><ul class='methods'><li data-type='method'><a href="module-Node-Node.html#draw">draw</a></li><li data-type='method'><a href="module-Node-Node.html#iterate">iterate</a></li></ul></li><li><a href="module-Path-Path.html">Path</a><ul class='methods'><li data-type='method'><a href="module-Path-Path.html#addNode">addNode</a></li><li data-type='method'><a href="module-Path-Path.html#addToHistory">addToHistory</a></li><li data-type='method'><a href="module-Path-Path.html#applyAlignment">applyAlignment</a></li><li data-type='method'><a href="module-Path-Path.html#applyAttraction">applyAttraction</a></li><li data-type='method'><a href="module-Path-Path.html#applyBounds">applyBounds</a></li><li data-type='method'><a href="module-Path-Path.html#applyBrownianMotion">applyBrownianMotion</a></li><li data-type='method'><a href="module-Path-Path.html#applyRepulsion">applyRepulsion</a></li><li data-type='method'><a href="module-Path-Path.html#draw">draw</a></li><li data-type='method'><a href="module-Path-Path.html#drawBounds">drawBounds</a></li><li data-type='method'><a href="module-Path-Path.html#drawCurrentEdges">drawCurrentEdges</a></li><li data-type='method'><a href="module-Path-Path.html#drawCurrentNodes">drawCurrentNodes</a></li><li data-type='method'><a href="module-Path-Path.html#drawEdges">drawEdges</a></li><li data-type='method'><a href="module-Path-Path.html#drawPreviousEdges">drawPreviousEdges</a></li><li data-type='method'><a href="module-Path-Path.html#getConnectedNodes">getConnectedNodes</a></li><li data-type='method'><a href="module-Path-Path.html#getInvertedColors">getInvertedColors</a></li><li data-type='method'><a href="module-Path-Path.html#getMidpointNode">getMidpointNode</a></li><li data-type='method'><a href="module-Path-Path.html#getTraceMode">getTraceMode</a></li><li data-type='method'><a href="module-Path-Path.html#injectNode">injectNode</a></li><li data-type='method'><a href="module-Path-Path.html#injectNodeByCurvature">injectNodeByCurvature</a></li><li data-type='method'><a href="module-Path-Path.html#injectRandomNode">injectRandomNode</a></li><li data-type='method'><a href="module-Path-Path.html#iterate">iterate</a></li><li data-type='method'><a href="module-Path-Path.html#moveTo">moveTo</a></li><li data-type='method'><a href="module-Path-Path.html#pruneNodes">pruneNodes</a></li><li data-type='method'><a href="module-Path-Path.html#scale">scale</a></li><li data-type='method'><a href="module-Path-Path.html#setBounds">setBounds</a></li><li data-type='method'><a href="module-Path-Path.html#setInvertedColors">setInvertedColors</a></li><li data-type='method'><a href="module-Path-Path.html#setMaxDistance">setMaxDistance</a></li><li data-type='method'><a href="module-Path-Path.html#setMinDistance">setMinDistance</a></li><li data-type='method'><a href="module-Path-Path.html#setRepulsionRadius">setRepulsionRadius</a></li><li data-type='method'><a href="module-Path-Path.html#setTraceMode">setTraceMode</a></li><li data-type='method'><a href="module-Path-Path.html#splitEdges">splitEdges</a></li><li data-type='method'><a href="module-Path-Path.html#toArray">toArray</a></li><li data-type='method'><a href="module-Path-Path.html#toggleInvertedColors">toggleInvertedColors</a></li><li data-type='method'><a href="module-Path-Path.html#toggleTraceMode">toggleTraceMode</a></li></ul></li><li><a href="module-SVGLoader-SVGLoader.html">SVGLoader</a><ul class='methods'><li data-type='method'><a href="module-SVGLoader-SVGLoader.html#.load">load</a></li><li data-type='method'><a href="module-SVGLoader-SVGLoader.html#.loadFromObject">loadFromObject</a></li></ul></li><li><a href="module-World-World.html">World</a><ul class='methods'><li data-type='method'><a href="module-World-World.html#addPath">addPath</a></li><li data-type='method'><a href="module-World-World.html#addPaths">addPaths</a></li><li data-type='method'><a href="module-World-World.html#addToHistory">addToHistory</a></li><li data-type='method'><a href="module-World-World.html#buildTree">buildTree</a></li><li data-type='method'><a href="module-World-World.html#clearPaths">clearPaths</a></li><li data-type='method'><a href="module-World-World.html#createPathElFromNodes">createPathElFromNodes</a></li><li data-type='method'><a href="module-World-World.html#draw">draw</a></li><li data-type='method'><a href="module-World-World.html#drawBackground">drawBackground</a></li><li data-type='method'><a href="module-World-World.html#export">export</a></li><li data-type='method'><a href="module-World-World.html#getDebugMode">getDebugMode</a></li><li data-type='method'><a href="module-World-World.html#getDrawBounds">getDrawBounds</a></li><li data-type='method'><a href="module-World-World.html#getDrawHistory">getDrawHistory</a></li><li data-type='method'><a href="module-World-World.html#getDrawNodes">getDrawNodes</a></li><li data-type='method'><a href="module-World-World.html#getFillMode">getFillMode</a></li><li data-type='method'><a href="module-World-World.html#iterate">iterate</a></li><li data-type='method'><a href="module-World-World.html#pause">pause</a></li><li data-type='method'><a href="module-World-World.html#prunePaths">prunePaths</a></li><li data-type='method'><a href="module-World-World.html#setAlignmentForce">setAlignmentForce</a></li><li data-type='method'><a href="module-World-World.html#setAttractionForce">setAttractionForce</a></li><li data-type='method'><a href="module-World-World.html#setDebugMode">setDebugMode</a></li><li data-type='method'><a href="module-World-World.html#setDrawBounds">setDrawBounds</a></li><li data-type='method'><a href="module-World-World.html#setDrawHistory">setDrawHistory</a></li><li data-type='method'><a href="module-World-World.html#setDrawNodes">setDrawNodes</a></li><li data-type='method'><a href="module-World-World.html#setFillMode">setFillMode</a></li><li data-type='method'><a href="module-World-World.html#setInvertedColors">setInvertedColors</a></li><li data-type='method'><a href="module-World-World.html#setMaxDistance">setMaxDistance</a></li><li data-type='method'><a href="module-World-World.html#setMinDistance">setMinDistance</a></li><li data-type='method'><a href="module-World-World.html#setRepulsionForce">setRepulsionForce</a></li><li data-type='method'><a href="module-World-World.html#setRepulsionRadius">setRepulsionRadius</a></li><li data-type='method'><a href="module-World-World.html#setTraceMode">setTraceMode</a></li><li data-type='method'><a href="module-World-World.html#toggleDebugMode">toggleDebugMode</a></li><li data-type='method'><a href="module-World-World.html#toggleDrawBounds">toggleDrawBounds</a></li><li data-type='method'><a href="module-World-World.html#toggleDrawHistory">toggleDrawHistory</a></li><li data-type='method'><a href="module-World-World.html#toggleDrawNodes">toggleDrawNodes</a></li><li data-type='method'><a href="module-World-World.html#toggleFillMode">toggleFillMode</a></li><li data-type='method'><a href="module-World-World.html#toggleInvertedColors">toggleInvertedColors</a></li><li data-type='method'><a href="module-World-World.html#togglePause">togglePause</a></li><li data-type='method'><a href="module-World-World.html#toggleTraceMode">toggleTraceMode</a></li><li data-type='method'><a href="module-World-World.html#unpause">unpause</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Bounds.html">Bounds</a></li><li><a href="module-Defaults.html">Defaults</a></li><li><a href="module-Node.html">Node</a></li><li><a href="module-Path.html">Path</a></li><li><a href="module-SVGLoader.html">SVGLoader</a></li><li><a href="module-World.html">World</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Defaults</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".AlignmentForce"><span class="type-signature">(static) </span>AlignmentForce<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum alignment force between connected nodes
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".AttractionForce"><span class="type-signature">(static) </span>AttractionForce<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum attraction force between connected nodes
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".BrownianMotionRange"><span class="type-signature">(static) </span>BrownianMotionRange<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Amount to 'jiggle' nodes when Brownian motion is enabled
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".DebugMode"><span class="type-signature">(static) </span>DebugMode<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Turn on/off debug mode (per-edge colors)
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".DrawHistory"><span class="type-signature">(static) </span>DrawHistory<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Turn on/off capturing and rendering of previous node positions to create a "tree ring" effect
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".DrawNodes"><span class="type-signature">(static) </span>DrawNodes<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Show/hide circles for each node
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".FillMode"><span class="type-signature">(static) </span>FillMode<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Turn on/off shape fills for closed paths
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".HistoryCaptureInterval"><span class="type-signature">(static) </span>HistoryCaptureInterval<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Interval (in ms) between capture of paths for history effect
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".InvertedColors"><span class="type-signature">(static) </span>InvertedColors<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Turn on/off inverted colors
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MaxDistance"><span class="type-signature">(static) </span>MaxDistance<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum distance between nodes before they are split
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MaxHistorySize"><span class="type-signature">(static) </span>MaxHistorySize<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum number of previous paths to capture for history effect
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MaxVelocity"><span class="type-signature">(static) </span>MaxVelocity<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum velocity at which a node can move per frame
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MinDistance"><span class="type-signature">(static) </span>MinDistance<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Minimum distance between nodes. Used in attraction, pruning, and injection
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".NodeInjectionInterval"><span class="type-signature">(static) </span>NodeInjectionInterval<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Interval (in ms) between call to node injection routine
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".RepulsionForce"><span class="type-signature">(static) </span>RepulsionForce<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Maximum repulsion force between nearby nodes
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".RepulsionRadius"><span class="type-signature">(static) </span>RepulsionRadius<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Radius to search for nearby nodes for repulsion force
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".ShowBounds"><span class="type-signature">(static) </span>ShowBounds<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Draw all boundaries
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".TraceMode"><span class="type-signature">(static) </span>TraceMode<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Allow accumulation of path growth by disabling background repaints
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".UseBrownianMotion"><span class="type-signature">(static) </span>UseBrownianMotion<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Defaults.js.html">Defaults.js</a>, <a href="Defaults.js.html#line104">line 104</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Turn on/off Brownian motion
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jan 12 2019 16:54:13 GMT-0600 (Central Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

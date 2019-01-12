@@ -193,9 +193,7 @@ class Path {
     }
   }
 
-  /**
-   * Search for edges that are too long and inject a new Node to split them up
-   */
+  /** Search for edges that are too long and inject a new Node to split them up */
   splitEdges() {
     for (let [index, node] of this.nodes.entries()) {
       let connectedNodes = this.getConnectedNodes(index);
@@ -216,9 +214,7 @@ class Path {
     }
   }
 
-  /**
-   * Remove Nodes that are too close to their neighbors to minimize "pinching"
-   */
+  /** Remove Nodes that are too close to their neighbors to minimize "pinching" */
   pruneNodes() {
     for(let [index, node] of this.nodes.entries()) {
       let connectedNodes = this.getConnectedNodes(index);
@@ -240,9 +236,7 @@ class Path {
     }
   }
 
-  /**
-   * Insert a new Node using the current injection method
-   */
+  /** Insert a new Node using the current injection method */
   injectNode() {
     switch(this.injectionMode) {
       case "RANDOM":
@@ -254,9 +248,7 @@ class Path {
     }
   }
 
-    /**
-     * Insert a new Node in a random location along the Path, if there is space for it
-     */
+    /** Insert a new Node in a random location along the Path, if there is space for it */
     injectRandomNode() {
       // Choose two connected nodes at random
       let index = parseInt(this.p5.random(1, this.nodes.length));
@@ -275,9 +267,7 @@ class Path {
       }
     }
 
-    /**
-     * Insert a new Node in an area where curvature is high
-     */
+    /** Insert a new Node in an area where curvature is high */
     injectNodeByCurvature() {
       for(let [index, node] of this.nodes.entries()) {
         let connectedNodes = this.getConnectedNodes(index);
@@ -365,9 +355,7 @@ class Path {
     );
   }
 
-  /**
-   * Draw this Path to the canvas using current object visibility settings
-   */
+  /** Draw this Path to the canvas using current object visibility settings */
   draw() {
     // Draw all the previous paths saved to the history array
     if(this.drawHistory) {
@@ -398,16 +386,12 @@ class Path {
     }
   }
 
-  /**
-   * Draw the current edges (leading edge) of the path
-   */
+  /** Draw the current edges (leading edge) of the path */
   drawCurrentEdges() {
     this.drawEdges(this.nodes);
   }
 
-  /**
-   * Draw all previous edges of the path saved to history array
-   */
+  /** Draw all previous edges of the path saved to history array */
   drawPreviousEdges() {
     for(let [index, nodes] of this.nodeHistory.entries()) {
       this.p5.stroke(
@@ -423,6 +407,7 @@ class Path {
 
   /**
    * Draw edges for a given set of nodes - can be either the current or previous nodes
+   * @param {array} Array of Node objects
    */
   drawEdges(nodes) {
     // Begin capturing vertices
@@ -464,9 +449,7 @@ class Path {
     }
   }
 
-  /**
-   * Draw circles for every node
-   */
+  /** Draw circles for every node */
   drawCurrentNodes() {
     this.p5.noStroke();
 
@@ -485,9 +468,7 @@ class Path {
     }
   }
 
-  /**
-   * Draw boundary shape(s)
-   */
+  /** Draw boundary shape(s) */
   drawBounds() {
     if(!this.invertedColors) {
       this.p5.stroke(200);
@@ -500,9 +481,7 @@ class Path {
     this.bounds.draw();
   }
 
-  /**
-   * Take a snapshot of the current nodes by saving a dereferenced clone of them to the history array
-   */
+  /** Take a snapshot of the current nodes by saving a dereferenced clone of them to the history array */
   addToHistory() {
     if(this.nodeHistory.length == this.settings.MaxHistorySize) {
       this.nodeHistory.shift();
@@ -651,16 +630,12 @@ class Path {
     this.bounds = bounds;
   }
 
-  /**
-   * Toggle the current state of the "trace mode" flag
-   */
+  /** Toggle the current state of the "trace mode" flag */
   toggleTraceMode() {
     this.setTraceMode(!this.getTraceMode());
   }
 
-  /**
-   * Toggle the current state of the "invert mode" flag
-   */
+  /** Toggle the current state of the "invert mode" flag */
   toggleInvertedColors() {
     this.setInvertedColors(!this.getInvertedColors());
   }

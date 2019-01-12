@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Node.js - Documentation</title>
+    <title>Defaults.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Node.js</h1>
+    <h1 class="page-title">Defaults.js</h1>
     
 
     
@@ -41,60 +41,123 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** @module Node */
+            <pre class="prettyprint source linenums"><code>/** @module Defaults */
 
-let Vec2 = require('./node_modules/vec2'),
-    Defaults = require('./Defaults');
-
-
-/** 
- * Single point (node) within a Path, whose only job is to manage it's position and movement towards new position. 
- * @extends Vec2
- */
-class Node extends Vec2 {
+module.exports = {
   /**
-   * Create a new Node object
-   * @param {object} p5 Reference to global instance of p5.js for drawing 
-   * @param {number} x Initial X coordinate
-   * @param {number} y Initial Y coordinate
-   * @param {object} settings Object of local override Settings to merge with Defaults
-   * @param {boolean} isFixed Whether or not this Node is allowed to move
-   * @param {number} minDistance Minimum distance this Node wants to be to nearby Nodes
-   * @param {number} repulsionRadius Radius around Node that will affect movement of other Nodes
+   * Minimum distance between nodes. Used in attraction, pruning, and injection
+   * @type {number}
    */
-  constructor(p5, x, y, settings = Defaults, isFixed = false, minDistance, repulsionRadius) {
-    super(x,y);
+  MinDistance: 20,
 
-    this.p5 = p5;
-    this.isFixed = isFixed;
-    this.settings = Object.assign({}, Defaults, settings);
+  /**
+   * Maximum distance between nodes before they are split
+   * @type {number}
+   */
+  MaxDistance: 30,
 
-    this.velocity = 0;
-    this.nextPosition = new Vec2(x, y);
+  /**
+   * Radius to search for nearby nodes for repulsion force 
+   * @type {number}
+   */
+  RepulsionRadius: 20,
 
-    this.minDistance = minDistance || settings.MinDistance;
-    this.repulsionRadius = repulsionRadius || settings.RepulsionRadius;
-  }
+  /**
+   * Maximum velocity at which a node can move per frame 
+   * @type {number}
+   */
+  MaxVelocity: .1,
 
-  /** Moves Node by one "step */
-  iterate() {
-    if(!this.isFixed) {
-      this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
-      this.y = this.p5.lerp(this.y, this.nextPosition.y, this.settings.MaxVelocity);
-    }
-  }
+  /**
+   * Maximum attraction force between connected nodes
+   * @type {number}
+   */
+  AttractionForce: .001,
 
-  /** Draw this Node to the canvas */
-  draw() {
-    if (this.isFixed) {
-      this.p5.ellipse(this.x, this.y, 20);
-    } else {
-      this.p5.ellipse(this.x, this.y, 5);
-    }
-  }
-}
+  /**
+   * Maximum repulsion force between nearby nodes
+   * @type {number}
+   */
+  RepulsionForce: 500,
 
-module.exports = Node;</code></pre>
+  /**
+   * Maximum alignment force between connected nodes
+   * @type {number}
+   */
+  AlignmentForce: .001,
+
+  /**
+   * Interval (in ms) between call to node injection routine
+   * @type {number}
+   */
+  NodeInjectionInterval: 100,
+
+  /**
+   * Show/hide circles for each node
+   * @type {boolean}
+   */
+  DrawNodes: false,
+
+  /**
+   * Allow accumulation of path growth by disabling background repaints
+   * @type {boolean}
+   */
+  TraceMode: false,
+
+  /**
+   * Turn on/off inverted colors
+   * @type {boolean}
+   */
+  InvertedColors: false,
+
+  /**
+   * Turn on/off debug mode (per-edge colors)
+   * @type {boolean}
+   */
+  DebugMode: false,
+
+  /**
+   * Turn on/off shape fills for closed paths
+   * @type {boolean}
+   */
+  FillMode: false,
+
+  /**
+   * Turn on/off capturing and rendering of previous node positions to create a "tree ring" effect
+   * @type {boolean}
+   */
+  DrawHistory: false,
+
+  /**
+   * Interval (in ms) between capture of paths for history effect
+   * @type {number}
+   */
+  HistoryCaptureInterval: 1000,
+
+  /**
+   * Maximum number of previous paths to capture for history effect
+   * @type {number}
+   */
+  MaxHistorySize: 10,
+
+  /**
+   * Turn on/off Brownian motion
+   * @type {boolean}
+   */
+  UseBrownianMotion: true,
+
+  /**
+   * Amount to 'jiggle' nodes when Brownian motion is enabled
+   * @type {number}
+   */
+  BrownianMotionRange: 0.01,
+
+  /**
+   * Draw all boundaries
+   * @type {boolean}
+   */
+  ShowBounds: true
+}</code></pre>
         </article>
     </section>
 

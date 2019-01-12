@@ -39,9 +39,7 @@ class World {
     }, this.settings.HistoryCaptureInterval);
   }
 
-  /**
-   * Run a single "tick" of the simulation by iterating on all Paths
-   */
+  /** Run a single "tick" of the simulation by iterating on all Paths */
   iterate() {
     this.prunePaths();
     this.buildTree();
@@ -53,9 +51,7 @@ class World {
     }
   }
 
-  /**
-   * Draw the background and all Paths
-   */
+  /** Draw the background and all Paths */
   draw() {
     if (!this.traceMode) {
       this.drawBackground();
@@ -66,9 +62,7 @@ class World {
     }
   }
 
-  /**
-   * Draw the background to the canvas
-   */
+  /** Draw the background to the canvas */
   drawBackground() {
     if(!this.invertedColors) {
       this.p5.background(255);
@@ -77,9 +71,7 @@ class World {
     }
   }
 
-  /**
-   * Build an R-tree spatial index with all Nodes of all Paths in this World
-   */
+  /** Build an R-tree spatial index with all Nodes of all Paths in this World */
   buildTree() {
     this.tree.clear();
     
@@ -114,9 +106,7 @@ class World {
     }
   }
 
-  /**
-   * Add another snapshot to each Path
-   */
+  /** Add another snapshot to each Path */
   addToHistory() {
     if(!this.paused) {
       for(let path of this.paths) {
@@ -125,9 +115,7 @@ class World {
     }
   }
 
-  /**
-   * Remove any Paths that have gotten too small
-   */
+  /** Remove any Paths that have gotten too small */
   prunePaths() {
     for(let i = 0; i < this.paths.length; i++) {
       if(this.paths[i].nodes.length <= 1) {
@@ -136,9 +124,7 @@ class World {
     }
   }
 
-  /**
-   * Generate an SVG file using the current canvas contents and open up a download prompt on the user's machine
-   */
+  /** Generate an SVG file using the current canvas contents and open up a download prompt on the user's machine */
   export() {
     let svg = document.createElement('svg');
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -203,23 +189,17 @@ class World {
     return pathEl;
   }
 
-  /**
-   * Remove all Paths from this World
-   */
+  /** Remove all Paths from this World */
   clearPaths() {
     this.paths = [];
   }
 
-  /**
-   * Pause the simulation
-   */
+  /** Pause the simulation */
   pause() {
     this.paused = true;
   }
 
-  /**
-   * Unpause the simulation
-   */
+  /** Unpause the simulation */
   unpause() {
     this.paused = false;
   }
@@ -443,16 +423,12 @@ class World {
     this.showBounds = state;
   }
 
-  /**
-   * Toggle the state of the Node visibility flag
-   */
+  /** Toggle the state of the Node visibility flag */
   toggleDrawNodes() {
     this.setDrawNodes(!this.getDrawNodes());
   }
 
-  /**
-   * Toggle the state of the "trace mode" effect flag
-   */
+  /** Toggle the state of the "trace mode" effect flag */
   toggleTraceMode() {
     this.traceMode = !this.traceMode;
     this.drawBackground();
@@ -463,9 +439,7 @@ class World {
     }
   }
 
-  /**
-   * Toggle the state of the "invert colors" flag
-   */
+  /** Toggle the state of the "invert colors" flag */
   toggleInvertedColors() {
     this.invertedColors = !this.invertedColors;
 
@@ -477,37 +451,27 @@ class World {
     }
   }
 
-  /**
-   * Toggle the state of the "debug mode" flag
-   */
+  /** Toggle the state of the "debug mode" flag */
   toggleDebugMode() {
     this.setDebugMode(!this.getDebugMode());
   }
 
-  /**
-   * Toggle the state of the "fill mode" flag
-   */
+  /** Toggle the state of the "fill mode" flag */
   toggleFillMode() {
     this.setFillMode(!this.getFillMode());
   }
 
-  /**
-   * Toggle the state of the "history" effect flag
-   */
+  /** Toggle the state of the "history" effect flag */
   toggleDrawHistory() {
     this.setDrawHistory(!this.getDrawHistory());
   }
 
-  /**
-   * Toggle the state of the Bounds visibility flag
-   */
+  /** Toggle the state of the Bounds visibility flag */
   toggleDrawBounds() {
     this.setDrawBounds(!this.getDrawBounds());
   }
 
-  /**
-   * Toggle the pause/unpause state of the simulation
-   */
+  /** Toggle the pause/unpause state of the simulation */
   togglePause() {
     if(this.paused) {
       this.unpause();

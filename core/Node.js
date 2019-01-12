@@ -33,9 +33,7 @@ class Node extends Vec2 {
     this.repulsionRadius = repulsionRadius || settings.RepulsionRadius;
   }
 
-  /**
-   * Moves Node by one "step"
-   */
+  /** Moves Node by one "step */
   iterate() {
     if(!this.isFixed) {
       this.x = this.p5.lerp(this.x, this.nextPosition.x, this.settings.MaxVelocity);
@@ -43,9 +41,7 @@ class Node extends Vec2 {
     }
   }
 
-  /**
-   * Draw this Node to the canvas
-   */
+  /** Draw this Node to the canvas */
   draw() {
     if (this.isFixed) {
       this.p5.ellipse(this.x, this.y, 20);
