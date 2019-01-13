@@ -2,7 +2,7 @@
 
 let inside = require('./node_modules/point-in-polygon');
 
-/** A polygonal containment vessel of sorts for Paths that can constrain them to particular shapes */
+/** Polygonal container for Paths that can constrain them to particular shapes */
 class Bounds {
   /**
    * Create a new Bounds object
@@ -23,9 +23,7 @@ class Bounds {
     return inside(point, this.polygon);
   }
 
-  /**
-   * Draws this Bounds polygon to the canvas
-   */
+  /** Draws this Bounds polygon to the canvas */
   draw() {
     this.p5.beginShape();
 

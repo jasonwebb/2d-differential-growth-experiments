@@ -11,13 +11,13 @@ class Path {
    * Create a new Path object
    * @param {object} p5 Reference to global p5.js instance
    * @param {array} nodes Array of initial Node objects to start with
-   * @param {object} settings Object containing local override Settings to be merged with Defaults
-   * @param {boolean} isClosed Whether this Path is closed (true) or open (false)
-   * @param {object} bounds Bounds object that this Path must stay within
-   * @param {object} fillColor Fill color object containing properties h, s, b, and a
-   * @param {object} strokeColor Stroke color object containing properties h, s, b, and a
-   * @param {object} invertedFillColor Fill color in "invert mode" containing properties h, s, b, and a
-   * @param {object} invertedStrokeColor Stroke color in "invert mode" containing properties h, s, b, and a
+   * @param {object} [settings] Object containing local override Settings to be merged with Defaults
+   * @param {boolean} [isClosed] Whether this Path is closed (true) or open (false)
+   * @param {object} [bounds] Bounds object that this Path must stay within
+   * @param {object} [fillColor] Fill color object containing properties h, s, b, and a
+   * @param {object} [strokeColor] Stroke color object containing properties h, s, b, and a
+   * @param {object} [invertedFillColor] Fill color in "invert mode" containing properties h, s, b, and a
+   * @param {object} [invertedStrokeColor] Stroke color in "invert mode" containing properties h, s, b, and a
    */
   constructor(
     p5, 
@@ -152,7 +152,7 @@ class Path {
 
   /**
    * Move the referenced Node (by index) away from all other nearby Nodes within the appropriate R-tree index (tree), within a pre-defined radius
-   * @param {*} index Index of Node to apply forces to
+   * @param {number} index Index of Node to apply forces to
    * @param {object} tree Reference to the appropriate R-tree index that this Path belongs to (see World)
    */
   applyRepulsion(index, tree) {
@@ -342,7 +342,7 @@ class Path {
    * Create and return a Node exactly halfway between the two provided Nodes
    * @param {object} node1 First node
    * @param {object} node2 Second node
-   * @param {boolean} fixed Whether this new Node should be fixed or not
+   * @param {boolean} [fixed] Whether this new Node should be fixed or not
    * @returns {object} New Node object
    */
   getMidpointNode(node1, node2, fixed = false) {
@@ -407,7 +407,7 @@ class Path {
 
   /**
    * Draw edges for a given set of nodes - can be either the current or previous nodes
-   * @param {array} Array of Node objects
+   * @param {array} nodes Array of Node objects
    */
   drawEdges(nodes) {
     // Begin capturing vertices

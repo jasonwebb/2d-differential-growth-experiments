@@ -10,8 +10,8 @@ class World {
   /**
    * Create a new World object
    * @param {object} p5 Reference to global p5.js instance
-   * @param {object} settings Object containing local override Settings to be merged with Defaults
-   * @param {array} paths Array of Path objects that belong to this World
+   * @param {object} [settings] Object containing local override Settings to be merged with Defaults
+   * @param {array} [paths] Array of Path objects that belong to this World
    */
   constructor(p5, settings = Defaults, paths = []) {
     this.p5 = p5;
