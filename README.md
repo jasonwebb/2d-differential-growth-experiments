@@ -41,6 +41,21 @@ All of these keyboard controls are available in each experiment.
 | `s`     | Download an SVG of current geometry            |
 | `b`     | Toggle visibility of path bounds               |
 
+## Going further
+This repository is more like a sketchbook, meant to contain some thematic scribbles on the topic of differential growth. I did not take a very rigorous approach in these experiments, opting to focus more on curiosity and effects than sheer performance and broader applications. 
+
+There are a lot of ways that the code I've written can be improved, or the algorithm itself explored more deeply, and I encourage you to take the next steps to expand upon what I've provided and create something new and awesome! Here are a few ideas that I've thought about exploring:
+
+1. Tune forces (attraction, repulsion, and alignment) to identify stable and interesting regions of the parameter space.
+2. Make optimization improvements to enable larger scales, without compromising too much in code readability.
+    * Maybe a more efficient spatial index or nearest-neighbor algorithm can be found?
+3. Move into the third dimension. Many routes to explore here, including:
+   1. Keep the simulation focused on 2D, but take snapshots on intervals and increment Z position for next iteration.
+   2. Use a 3D package like ThreeJS and map the same 2D simulation onto the surfaces of 3D meshes.
+   3. Explore professional-grade VFX and CAD options like Houdini, Unity, and Rhino + Grasshopper to achieve extreme performance.
+4. Port the code into a more performant language / framework like openFrameworks or Cinder. Even the Java-based Processing environment may show some performance gains!
+
+
 ## References
 
 * [Differential line growth with Processing](http://www.codeplastic.com/2017/07/22/differential-line-growth-with-processing/) by [Alberto Giachino (CodePlastic)](http://www.codeplastic.com/)
@@ -70,7 +85,6 @@ All of these keyboard controls are available in each experiment.
 * [browserify](https://www.npmjs.com/package/browserify), [babel](https://www.npmjs.com/package/babel-core), and others for working with modern ES6 and module patterns.
 
 ## Samples
-
 
 ![Single line growth process](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/01%20-%20single%20line/images/01-growth-process.gif)
 
