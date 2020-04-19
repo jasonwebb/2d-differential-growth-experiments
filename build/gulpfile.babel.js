@@ -65,7 +65,7 @@ gulp.task('build:js', () => {
       entries: experiment + 'js/entry.js',
       debug: true
     });
-  
+
     streams.add(b.bundle()
       .pipe(source('app.js'))
       .pipe(buffer())
@@ -77,7 +77,7 @@ gulp.task('build:js', () => {
       .pipe(gulp.dest(experiment + 'dist'))
       .pipe(connect.reload()));
   }
-  
+
   return streams;
 });
 

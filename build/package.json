@@ -9,28 +9,28 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.0.1",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "browserify": "^16.2.2",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.9.0",
+    "browserify": "^16.5.1",
     "del": "^3.0.0",
-    "docdash": "^1.0.2",
+    "docdash": "^1.2.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
-    "gulp-babel": "^8.0.0-beta.2",
-    "gulp-clean-css": "^3.9.4",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.5.0",
+    "gulp-connect": "^5.7.0",
     "gulp-open": "^3.0.1",
     "gulp-rename": "^1.4.0",
-    "gulp-uglify": "^3.0.1",
-    "jsdoc": "^3.5.5",
+    "gulp-uglify": "^3.0.2",
+    "jsdoc": "^3.6.4",
     "merge-stream": "^1.0.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yargs": "^12.0.2"
+    "yargs": "^12.0.5"
   },
   "dependencies": {
-    "npm": "^6.4.0"
+    "npm": "^6.14.4"
   }
 }

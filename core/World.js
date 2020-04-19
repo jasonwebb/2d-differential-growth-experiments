@@ -31,11 +31,11 @@ class World {
 
     this.tree = rbush(9, ['.x','.y','.x','.y']);  // use custom accessor strings per https://github.com/mourner/rbush#data-format
     this.buildTree();
-    
+
     // Begin capturing path history
     let _this = this;
     setInterval(function() {
-      _this.addToHistory(); 
+      _this.addToHistory();
     }, this.settings.HistoryCaptureInterval);
   }
 
@@ -74,7 +74,7 @@ class World {
   /** Build an R-tree spatial index with all Nodes of all Paths in this World */
   buildTree() {
     this.tree.clear();
-    
+
     for(let path of this.paths) {
       this.tree.load(path.nodes);
     }
@@ -98,7 +98,7 @@ class World {
 
   /**
    * Add multiple Path objects to this World
-   * @param {array} paths 
+   * @param {array} paths
    */
   addPaths(paths) {
     for(let path of paths) {
@@ -126,9 +126,9 @@ class World {
 
   /** Generate an SVG file using the current canvas contents and open up a download prompt on the user's machine */
   export() {
-    let svg = document.createElement('svg');
-    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://www.w3.org/2000/svg');
+    svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
     svg.setAttribute('width', window.innerWidth);
     svg.setAttribute('height', window.innerHeight);
     svg.setAttribute('viewBox', '0 0 ' + window.innerWidth + ' ' + window.innerHeight);
@@ -147,12 +147,9 @@ class World {
     }
 
     // Force download of SVG based on https://jsfiddle.net/ch77e7yh/1
-    let svgDocType = document.implementation.createDocumentType('svg', "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
-    let svgDoc = document.implementation.createDocument('http://www.w3.org/2000/svg', 'svg', svgDocType);
-    svgDoc.replaceChild(svg, svgDoc.documentElement);
-    let svgData = (new XMLSerializer()).serializeToString(svgDoc);
-
-    let blob = new Blob([svgData.replace(/></g, '>\n\r<')]);
+    const svgDoctype = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>';
+    const serializedSvg = (new XMLSerializer()).serializeToString(svg);
+    const blob = new Blob([svgDoctype, serializedSvg], { type: 'image/svg+xml;' })
     saveAs(blob, 'differential-growth-' + Date.now() + '.svg');
   }
 
@@ -182,7 +179,7 @@ class World {
       d += ' Z';
     }
 
-    let pathEl = document.createElement('path');
+    let pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     pathEl.setAttribute('d', d);
     pathEl.setAttribute('style', 'fill: none; stroke: black; stroke-width: 1');
 
