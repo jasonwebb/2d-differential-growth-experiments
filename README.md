@@ -1,3 +1,7 @@
+> [Read my Medium article](https://medium.com/@jason.webb/2d-differential-growth-in-js-1843fd51b0ce) to learn more about diffusion-limited aggregation and this project.
+>
+> [Additional media is available on my portfolio](https://jasonwebb.io/2019/05/differential-growth-experiments-in-javascript)
+
 This repo contains a series of visual experiments built with JavaScript that explore the topic of __differential growth__ as a method for generating interesting 2D forms.
 
 I am particularly interested in the application of such techniques in the context of digital fabrication, so these experiments will be more focused on schematic representations (colorless, vector-based, SVG/STL exports) over purely visual effects.
@@ -22,7 +26,7 @@ Within these rules you can see several opportunities for customization that enab
 * The __attraction force__ between connected nodes.
 * The __repulsion force__ between nearby nodes.
 * The __radius__ around each node used to calculate which nearby nodes have an influence on it.
-* A __growth scheme__ that determines when and how new nodes are introduced to the system to induce interesting asymmetry. 
+* A __growth scheme__ that determines when and how new nodes are introduced to the system to induce interesting asymmetry.
 
 ## Global keyboard controls
 All of these keyboard controls are available in each experiment.
@@ -42,7 +46,7 @@ All of these keyboard controls are available in each experiment.
 | `b`     | Toggle visibility of path bounds               |
 
 ## Going further
-This repository is more like a sketchbook, meant to contain some thematic scribbles on the topic of differential growth. I did not take a very rigorous approach in these experiments, opting to focus more on curiosity and effects than sheer performance and broader applications. 
+This repository is more like a sketchbook, meant to contain some thematic scribbles on the topic of differential growth. I did not take a very rigorous approach in these experiments, opting to focus more on curiosity and effects than sheer performance and broader applications.
 
 There are a lot of ways that the code I've written can be improved, or the algorithm itself explored more deeply, and I encourage you to take the next steps to expand upon what I've provided and create something new and awesome! Here are a few ideas that I've thought about exploring:
 
