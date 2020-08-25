@@ -1,4 +1,4 @@
-> [Read my Medium article](https://medium.com/@jason.webb/2d-differential-growth-in-js-1843fd51b0ce) to learn more about diffusion-limited aggregation and this project.
+> [Read my Medium article](https://medium.com/@jason.webb/2d-differential-growth-in-js-1843fd51b0ce) to learn more about differential growth and this project.
 >
 > [Additional media is available on my portfolio](https://jasonwebb.io/2019/05/differential-growth-experiments-in-javascript)
 
