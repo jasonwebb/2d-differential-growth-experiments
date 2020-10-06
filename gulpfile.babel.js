@@ -12,23 +12,23 @@ let browserify = require('browserify'),
 
 // Define folders
 const experiments = [
-  '../experiments/01 - single line/',
-  '../experiments/02 - simple closed shape/',
-  '../experiments/03 - multiple shapes/',
-  '../experiments/04 - SVG as input/',
-  '../experiments/05 - line studies/',
-  '../experiments/06 - shape studies/',
-  '../experiments/07 - bounds/',
-  '../experiments/playground/'
+  'experiments/01 - single line/',
+  'experiments/02 - simple closed shape/',
+  'experiments/03 - multiple shapes/',
+  'experiments/04 - SVG as input/',
+  'experiments/05 - line studies/',
+  'experiments/06 - shape studies/',
+  'experiments/07 - bounds/',
+  'experiments/playground/'
 ];
 
 // Define globs
 const globs = {
   js: 'js/**/*.js',
   dist: 'dist/**/*',
-  core: '../core/**/*.js',
-  allJs: ['../core/*.js'],
-  allHtml: ['../index.html']
+  core: 'core/**/*.js',
+  allJs: ['core/*.js'],
+  allHtml: ['index.html']
 };
 
 // Build globs for global watch tasks
@@ -101,14 +101,14 @@ gulp.task('watch', () => {
 
 gulp.task('serve', () => {
   connect.server({
-    root: '../',
+    root: './',
     port: '8080',
     livereload: true
   });
 });
 
 gulp.task('open', () => {
-  return gulp.src('../index.html')
+  return gulp.src('index.html')
     .pipe(open({
       uri: 'http://localhost:8080'
     }));

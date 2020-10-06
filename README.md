@@ -73,8 +73,8 @@ There are a lot of ways that the code I've written can be improved, or the algor
 
 ## Local install instructions
 
-1. Run `npm install` in both the `build/` and `core/` folders.
-2. Run `gulp` from within the `build/` folder to kick off a watch process and a browser window with LiveReload enabled.
+1. Run `npm install` in both the root (`/`) and `core/` folders.
+2. Run `gulp` to kick off a watch process and a browser window with LiveReload enabled.
 3. Keep Gulp running and the browser window open while making changes. If all goes well, new builds will kick off when you save your changes and the browser will refresh!
 
 ## Packages used
@@ -90,12 +90,12 @@ There are a lot of ways that the code I've written can be improved, or the algor
 
 ## Samples
 
-![Single line growth process](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/01%20-%20single%20line/images/01-growth-process.gif)
+![Single line growth process](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/experiments/01%20-%20single%20line/images/01-growth-process.gif)
 
-![Triangle](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/02%20-%20simple%20closed%20shape/images/02-triangle-growth.gif)
+![Triangle](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/experiments/02%20-%20simple%20closed%20shape/images/02-triangle-growth.gif)
 
-![Multiple shapes](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/03%20-%20multiple%20shapes/images/03-growth-normal.gif)
+![Multiple shapes](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/experiments/03%20-%20multiple%20shapes/images/03-growth-normal.gif)
 
-![SVG supershape as input](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/04%20-%20SVG%20as%20input/images/04-superformula-growth-process-inverted.gif)
+![SVG supershape as input](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/experiments/04%20-%20SVG%20as%20input/images/04-superformula-growth-process-inverted.gif)
 
-![Opposing arcs converging](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/05%20-%20line%20studies/images/08-opp-arcs-solid-trace.png)
+![Opposing arcs converging](https://raw.githubusercontent.com/jasonwebb/2d-differential-growth-experiments/master/experiments/05%20-%20line%20studies/images/08-opp-arcs-solid-trace.png)
