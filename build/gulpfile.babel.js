@@ -12,14 +12,14 @@ let browserify = require('browserify'),
 
 // Define folders
 const experiments = [
-  '../01 - single line/',
-  '../02 - simple closed shape/',
-  '../03 - multiple shapes/',
-  '../04 - SVG as input/',
-  '../05 - line studies/',
-  '../06 - shape studies/',
-  '../07 - bounds/',
-  '../playground/'
+  '../experiments/01 - single line/',
+  '../experiments/02 - simple closed shape/',
+  '../experiments/03 - multiple shapes/',
+  '../experiments/04 - SVG as input/',
+  '../experiments/05 - line studies/',
+  '../experiments/06 - shape studies/',
+  '../experiments/07 - bounds/',
+  '../experiments/playground/'
 ];
 
 // Define globs
