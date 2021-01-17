@@ -2,7 +2,7 @@ let Node = require('../../../core/Node'),
     Path = require('../../../core/Path'),
     World = require('../../../core/World'),
     Settings = require('./Settings'),
-    overlap = require('../node_modules/polygon-overlap');
+    overlap = require('../../../node_modules/polygon-overlap');
 
 let world;
 
