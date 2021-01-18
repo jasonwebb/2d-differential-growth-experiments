@@ -82,16 +82,15 @@ gulp.task('build:js', () => {
 });
 
 // Build all
-gulp.task('build', ['clean', 'build:js']);
-
+gulp.task('build', gulp.series(gulp.parallel('clean', 'build:js')));
 
 //=============
 //  WATCH
 //=============
 
 gulp.task('watch', () => {
-  gulp.watch(globs.allJs, ['build']);
-  gulp.watch(globs.allHtml, ['build']);
+  gulp.watch(globs.allJs, gulp.parallel('build'));
+  gulp.watch(globs.allHtml, gulp.parallel('build'));
 });
 
 
@@ -119,4 +118,4 @@ gulp.task('open', () => {
 //  DEFAULT
 //=============
 
-gulp.task('default', ['build', 'serve', 'open', 'watch']);
+gulp.task('default', gulp.series(gulp.parallel('build', 'serve', 'open', 'watch')));
