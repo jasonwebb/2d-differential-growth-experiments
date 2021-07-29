@@ -22,7 +22,9 @@ let allButtonEls = document.querySelectorAll('button'),
     svgImportInputEl = document.querySelector('.svgImportInput'),
     playButtonEl = document.querySelector('.play');
 
-let modalEl = document.querySelector('.modal');
+let modalEl = document.querySelector('.modal'),
+    triggeringEl,
+    firstFocusableElement, lastFocusableElement;
 
 
 /*
@@ -61,7 +63,6 @@ const sketch = function (p5) {
     document.querySelector('.play').addEventListener('click', togglePause);
 
     // Right menu ---------------------
-    document.querySelector('.viewSource').addEventListener('click', viewSource);
     document.querySelector('.keyboard').addEventListener('click', toggleKeyboardControls);
     document.querySelector('.about').addEventListener('click', toggleAbout);
     document.querySelector('.parameters').addEventListener('click', toggleParameters);
@@ -87,18 +88,18 @@ const sketch = function (p5) {
   */
   function setActiveTool(tool) {
     for (let button of allButtonEls) {
-      button.classList.remove('is-active');
+      button.removeAttribute('aria-current');
     }
 
     switch (tool) {
       case FREEHAND:
-        document.querySelector('.freehand').classList.add('is-active');
+        document.querySelector('.freehand').setAttribute('aria-current', true);
         break;
       case RECTANGLE:
-        document.querySelector('.rectangle').classList.add('is-active');
+        document.querySelector('.rectangle').setAttribute('aria-current', true);
         break;
       case CIRCLE:
-        document.querySelector('.circle').classList.add('is-active');
+        document.querySelector('.circle').setAttribute('aria-current', true);
         break;
     }
 
@@ -138,35 +139,35 @@ const sketch = function (p5) {
     world.togglePause();
 
     let icon = playButtonEl.querySelector('.icon');
+    let text = playButtonEl.querySelector('.text');
 
     if (world.paused) {
       icon.classList.remove('fa-pause');
       icon.classList.add('fa-play');
+      text.innerHTML = 'Play';
     } else {
       icon.classList.remove('fa-play');
       icon.classList.add('fa-pause');
+      text.innerHTML = 'Pause';
     }
-  }
-
-
-  // View source - go to Github repo
-  function viewSource(e) {
-    window.location.href = e.target.getAttribute('data-href');
   }
 
   // Keyboard icon - toggle keyboard controls modal window
   function toggleKeyboardControls() {
+    triggeringEl = document.querySelector('.keyboard');
     openModal('keyboard-controls');
   }
 
   // Question mark icon - toggle 'about' modal window
   function toggleAbout() {
+    triggeringEl = document.querySelector('.about');
     openModal('about');
   }
 
 
   // Sliders icon - toggle parameters modal window
   function toggleParameters() {
+    triggeringEl = document.querySelector('.parameters');
     openModal('parameters');
   }
 
@@ -182,10 +183,36 @@ const sketch = function (p5) {
 
     modalEl.querySelector('.modal-backdrop').addEventListener('click', closeModal);
     modalEl.querySelector('.close').addEventListener('click', closeModal);
+
+    modalEl.addEventListener('keydown', function(e) {
+      if(e.key == 'Escape') {
+        closeModal();
+      }
+
+      if(modal === 'keyboard-controls') {
+        if(e.key == 'Tab') {
+          e.preventDefault();
+        }
+      } else {
+        firstFocusableElement = modalEl.querySelector('.first-focusable-element');
+        lastFocusableElement = modalEl.querySelector('.' + modal + '-content').querySelector('.last-focusable-element');
+
+        if(e.target == firstFocusableElement && e.key == 'Tab' && e.shiftKey) {
+          e.preventDefault();
+          lastFocusableElement.focus();
+        } else if(e.target == lastFocusableElement && e.key == 'Tab' && !e.shiftKey) {
+          e.preventDefault();
+          firstFocusableElement.focus();
+        }
+      }
+    });
+
+    modalEl.querySelector('.close').focus();
   }
 
   function closeModal() {
     modalEl.classList.remove('is-visible');
+    triggeringEl.focus();
   }
 
   // Parse SVG file from user input and add to World

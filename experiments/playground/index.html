@@ -35,20 +35,21 @@
 <body>
   <h1 class="is-hidden">Differential growth playground</h1>
 
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-backdrop"></div>
 
     <div class="modal-content">
-      <div class="close">
+      <button class="close first-focusable-element">
         <span class="fas fa-times"></span>
-      </div>
+        <span class="sr-only">Close</span>
+      </button>
 
       <div class="keyboard-controls-content is-hidden">
-        <h2>Keyboard shortcuts</h2>
+        <h1 id="keyboard-controls-heading">Keyboard shortcuts</h1>
 
         <ul>
           <li>
-            <code>t</code> - toggle trace effect 
+            <code>t</code> - toggle trace effect
           </li>
           <li>
             <code>n</code> - toggle visibility of nodes
@@ -78,193 +79,197 @@
       </div>
 
       <div class="about-content is-hidden">
-        <h2>About this app</h2>
+        <h1>About this app</h1>
         <p>This interactive application lets you grow fun 2D forms out of simple shapes using a process found in nature called <em>differential growth</em>. Use the tools on the left to draw lines, rectangles, and circles or import custom SVG artwork, then hit the Play button to start the process!</code></p>
         <p>When you see something you like, use the Download SVG button (or the S key) to get a vector file that you can use with pen plotters, laser cutters, and design software like Fusion 360 or Illustrator!</p>
 
         <div class="columns">
           <div class="column">
-            <h3>What is differential growth?</h3>
+            <h2>What is differential growth?</h2>
             <p><i>Differential growth</i> is a natural process that produces interesting undulating forms out of over-constrained chains of particles using simple, configurable rules.</p>
             <p>Anders Hoff describes this process well in his article <a href="https://inconvergent.net/2016/shepherding-random-growth/" target="_blank">Shepherding Random Growth</a>.</p>
           </div>
 
           <div class="column">
-            <h3>How was this made?</h3>
+            <h2>How was this made?</h2>
             <p>This app was built using JavaScript (ES6), p5.js, Babel, Browserify, and a smattering of single-purpose packages.</p>
             <p>Source code and documentation <a href="https://github.com/jasonwebb/2d-differential-growth-experiments">available on Github</a>.</p>
           </div>
         </div>
 
         <div class="is-centered">
-          <button class="start">Start playing!</button>
+          <button class="start last-focusable-element">Start playing!</button>
         </div>
       </div>
 
       <div class="parameters-content is-hidden">
-        <h2>Adjust parameters</h2>
+        <h1>Adjust parameters</h1>
 
         <div class="columns">
           <div class="column">
             <fieldset>
-              <div class="control range">
+              <legend class="sr-only">Distance parameters</legend>
+
+              <div class="control range" role="group">
                 <label for="min-distance">Minimum distance</label>
-                <input type="range" min="1" max="20" id="min-distance">
-                <span class="value"></span>
-                <div class="description">Minimum distance between nodes. Lower values mean smoother curves, but slower performance.</div>
+                <input type="range" min="1" max="20" id="min-distance" aria-describedby="min-distance-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="min-distance-description">Minimum distance between nodes. Lower values mean smoother curves, but slower performance.</div>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="max-distance">Maximum distance</label>
-                <input type="range" min="1" max="20" id="max-distance">
-                <span class="value"></span>
-                <div class="description">Maximum distance between nodes before edge is split.</div>
+                <input type="range" min="1" max="20" id="max-distance" aria-describedby="max-distance-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="max-distance-description">Maximum distance between nodes before edge is split.</div>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="repulsion-radius">Repulsion radius</label>
-                <input type="range" min="1" max="20" id="repulsion-radius">
-                <span class="value"></span>
-                <div class="description">Distance around each node </div>
+                <input type="range" min="1" max="20" id="repulsion-radius" aria-describedby="repulsion-radius-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="repulsion-radius-description">Distance around each node </div>
               </div>
             </fieldset>
 
             <fieldset>
-              <div class="control range">
+              <legend class="sr-only">Force parameters</legend>
+
+              <div class="control range" role="group">
                 <label for="attraction-force">Attraction force</label>
-                <input type="range" min=".01" max="1" step=".01" id="attraction-force">
-                <span class="value"></span>
-                <div class="description">How strongly each node will be pulled to it's <em>connected</em> neighbors.</div>
+                <input type="range" min=".01" max="1" step=".01" id="attraction-force" aria-describedby="attraction-force-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="attraction-force-description">How strongly each node will be pulled to it's <em>connected</em> neighbors.</div>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="repulsion-force">Repulsion force</label>
-                <input type="range" min=".01" max="1" step=".01" id="repulsion-force">
-                <span class="value"></span>
-                <div class="description">How strongly nodes will push each other away.</div>
+                <input type="range" min=".01" max="1" step=".01" id="repulsion-force" aria-describedby="repulsion-force-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="repulsion-force-description">How strongly nodes will push each other away.</div>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="alignment-force">Alignment force</label>
-                <input type="range" min=".01" max="1" step=".01" id="alignment-force">
-                <span class="value"></span>
-                <div class="description">How strongly each node will try to form a straight line with it's <em>connected</em> neighbors.</div>
+                <input type="range" min=".01" max="1" step=".01" id="alignment-force" aria-describedby="alignment-force-description">
+                <span class="value" aria-hidden="true"></span>
+                <div class="description" id="alignment-force-description">How strongly each node will try to form a straight line with it's <em>connected</em> neighbors.</div>
               </div>
             </fieldset>
           </div>
 
           <div class="column">
             <fieldset>
+              <legend class="sr-only">Modes and effects</legend>
+
               <div class="control">
-                <input type="checkbox" id="draw-nodes">
+                <input type="checkbox" id="draw-nodes" class="sr-only">
                 <label for="draw-nodes">Draw nodes</label>
               </div>
 
               <div class="control">
-                <input type="checkbox" id="fill-mode">
+                <input type="checkbox" id="fill-mode" class="sr-only">
                 <label for="fill-mode">Fill shapes</label>
               </div>
 
               <div class="control">
-                <input type="checkbox" id="debug-mode">
+                <input type="checkbox" id="debug-mode" class="sr-only">
                 <label for="debug-mode">Debug mode</label>
               </div>
-                
+
               <div class="control">
-                <input type="checkbox" id="inverted-colors">
+                <input type="checkbox" id="inverted-colors" class="sr-only">
                 <label for="inverted-colors">Invert colors</label>
               </div>
 
               <div class="control">
-                <input type="checkbox" id="trace-mode">
+                <input type="checkbox" id="trace-mode" class="sr-only">
                 <label for="trace-mode">Trace effect</label>
               </div>
             </fieldset>
 
             <fieldset>
+              <legend class="sr-only">History effect</legend>
+
               <div class="control">
-                <input type="checkbox" id="draw-history">
+                <input type="checkbox" id="draw-history" class="sr-only">
                 <label for="draw-history">History effect</label>
               </div>
-              
-              <div class="control range">
-                <label for="history-capture-interval">History capture interval (in ms)</label> 
+
+              <div class="control range" role="group">
+                <label for="history-capture-interval">History capture interval (in ms)</label>
                 <input type="range" min="10" max="500" step="1" id="history-capture-interval">
-                <span class="value"></span>
+                <span class="value" aria-hidden="true"></span>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="max-history-size">Max history size</label>
                 <input type="range" min="1" max="20" step="1" id="max-history-size">
-                <span class="value"></span>
+                <span class="value" aria-hidden="true"></span>
               </div>
             </fieldset>
 
             <fieldset>
+              <legend class="sr-only">Brownian motion</legend>
+
               <div class="control">
-                <input type="checkbox" id="use-brownian-motion">
+                <input type="checkbox" id="use-brownian-motion" class="sr-only">
                 <label for="use-brownian-motion">Use Brownian motion</label>
               </div>
 
-              <div class="control range">
+              <div class="control range" role="group">
                 <label for="brownian-motion-range">Displacement range</label>
                 <input type="range" min=".01" max=".1" step=".01" id="brownian-motion-range">
-                <span class="value"></span>
+                <span class="value" aria-hidden="true"></span>
               </div>
             </fieldset>
           </div>
         </div>
 
-        <button class="apply">Apply</button>
+        <button class="apply last-focusable-element">Apply</button>
       </div>
     </div>
-  </div>
-
-  <div class="top-controls">
-    <button class="play">
-      <span class="icon fas fa-play"></span>
-    </button>
   </div>
 
   <aside class="left-menu toolbar">
     <ul>
       <li>
-        <button class="freehand is-active">
+        <button class="freehand button" aria-label="Freehand" aria-current="true">
           <span class="icon fas fa-pencil-alt"></span>
           <span class="text">Freehand</span>
         </button>
       </li>
 
       <li>
-        <button class="rectangle">
+        <button class="rectangle button" aria-label="Draw rectangle">
           <span class="icon far fa-square"></span>
           <span class="text">Draw rectangle</span>
         </button>
       </li>
 
       <li>
-        <button class="circle">
+        <button class="circle button" aria-label="Draw circle">
           <span class="icon far fa-circle"></span>
           <span class="text">Draw circle</span>
         </button>
       </li>
-      
+
       <li>
-        <button class="import">
+        <button class="import button" aria-label="Import SVG">
           <span class="icon far fa-folder-open"></span>
           <span class="text">Import SVG</span>
         </button>
       </li>
 
       <li>
-        <button class="reset">
+        <button class="reset button" aria-label="Erase all">
           <span class="icon fas fa-eraser"></span>
           <span class="text">Erase all</span>
         </button>
       </li>
 
       <li>
-        <button class="export">
+        <button class="export button" aria-label="Download SVG">
           <span class="icon fas fa-download"></span>
           <span class="text">Download SVG</span>
         </button>
@@ -272,31 +277,38 @@
     </ul>
   </aside>
 
+  <div class="top-controls">
+    <button class="play button">
+      <span class="icon fas fa-play" aria-hidden="true"></span>
+      <span class="text sr-only">Play</span>
+    </button>
+  </div>
+
   <aside class="right-menu toolbar">
     <ul>
       <li>
-        <button data-href="https://github.com/jasonwebb/2d-differential-growth-experiments" class="viewSource">
+        <a href="https://github.com/jasonwebb/2d-differential-growth-experiments" class="viewSource button" aria-label="View source on Github">
           <span class="text">View source on Github</span>
           <span class="icon fas fa-code"></span>
-        </button>
+        </a>
       </li>
 
       <li>
-        <button class="keyboard">
+        <button class="keyboard button" aria-label="Keyboard controls">
           <span class="text">Keyboard controls</span>
           <span class="icon fas fa-keyboard"></span>
         </button>
       </li>
-      
+
       <li>
-        <button class="about">
+        <button class="about button" aria-label="About">
           <span class="text">About</span>
           <span class="icon fas fa-question"></span>
         </button>
       </li>
 
       <li>
-        <button class="parameters">
+        <button class="parameters button" aria-label="Adjust parameters">
           <span class="text">Adjust parameters</span>
           <span class="icon fas fa-sliders-h"></span>
         </button>
@@ -304,8 +316,8 @@
     </ul>
   </aside>
 
-  <input type="file" class="svgImportInput" accept=".svg" hidden>
-  <object id="user-file" type="image/svg+xml"></object>
+  <input type="file" class="svgImportInput" accept=".svg" hidden aria-label="user uploaded file">
+  <object id="user-file" type="image/svg+xml" aria-hidden="true" tabindex="-1"></object>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
   <script src="dist/app.min.js"></script>

@@ -36,17 +36,14 @@ ul {
 /*
  Button prototype
 */
-button {
+button,
+.button {
+  display: inline-block;
   background: transparent;
   background-color: rgba(228, 228, 228);
   border-radius: 50px;
   cursor: pointer;
 }
-
-  button:active,
-  button:focus {
-    outline: none;
-  }
 
 
 /*
@@ -64,15 +61,19 @@ button {
     background-color: transparent;
   }
 
+    .top-controls button:focus {
+      outline-offset: 8px;
+    }
+
     .top-controls button .icon {
       color: rgba(203,203,203);
       font-size: 50px;
     }
 
-      .top-controls button:hover .icon {
+      .top-controls button:hover .icon,
+      .top-controls button:focus .icon {
         color: black;
       }
-
 
 /*
  Toolbar prototype
@@ -86,33 +87,34 @@ button {
     margin-bottom: 20px;
   }
 
-  .toolbar button {}
+  .toolbar .button {}
 
-    .toolbar button:focus {
-      outline: none;
-      border-radius: 50px;
-      box-shadow: 0 0 10px rgba(0,0,255,.5);
+    .toolbar .button:focus {
+      outline-offset: 4px;
     }
 
-    .toolbar button:hover,
-    .toolbar button.is-active {
+    .toolbar .button:hover,
+    .toolbar .button[aria-current="true"],
+    .toolbar .button:focus {
       background-color: rgba(51,51,51);
       color: white;
       box-shadow: 3px 3px 3px rgba(0,0,0,.3);
     }
 
-    .toolbar button:hover .icon,
-      .toolbar button.is-active .icon {
+      .toolbar .button:hover .icon,
+      .toolbar .button:focus .icon,
+      .toolbar .button[aria-current="true"] .icon {
         opacity: .85;
         color: white;
       }
 
-      .toolbar button:hover .text {
+      .toolbar .button:hover .text,
+      .toolbar .button:focus .text {
         display: inline-block;
 
       }
 
-    .toolbar button .icon {
+    .toolbar .button .icon {
       color: black;
       font-size: 26px;
       opacity: .4;
@@ -123,7 +125,7 @@ button {
       pointer-events: none;
     }
 
-    .toolbar button .text {
+    .toolbar .button .text {
       display: none;
       font-size: 18px;
       opacity: .85;
@@ -142,7 +144,7 @@ button {
   top: 20px;
 }
 
-  .left-menu button .text {
+  .left-menu .button .text {
     margin-left: -5px;
     padding-right: 25px;
   }
@@ -158,7 +160,7 @@ button {
   text-align: right;
 }
 
-  .right-menu button .text {
+  .right-menu .button .text {
     margin-right: -5px;
     padding-left: 25px;
   }
@@ -205,7 +207,7 @@ button {
     position: relative;
     background-color: rgba(0,0,0,1);
     padding: 30px 40px;
-    color: rgba(255,255,255,.7);
+    color: rgba(255,255,255,.8);
     border-radius: 10px;
     box-shadow: 0 0 50px rgba(0,0,0,.4);
   }
@@ -215,13 +217,24 @@ button {
       right: 20px;
       top: 15px;
       font-size: 30px;
-      opacity: .5;
+      opacity: .7;
       cursor: pointer;
+      background: none;
+      color: white;
     }
 
       .modal .modal-content .close:hover {
         opacity: 1;
       }
+
+      .modal .modal-content .close:focus {
+        outline-offset: 4px;
+      }
+
+    .modal .modal-content h1 {
+      margin-top: 0;
+      font-size: 24px;
+    }
 
     .modal .modal-content h1,
     .modal .modal-content h2,
@@ -280,7 +293,7 @@ button {
   /* Keyboard controls modal */
   .modal .modal-content .keyboard-controls-content {}
 
-    .modal .modal-content .keyboard-controls-content h2 {
+    .modal .modal-content .keyboard-controls-content h1 {
       margin-bottom: 20px;
     }
 
@@ -351,10 +364,6 @@ button {
       }
 
         /* Custom checkboxes */
-        .modal .modal-content .parameters-content fieldset input[type='checkbox'] {
-          display: none;
-        }
-
         .modal .modal-content .parameters-content fieldset:not(:first-of-type) input[type='checkbox'] + label {
           width: 200px;
           margin-bottom: 10px;
@@ -384,6 +393,11 @@ button {
             content: '\f00c';
           }
 
+          .modal .modal-content .parameters-content fieldset input[type='checkbox']:focus + label::before {
+            outline: 1px solid white;
+            outline-offset: 4px;
+          }
+
       /* Value next to ranges */
       .modal .modal-content .parameters-content fieldset .value {
         font-family: 'Courier New', Courier, monospace;
@@ -404,16 +418,25 @@ button {
     .modal .modal-content .about-content .start,
     .modal .modal-content .parameters-content .apply {
       border-radius: 5px;
-      font-size: 16px;
+      border: 1px solid rgba(255,255,255,.8);
+      font-size: 18px;
       color: rgba(255,255,255,.7);
       padding: 10px 20px;
-      background-color: rgba(255,255,255,.2);
+      background: none;
     }
 
       .modal .modal-content .about-content .start:hover,
-      .modal .modal-content .parameters-content .apply:hover {
-        color: rgba(255,255,255,.9);
-        background-color: rgba(255,255,255,.3);
+      .modal .modal-content .about-content .start:focus,
+      .modal .modal-content .parameters-content .apply:hover,
+      .modal .modal-content .parameters-content .apply:focus {
+        color: black;
+        background-color: white;
+        text-decoration: underline;
+      }
+
+      .modal .modal-content .about-content .start:focus,
+      .modal .modal-content .parameters-content .apply:focus {
+        outline-offset: 4px;
       }
 
 /*
@@ -426,7 +449,7 @@ button {
   }
 
 /*
-  Custom range styles 
+  Custom range styles
 */
 input[type=range] {
   background-color: transparent;
@@ -434,100 +457,99 @@ input[type=range] {
   margin: 0;
 }
 
-input[type=range]:focus {
-  outline: none;
-}
+  input[type=range]:focus {
+    outline-offset: 4px;
+  }
 
-input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 15px;
-  cursor: pointer;
-  box-shadow: 0;
-  background: rgba(0,0,0,1);
-  border-radius: 0;
-  border: 0;
-}
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    box-shadow: 0;
+    background: rgba(0,0,0,1);
+    border-radius: 0;
+    border: 0;
+  }
 
-input[type=range]::-webkit-slider-thumb {
-  box-shadow: 0;
-  border: 0;
-  height: 15px;
-  width: 15px;
-  border-radius: 0;
-  background: rgba(255,255,255,.5);
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: 0;
-}
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0;
+    border: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 0;
+    background: rgba(255,255,255,.5);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: 0;
+  }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
-  background: rgba(0,0,0,1);
-}
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: rgba(0,0,0,1);
+  }
 
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 15px;
-  cursor: pointer;
-  box-shadow: 0;
-  background: rgba(0,0,0,1);
-  border-radius: 0;
-  border: 0;
-}
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    box-shadow: 0;
+    background: rgba(0,0,0,1);
+    border-radius: 0;
+    border: 0;
+  }
 
-input[type=range]::-moz-range-thumb {
-  box-shadow: 0;
-  border: 0;
-  height: 15px;
-  width: 15px;
-  border-radius: 0;
-  background: rgba(255,255,255,.5);
-  cursor: pointer;
-}
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 0;
+    border: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 0;
+    background: rgba(255,255,255,.5);
+    cursor: pointer;
+  }
 
-input[type=range]::-ms-track {
-  width: 100%;
-  height: 15px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
 
-input[type=range]::-ms-fill-lower {
-  background: rgba(0,0,0,1);
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
+  input[type=range]::-ms-fill-lower {
+    background: rgba(0,0,0,1);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
 
-input[type=range]::-ms-fill-upper {
-  background: rgba(0,0,0,1);
-  border: 0;
-  border-radius: 0;
-  box-shadow: 0;
-}
+  input[type=range]::-ms-fill-upper {
+    background: rgba(0,0,0,1);
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0;
+  }
 
-input[type=range]::-ms-thumb {
-  box-shadow: 0;
-  border: 0;
-  width: 15px;
-  border-radius: 0;
-  background: rgba(255,255,255,.5);
-  cursor: pointer;
-  height: 15px;
-}
+  input[type=range]::-ms-thumb {
+    box-shadow: 0;
+    border: 0;
+    width: 15px;
+    border-radius: 0;
+    background: rgba(255,255,255,.5);
+    cursor: pointer;
+    height: 15px;
+  }
 
-input[type=range]:focus::-ms-fill-lower {
-  background: rgba(0,0,0,1);
-}
+  input[type=range]:focus::-ms-fill-lower {
+    background: rgba(0,0,0,1);
+  }
 
-input[type=range]:focus::-ms-fill-upper {
-  background: rgba(0,0,0,1);
-}
+  input[type=range]:focus::-ms-fill-upper {
+    background: rgba(0,0,0,1);
+  }
 
-
-input[type=range]::-webkit-slider-thumb:hover,
-input[type=range]::-moz-range-thumb:hover,
-input[type=range]::-ms-thumb:hover {
-  background: rgba(0,0,0,.8);
-}
+  input[type=range]::-webkit-slider-thumb:hover,
+  input[type=range]::-moz-range-thumb:hover,
+  input[type=range]::-ms-thumb:hover {
+    background: rgba(0,0,0,.8);
+  }
