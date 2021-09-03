@@ -114,7 +114,7 @@ const sketch = function (p5) {
         break;
 
       case SVG_TEXT:
-        let letters = SVGLoader.load(p5, 'text', Settings);
+        let letters = SVGLoader.load(p5, document.querySelector('#text'), Settings);
 
         for(let [index, letter] of letters.entries()) {
           letter.scale(3.5);
@@ -208,7 +208,7 @@ const sketch = function (p5) {
         break;
 
       case SVG_MAZE:
-        bounds = SVGLoader.load(p5, 'maze', Settings);
+        bounds = SVGLoader.load(p5, document.querySelector('#maze'), Settings);
 
         for(let bound of bounds) {
           bound.scale(.8);
@@ -298,6 +298,11 @@ const sketch = function (p5) {
       // Restart with SVG text with '4'
       case '4':
         restartWorldWith(SVG_TEXT);
+        break;
+
+      // Restart with SVG maze with '5'
+      case '5':
+        restartWorldWith(SVG_MAZE);
         break;
 
       // Toggle trace mode with 't'
